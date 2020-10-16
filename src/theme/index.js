@@ -1,0 +1,24 @@
+export const appThemeLight = {
+  palette: {
+    primary: {
+      light: "#ffffff",
+      main: "#F4F5F7",
+      dark: "#D3D8E2",
+    },
+    secondary: {
+      light: "#A0ABB3",
+      main: "#405568",
+      dark: "#102940",
+    },
+    accentOne: {
+      light: "#797979",
+      main: "#353535",
+      dark: "#181818",
+    },
+    accentTwo: {
+      light: "#942AFF",
+      main: "#6D0DCD",
+      dark: "#45008A",
+    },
+  },
+};
