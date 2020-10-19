@@ -6,7 +6,9 @@ const style = makeStyles((theme) => ({
   },
   title: {
     color: theme.palette.secondary.dark,
+    opacity: "0.9",
     fontSize: "30px",
+    fontWeight: "500",
   },
 }));
 

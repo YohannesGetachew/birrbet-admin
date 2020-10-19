@@ -61,7 +61,7 @@ const style = makeStyles((theme) => ({
     },
   },
   contentC: {
-    backgroundColor: "#ffffff",
+    backgroundColor: theme.palette.secondary.light,
     position: "relative",
     flexGrow: "1",
     overflow: "auto",

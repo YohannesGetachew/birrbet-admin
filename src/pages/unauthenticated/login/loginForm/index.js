@@ -44,7 +44,9 @@ const LoginForm = () => {
   const style = loginStyle();
   return (
     <>
-      <h1 className={style.header}>Birr Bet</h1>
+      <h1 className={style.header}>
+        <span className={style.logo}>B</span>irr bets
+      </h1>
       {error && error.message === "User not found" && (
         <div className={style.errorC}>
           <AlertError message="Wrong credentials" />

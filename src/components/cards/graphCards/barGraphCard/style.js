@@ -3,19 +3,14 @@ import { makeStyles } from "@material-ui/core/styles";
 const style = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.secondary.dark,
-    // height: "100%",
-    width: "100%",
+    padding: "20px",
     borderRadius: "4px",
   },
-  padded: {
-    padding: "20px",
-  },
   title: {
-    marginLeft: "10px",
+    color: theme.palette.primary.main,
+    opacity: 0.9,
     fontWeight: "normal",
-    color: theme.palette.primary.dark,
-    opacity: "0.9",
-    fontSize: "20px",
+    marginBottom: "10px",
   },
 }));
 

@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const style = makeStyles((theme) => ({
   root: {
-    width: "100px",
+    width: "100%",
     backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.primary.dark,
     padding: "15px 60px 15px 15px",
@@ -11,6 +11,7 @@ const style = makeStyles((theme) => ({
   title: {
     fontWeight: "normal",
     marginBottom: "15px",
+    opacity: "0.9",
   },
   body: {
     marginBottom: "15px",

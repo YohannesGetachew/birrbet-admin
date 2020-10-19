@@ -15,6 +15,7 @@ const style = makeStyles((theme) => ({
   onlyLogo: {
     padding: "0 8px 2px 8px",
     borderRadius: "4px",
+    border: `2px solid ${theme.palette.accentTwo.main}`,
     marginRight: (props) => (props.collapsed ? 0 : "10px"),
     fontSize: "25px",
     backgroundColor: theme.palette.accentOne.dark,

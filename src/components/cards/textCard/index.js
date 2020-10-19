@@ -10,12 +10,13 @@ const TextCard = ({ title, body, analytics, analyticsStartDate }) => {
   return (
     <motion.div
       //   animate={{ x: 1 }}
-      initial={{ scale: 1.4 }}
+      initial={{ scale: 0.9 }}
       animate={{ scale: 1 }}
+      transition={{ duration: 0.2 }}
       className={style.root}
     >
-      <h3 className={style.title}>Customers</h3>
-      <h3 className={style.body}>43</h3>
+      <h3 className={style.title}>{title}</h3>
+      <h3 className={style.body}>{body}</h3>
       <h5 className={style.analytics}>
         <span>
           {analytics.direction === "increase" ? (
@@ -24,9 +25,9 @@ const TextCard = ({ title, body, analytics, analyticsStartDate }) => {
             <DownArrow className={style.icon} />
           )}
         </span>
-        7%
+        {analytics.number}
       </h5>
-      <p className={style.analyticsStartDate}>All time</p>
+      <p className={style.analyticsStartDate}>{analyticsStartDate}</p>
     </motion.div>
   );
 };
@@ -38,7 +39,7 @@ TextCard.propTypes = {
   body: PropTypes.string,
   analytics: PropTypes.shape({
     direction: PropTypes.string,
-    number: PropTypes.number,
+    number: PropTypes.string,
   }),
   analyticsStartDate: PropTypes.string,
 };

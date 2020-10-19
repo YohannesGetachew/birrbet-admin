@@ -3,31 +3,64 @@ import { Line } from "react-chartjs-2";
 
 const LineGraph = () => {
   const data = {
-    labels: ["12-23-12", "11-23-12", "10-23-12"],
+    labels: ["10-23-12", "11-23-12", "12-23-12"],
     datasets: [
       {
         label: "Deposits",
-        data: [34589, 5689, 3456, 2345],
+        data: [10, 50, 40, 20],
         backgroundColor: ["transparent"],
         borderColor: ["#ffffff"],
       },
       {
         label: "Withdrawals",
-        data: [23456, 32456, 51627, 33874],
+        data: [45, 30, 10, 40],
         backgroundColor: ["transparent"],
         borderColor: ["#942AFF"],
       },
     ],
   };
   return (
-    <Line
-      data={data}
-      options={{
-        maintainAspectRatio: false,
-      }}
-      width={null}
-      height={null}
-    />
+    <div style={{ height: "210px" }}>
+      <Line
+        data={data}
+        width={null}
+        height={null}
+        options={{
+          maintainAspectRatio: false,
+          responsive: true,
+          legend: {
+            labels: {
+              fontColor: "#E6EBF6",
+              fontSize: 10,
+            },
+          },
+          scales: {
+            xAxes: [
+              {
+                display: true,
+                gridLines: {
+                  zeroLineColor: "#fff",
+                },
+                ticks: {
+                  fontColor: "rgba(255,255,255,0.7)",
+                },
+              },
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  zeroLineColor: "#fff",
+                },
+                ticks: {
+                  fontColor: "rgba(255,255,255,0.7)",
+                  fontSize: 10,
+                },
+              },
+            ],
+          },
+        }}
+      />
+    </div>
   );
 };
 

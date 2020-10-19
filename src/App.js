@@ -16,7 +16,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Route path="/" render={() => renderByAuthorization(true)} />
+        <Route path="/" render={() => renderByAuthorization(authData)} />
       </ThemeProvider>
     </BrowserRouter>
   );
