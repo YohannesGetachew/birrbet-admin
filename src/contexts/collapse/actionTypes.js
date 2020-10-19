@@ -1,0 +1,1 @@
+export const SET_COLLAPSE_DATA = "COLLAPSE_DATA";

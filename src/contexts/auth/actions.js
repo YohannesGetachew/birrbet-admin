@@ -1,14 +1,14 @@
-import { ADD_USER, REMOVE_USER } from "./actionTypes";
+import { ADD_AUTH_DATA, REMOVE_AUTH_DATA } from "./actionTypes";
 
-export const addUser = (user = null) => {
+export const addAuthData = (authData = null) => {
   return {
-    type: ADD_USER,
-    payload: user,
+    type: ADD_AUTH_DATA,
+    payload: authData,
   };
 };
 
-export const removeUser = () => {
+export const removeAuthData = () => {
   return {
-    type: REMOVE_USER,
+    type: REMOVE_AUTH_DATA,
   };
 };

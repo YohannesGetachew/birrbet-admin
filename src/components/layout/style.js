@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const FULLY_EXTENDED_SIDEBAR_WIDTH = "150px";
+const FULLY_EXTENDED_SIDEBAR_WIDTH = "180px";
 const PARTIALLY_COLLAPSED_SIDEBAR_WIDTH = "80px";
 const FULLY_COLLAPSED_SIDEBAR_WIDTH = "0";
 
@@ -14,33 +14,36 @@ const style = makeStyles((theme) => ({
       gridTemplateRows: "50px auto",
     },
   },
-  topBar: {
-    backgroundColor: "grey",
-  },
+  topBarC: {},
   sideBarAndContentC: {
     display: "flex",
     position: "relative",
     overflow: "hidden",
   },
-  sideBar: {
+  sideBarC: {
     backgroundColor: "#f4f5f7",
+    borderTop: `1px solid ${theme.palette.primary.dark}`,
+    opacity: 1,
     flex: (props) =>
       props.collapsed
         ? `0 0 ${PARTIALLY_COLLAPSED_SIDEBAR_WIDTH}`
         : `0 0 ${FULLY_EXTENDED_SIDEBAR_WIDTH}`,
-    transition: "all 0.8s",
+    transition: "all 0.6s",
     overflow: "auto",
     [theme.breakpoints.down("sm")]: {
+      opacity: (props) => (props.collapsed ? 0 : 1),
       width: (props) =>
         props.collapsed
           ? FULLY_COLLAPSED_SIDEBAR_WIDTH
           : FULLY_EXTENDED_SIDEBAR_WIDTH,
       position: "absolute",
-      zIndex: "99",
+      zIndex: "101",
       top: "0",
       left: "0",
       bottom: "0",
-      boxShadow: "2px 2px 8px #000000",
+      [theme.breakpoints.down("sm")]: {
+        boxShadow: `1px 1px 8px ${theme.palette.accentOne.light}`,
+      },
     },
   },
   backdrop: {
@@ -53,11 +56,11 @@ const style = makeStyles((theme) => ({
       top: "0",
       left: "0",
       bottom: "0",
-      backgroundColor: "rgba(0, 0, 0, 0.2)",
+      backgroundColor: "rgba(0, 0, 0, 0.1)",
       width: (props) => (props.collapsed ? "0" : "100%"),
     },
   },
-  content: {
+  contentC: {
     backgroundColor: "#ffffff",
     position: "relative",
     flexGrow: "1",

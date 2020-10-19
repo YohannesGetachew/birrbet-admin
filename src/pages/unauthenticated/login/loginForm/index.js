@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Formik, Form } from "formik";
 import { useMutation } from "@apollo/client";
 import * as Yup from "yup";
 import { TextField } from "../../../../components/fields";
 import { SubmitButton } from "../../../../components/buttons";
+import { AlertError } from "../../../../components/errors";
 import { LOGIN } from "../../../../graphql/user";
+import { AuthContext, Actions } from "../../../../contexts/auth";
 import loginStyle from "./style";
 
 const initialValues = { username: "", password: "" };
@@ -14,33 +16,51 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required("Password is required"),
 });
 
-const handleSubmit = async (values, setSubmitting, mutate) => {
+const handleSubmit = async (
+  values,
+  setSubmitting,
+  mutate,
+  dispatch,
+  addAuthData
+) => {
   setSubmitting(true);
   try {
     const authData = await mutate({ variables: values });
     setSubmitting(false);
     if (authData) {
       const token = authData?.data?.login?.accessToken;
-      console.log(token);
+      if (token) return dispatch(addAuthData(authData.data.login));
     } else {
-      console.log("no auth data");
+      console.log("no auth data present");
     }
   } catch (err) {
-    console.log(err);
+    return;
   }
 };
 
 const LoginForm = () => {
-  const [mutate] = useMutation(LOGIN);
+  const { dispatch } = useContext(AuthContext);
+  const [mutate, { error }] = useMutation(LOGIN);
   const style = loginStyle();
   return (
     <>
       <h1 className={style.header}>Birr Bet</h1>
+      {error && error.message === "User not found" && (
+        <div className={style.errorC}>
+          <AlertError message="Wrong credentials" />
+        </div>
+      )}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) =>
-          handleSubmit(values, setSubmitting, mutate)
+          handleSubmit(
+            values,
+            setSubmitting,
+            mutate,
+            dispatch,
+            Actions.addAuthData
+          )
         }
       >
         {({ isSubmitting }) => (

@@ -3,7 +3,7 @@ export const appThemeLight = {
     primary: {
       light: "#ffffff",
       main: "#F4F5F7",
-      dark: "#D3D8E2",
+      dark: "#E6EBF6",
     },
     secondary: {
       light: "#A0ABB3",
@@ -19,6 +19,24 @@ export const appThemeLight = {
       light: "#942AFF",
       main: "#6D0DCD",
       dark: "#45008A",
+    },
+  },
+  overrides: {
+    MUIDataTable: {
+      root: {
+        color: "#ffffff",
+      },
+      paper: {
+        boxShadow: "none",
+      },
+    },
+    MUIDataTableBodyCell: {
+      root: {
+        backgroundColor: "#FF0000",
+        "@media print": {
+          backgroundColor: "whites",
+        },
+      },
     },
   },
 };

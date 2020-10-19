@@ -5,6 +5,7 @@ export const LOGIN = gql`
     login(loginInput: { username: $username, password: $password }) {
       accessToken
       tokenType
+      expiresIn
     }
   }
 `;

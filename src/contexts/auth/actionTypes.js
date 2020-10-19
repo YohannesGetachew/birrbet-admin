@@ -1,2 +1,2 @@
-export const ADD_USER = "ADD_USER";
-export const REMOVE_USER = "REMOVE_USER";
+export const ADD_AUTH_DATA = "ADD_AUTH_DATA";
+export const REMOVE_AUTH_DATA = "ADD_AUTH_DATA";

@@ -1,16 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import App from "./app";
+import customApolloClient from "./apollo";
+import { AuthContextProvider } from "./contexts/auth";
+import "vanilla-antd-message/dist/style.css";
 import "./index.css";
-
-const API_URL = process.env.REACT_APP_API_URL;
-const client = new ApolloClient({ uri: API_URL, cache: new InMemoryCache() });
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <App />
+    <ApolloProvider client={customApolloClient}>
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")

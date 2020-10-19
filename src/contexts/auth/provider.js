@@ -1,33 +1,39 @@
 import React, { useReducer, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 
-import { authReducer } from "../reducers/authReducer";
-import { AuthContext } from "../contexts";
+import { authReducer } from "./reducer";
+import { AuthContext } from "./context";
 
-const initialUser = () => {
-  return Cookies.getJSON("user") || null;
+const initialAuthData = () => {
+  return Cookies.getJSON("Authorization") || null;
 };
 
+// authData {
+//   accessToken: String!
+//   refreshToken: String!
+//   tokenType: String
+//   expiresIn: Float!
+// }
 const AuthContextProvider = (props) => {
-  const [user, dispatch] = useReducer(authReducer, [], initialUser);
+  const [authData, dispatch] = useReducer(authReducer, [], initialAuthData);
   const hasMount = useRef(false);
 
   useEffect(() => {
     if (!hasMount.current) {
       hasMount.current = true;
     } else {
-      if (user) {
-        Cookies.set("user", JSON.stringify(user), {
-          expires: user.expiresIn / 86400,
+      if (authData) {
+        Cookies.set("Authorization", `Bearer ${authData.accessToken}`, {
+          expires: authData.expiresIn / 86400,
         });
       } else {
-        Cookies.set("user", null);
+        Cookies.set("Authorization", null);
       }
     }
-  }, [user]);
+  }, [authData]);
 
   return (
-    <AuthContext.Provider value={{ user, dispatch }}>
+    <AuthContext.Provider value={{ authData, dispatch }}>
       {props.children}
     </AuthContext.Provider>
   );

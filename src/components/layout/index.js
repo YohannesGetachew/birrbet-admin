@@ -1,24 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import PropTypes from "prop-types";
+import { CollapseContext, Actions } from "../../contexts/collapse";
 import layoutStyle from "./style";
 
-const Layout = () => {
+const Layout = (props) => {
   const [collapsed, setCollapsed] = useState(false);
+  const handleCollapse = () => {
+    setCollapsed((prevCollapsed) => !prevCollapsed);
+  };
+  const { dispatch } = useContext(CollapseContext);
+  useEffect(() => {
+    dispatch(Actions.setCollapseHandler({ collapsed, handleCollapse }));
+  }, [dispatch, collapsed]);
   const style = layoutStyle({ collapsed });
   return (
     <div className={style.root}>
-      <div className={style.topBar}>
-        <button onClick={() => setCollapsed(!collapsed)}>top</button>
-      </div>
+      <div className={style.topBarC}>{props.topBar}</div>
 
       <div className={style.sideBarAndContentC}>
-        <div collapsed={collapsed} className={style.sideBar}>
-          <button onClick={() => setCollapsed(!collapsed)}>side</button>
-        </div>
+        <div className={style.sideBarC}>{props.sideBar}</div>
 
-        <div className={style.content}></div>
+        <div className={style.contentC}>{props.content}</div>
         <div
           onClick={() => setCollapsed(true)}
-          collapsed={collapsed}
           className={style.backdrop}
         ></div>
       </div>
@@ -26,3 +30,8 @@ const Layout = () => {
   );
 };
 export default Layout;
+
+Layout.propTypes = {
+  topBar: PropTypes.element,
+  sideBar: PropTypes.element,
+};
