@@ -4,6 +4,9 @@ import ShowTickets from "./showTickets";
 import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
 import { TICKETS } from "../../graphql/ticket";
+import { Grid } from "@material-ui/core";
+import TicketAnalytics from "./ticketAnylitics";
+import TicketAnylitics from "./ticketAnylitics";
 
 const Tickets = () => {
   const {
@@ -32,9 +35,14 @@ const Tickets = () => {
     );
   }
   return (
-    <div style={{ marginLeft: "100px" }}>
-      <ShowTickets tickets={ticketData.tickets} />
-    </div>
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={8}>
+        <ShowTickets tickets={ticketData.tickets} />
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <TicketAnylitics />
+      </Grid>
+    </Grid>
   );
 };
 

@@ -1,5 +1,5 @@
 import TextCard from "./textCard";
 import LineGraphCard from "./graphCards/lineGraphCard";
-import BarGraphCard from "./graphCards/barGraphCard";
+import DoghnutGraphCard from "./graphCards/doghnutGraphCard";
 
-export { TextCard, LineGraphCard, BarGraphCard };
+export { TextCard, LineGraphCard, DoghnutGraphCard };

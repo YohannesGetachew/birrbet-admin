@@ -1,10 +1,10 @@
 import React from "react";
-import { Button } from "@material-ui/core";
-import CheckRoundedIcon from "@material-ui/icons/CheckRounded";
-import ClearRoundedIcon from "@material-ui/icons/ClearRounded";
+import { ClearRounded, CheckRounded } from "@material-ui/icons";
+import { CustomIconButton } from "../../../../components/buttons/iconButtons";
 import { convertFromUnix } from "../../../../utils/date";
+import { Button } from "@material-ui/core";
 
-const ticketColumn = [
+const getTicketColumn = (theme, prepareTicketPlacement) => [
   {
     name: "ticketID",
     label: "Ticket code",
@@ -15,7 +15,11 @@ const ticketColumn = [
     label: "Status",
     options: {
       customBodyRender: (value, tableMeta, updateValue) => {
-        const colors = { PENDING: "orange", LOSE: "red", WIN: "green" };
+        const colors = {
+          PENDING: theme.palette.warning.dark,
+          LOSE: theme.palette.error.dark,
+          WIN: theme.palette.success.dark,
+        };
         return (
           <span
             style={{
@@ -46,9 +50,9 @@ const ticketColumn = [
     options: {
       customBodyRender: (value, tableMeta, updateValue) =>
         value ? (
-          <CheckRoundedIcon style={{ color: "green" }} />
+          <CheckRounded style={{ color: theme.palette.success.main }} />
         ) : (
-          <ClearRoundedIcon style={{ color: "#f5425d" }} />
+          <ClearRounded style={{ color: theme.palette.error.main }} />
         ),
     },
   },
@@ -58,24 +62,35 @@ const ticketColumn = [
     options: {
       print: false,
       filter: false,
+      sort: false,
       download: false,
       customBodyRender: (value, tableMeta, updateValue) => (
         <>
           <Button
             size="small"
-            color="secondary"
-            variant="contained"
-            style={{ marginRight: "10px" }}
+            style={{
+              backgroundColor: tableMeta.rowData[3]
+                ? theme.palette.primary.light
+                : theme.palette.accentTwo.dark,
+              color: tableMeta.rowData[3]
+                ? theme.palette.accentOne.light
+                : theme.palette.primary.main,
+              marginRight: "10px",
+            }}
+            disabled={tableMeta.rowData[3]}
+            onClick={() => prepareTicketPlacement(value, "PLACE")}
           >
-            Place
+            {tableMeta.rowData[3] ? "Placed" : "Place"}
           </Button>
-          <Button size="small" color="secondary" variant="contained">
-            Print
-          </Button>
+          <CustomIconButton
+            disabled={!tableMeta.rowData[3]}
+            type="print"
+            handleClick={() => prepareTicketPlacement(value, "PRINT")}
+          />
         </>
       ),
     },
   },
 ];
 
-export default ticketColumn;
+export default getTicketColumn;

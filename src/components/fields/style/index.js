@@ -4,23 +4,23 @@ const style = makeStyles((theme) => ({
   root: {
     "& label": {
       color: (props) =>
-        props.dark ? theme.palette.primary.dark : theme.palette.accentOne.main,
+        props.dark ? theme.palette.primary.dark : theme.palette.secondary.main,
     },
     "& label.Mui-focused": {
       color: (props) =>
-        props.dark ? theme.palette.primary.light : theme.palette.primary.dark,
+        props.dark ? theme.palette.primary.light : theme.palette.secondary.dark,
     },
     "& .MuiInput-underline:before": {
       borderBottomColor: (props) =>
-        props.dark ? theme.palette.primary.dark : theme.palette.accentTwo.dark,
+        props.dark ? theme.palette.primary.dark : theme.palette.secondary.main,
     },
     "& .MuiInput-underline:hover::before": {
       borderBottomColor: (props) =>
-        props.dark ? theme.palette.primary.light : theme.palette.primary.light,
+        props.dark ? theme.palette.primary.light : theme.palette.secondary.dark,
     },
     "& .MuiInput-input": {
       color: (props) =>
-        props.dark ? theme.palette.primary.light : theme.palette.accentOne.dark,
+        props.dark ? theme.palette.primary.light : theme.palette.accentOne.main,
     },
     "& .MuiInputAdornment-root": {
       color: theme.palette.accentOne.light,

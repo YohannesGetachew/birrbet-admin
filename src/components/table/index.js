@@ -7,10 +7,10 @@ import tableStyle from "./style";
 const Table = ({ ...rest }) => {
   const style = tableStyle();
   const defaultOptions = {
-    selectableRows: false,
+    selectableRows: "none",
   };
   return (
-    <div>
+    <div className={style.root}>
       <MUIDataTable {...rest} options={defaultOptions} />
     </div>
   );

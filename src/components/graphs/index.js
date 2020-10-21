@@ -1,4 +1,4 @@
 import LineGraph from "./lineGraph";
-import BarGraph from "./barGraph";
+import DoghnutGraph from "./doghnutGraph";
 
-export { LineGraph, BarGraph };
+export { LineGraph, DoghnutGraph };

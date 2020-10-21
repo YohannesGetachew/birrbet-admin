@@ -5,11 +5,11 @@ import textCardStyle from "./style";
 import DownArrow from "@material-ui/icons/ArrowDownwardRounded";
 import UpArrow from "@material-ui/icons/ArrowUpwardRounded";
 
-const TextCard = ({ title, body, analytics, analyticsStartDate }) => {
+const TextCard = ({ anyliticsData }) => {
+  const { title, body, analytics, analyticsStartDate } = anyliticsData;
   const style = textCardStyle({ direction: analytics.direction });
   return (
     <motion.div
-      //   animate={{ x: 1 }}
       initial={{ scale: 0.9 }}
       animate={{ scale: 1 }}
       transition={{ duration: 0.2 }}
@@ -35,11 +35,13 @@ const TextCard = ({ title, body, analytics, analyticsStartDate }) => {
 export default TextCard;
 
 TextCard.propTypes = {
-  title: PropTypes.string,
-  body: PropTypes.string,
-  analytics: PropTypes.shape({
-    direction: PropTypes.string,
-    number: PropTypes.string,
+  anyliticsData: PropTypes.shape({
+    title: PropTypes.string,
+    body: PropTypes.string,
+    analytics: PropTypes.shape({
+      direction: PropTypes.string,
+      number: PropTypes.string,
+    }),
+    analyticsStartDate: PropTypes.string,
   }),
-  analyticsStartDate: PropTypes.string,
 };

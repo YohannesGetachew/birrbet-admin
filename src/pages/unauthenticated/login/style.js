@@ -12,6 +12,7 @@ const style = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
+    padding: "20px",
   },
   pictureC: {
     height: "100%",

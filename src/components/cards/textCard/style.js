@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 const style = makeStyles((theme) => ({
   root: {
     width: "100%",
-    backgroundColor: theme.palette.secondary.dark,
-    color: theme.palette.primary.dark,
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.secondary.dark,
     padding: "15px 60px 15px 15px",
     borderRadius: "4px",
   },
@@ -17,7 +17,10 @@ const style = makeStyles((theme) => ({
     marginBottom: "15px",
   },
   analytics: {
-    color: (props) => (props.direction === "increase" ? "green" : "red"),
+    color: (props) =>
+      props.direction === "increase"
+        ? theme.palette.success.main
+        : theme.palette.error.main,
   },
   analyticsStartDate: {
     fontSize: "10px",

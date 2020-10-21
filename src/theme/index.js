@@ -1,3 +1,4 @@
+import muiDatatableOverride from "./mui-datatable-override";
 export const appThemeLight = {
   palette: {
     primary: {
@@ -21,31 +22,7 @@ export const appThemeLight = {
       dark: "#45008A",
     },
   },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    },
-  },
   overrides: {
-    MUIDataTable: {
-      root: {
-        color: "#ffffff",
-      },
-      paper: {
-        boxShadow: "none",
-      },
-    },
-    MUIDataTableBodyCell: {
-      root: {
-        backgroundColor: "#FF0000",
-        "@media print": {
-          backgroundColor: "whites",
-        },
-      },
-    },
+    ...muiDatatableOverride,
   },
 };
