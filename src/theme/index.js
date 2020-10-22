@@ -21,6 +21,11 @@ export const appThemeLight = {
       main: "#6D0DCD",
       dark: "#45008A",
     },
+    error: {
+      light: "#fc035e",
+      main: "#fc0352",
+      dak: "#fc0345",
+    },
   },
   overrides: {
     ...muiDatatableOverride,

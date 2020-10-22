@@ -2,6 +2,8 @@ import React from "react";
 import Dashboard from "../contentItems/dashboard";
 import Report from "../contentItems/report";
 import Ticket from "../contentItems/ticket";
+import Users from "../contentItems/users";
+import MutateUser from "../contentItems/users/mutateUser";
 // import {
 //   DashboardRounded,
 //   SportsBaseballRounded,
@@ -121,7 +123,11 @@ const CategorizedRoutes = [
         menuName: "Users",
         path: "/admin/users",
         icon: <GroupRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: Users,
+        subRoutes: [
+          { path: "/create", content: MutateUser, subRouteName: "Create user" },
+          { path: "/edit/:id", content: MutateUser, subRouteName: "Edit user" },
+        ],
       },
       {
         menuName: "Transactions",

@@ -5,7 +5,7 @@ const getStyleByType = (type, theme) => {
     case "edit":
       return {
         iconColor: theme.palette.primary.dark,
-        backgroundColor: theme.palette.accentTwo.main,
+        backgroundColor: theme.palette.warning.dark,
       };
     case "delete":
       return {

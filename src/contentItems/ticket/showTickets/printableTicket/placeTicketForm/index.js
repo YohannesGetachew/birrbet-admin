@@ -7,6 +7,7 @@ import { SubmitButton } from "../../../../../components/buttons";
 import * as Yup from "yup";
 import { Grid } from "@material-ui/core";
 import placeTicketFormStyle from "./style";
+import { popupError } from "../../../../../components/errors";
 
 const handleSubmit = async (values, setSubmitting, mutate, ticketID) => {
   setSubmitting(true);
@@ -19,8 +20,7 @@ const handleSubmit = async (values, setSubmitting, mutate, ticketID) => {
     });
     setSubmitting(false);
   } catch (err) {
-    setSubmitting(false);
-    console.log(err);
+    popupError("Ticket has expired");
   }
 };
 
@@ -38,7 +38,7 @@ const PlaceTicketForm = ({
   totalOdds,
   calculateReturns,
 }) => {
-  const [mutate] = useMutation(UPDATE_TICKET);
+  const [mutate, { error }] = useMutation(UPDATE_TICKET);
   const style = placeTicketFormStyle();
   return (
     <Formik

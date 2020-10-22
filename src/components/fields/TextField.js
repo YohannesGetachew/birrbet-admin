@@ -3,11 +3,11 @@ import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
 import { Field } from "formik";
 
-import TextFieldStyle from "./style";
+import textFieldStyle from "./style";
 
 // ...rest : {label, type, fullWidth, variant, autoComplete}
 const FieldText = ({ name, dark, ...rest }) => {
-  const style = TextFieldStyle({ dark });
+  const style = textFieldStyle({ dark });
   return (
     <Field name={name}>
       {({ field, meta }) => {

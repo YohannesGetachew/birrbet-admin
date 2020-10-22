@@ -11,13 +11,28 @@ const Content = () => {
       <div className={style.headerNbodyC}>
         {Routes.map((route) =>
           route.items.map((routeItem) => (
-            <Route
-              key={routeItem.path}
-              path={routeItem.path}
-              children={({ match }) =>
-                match && <ContentHeader title={routeItem.menuName} />
-              }
-            ></Route>
+            <div key={routeItem.path}>
+              {routeItem.subRoutes &&
+                routeItem.subRoutes.map((subRoute) => (
+                  <Route
+                    key={`${routeItem.path}${subRoute.path}`}
+                    path={`${routeItem.path}${subRoute.path}`}
+                    children={({ match }) =>
+                      match &&
+                      match.isExact && (
+                        <ContentHeader title={subRoute.subRouteName} />
+                      )
+                    }
+                  ></Route>
+                ))}
+              <Route
+                path={routeItem.path}
+                children={({ match }) =>
+                  match &&
+                  match.isExact && <ContentHeader title={routeItem.menuName} />
+                }
+              ></Route>
+            </div>
           ))
         )}
 

@@ -18,6 +18,10 @@ const style = makeStyles((theme) => ({
       borderBottomColor: (props) =>
         props.dark ? theme.palette.primary.light : theme.palette.secondary.dark,
     },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: (props) =>
+        props.dark ? theme.palette.primary.light : theme.palette.secondary.dark,
+    },
     "& .MuiInput-input": {
       color: (props) =>
         props.dark ? theme.palette.primary.light : theme.palette.accentOne.main,

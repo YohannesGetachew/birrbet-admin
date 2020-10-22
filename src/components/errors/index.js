@@ -34,6 +34,7 @@ AlertError.propTypes = {
 };
 AlertError.defaultProps = {
   variant: "filled",
+  message: "Something went wrong. Try reloading or check your connection",
 };
 
 const popupError = (errorMessage) => {

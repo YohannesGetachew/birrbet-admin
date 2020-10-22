@@ -1,6 +1,12 @@
 import React from "react";
 import { IconButton } from "@material-ui/core";
-import { Print, PrintDisabled, Edit, Delete } from "@material-ui/icons";
+import {
+  Print,
+  PrintDisabled,
+  Edit,
+  Delete,
+  VisibilityRounded,
+} from "@material-ui/icons";
 import iconButtonStyle from "./style";
 
 const getItemsByType = (type, style, disabled) => {
@@ -15,6 +21,8 @@ const getItemsByType = (type, style, disabled) => {
       return <Delete className={style.icon} />;
     case "edit":
       return <Edit className={style.icon} />;
+    case "view":
+      return <VisibilityRounded className={style.icon} />;
     default:
       return <Print className={style.icon} />;
   }

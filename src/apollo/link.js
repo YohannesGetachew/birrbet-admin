@@ -7,7 +7,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 const httpLink = new HttpLink({
   uri: API_URL,
-  credentials: "same-origin",
+  credentials: "include",
 });
 
 const request = async (operation) => {
@@ -43,6 +43,7 @@ export const requestLink = new ApolloLink(
 const errorLink = onError(
   ({ graphQLErrors, networkError, operation, response }) => {
     if (graphQLErrors) {
+      console.log(graphQLErrors);
       let graphQLMessge = "";
       graphQLErrors.forEach((error) => {
         if (
