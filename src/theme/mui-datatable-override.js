@@ -28,9 +28,20 @@ const muiDatatableOverride = {
       // borderTop: "1px solid #000000",
     },
   },
+
+  MUIDataTableBodyRow: {
+    root: {
+      "&:nth-child(odd)": {
+        backgroundColor: "#E6EBF688",
+      },
+      "&:nth-child(even)": {
+        backgroundColor: "#E6EBF6DD",
+      },
+    },
+  },
   MUIDataTableBodyCell: {
     root: {
-      backgroundColor: "#E6EBF6",
+      // backgroundColor: "#E6EBF6",
       // padding: "3px 8px 3px 8px",
       color: "#405568CC",
       "@media print": {
