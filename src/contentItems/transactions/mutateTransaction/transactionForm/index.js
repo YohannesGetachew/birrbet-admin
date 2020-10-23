@@ -15,7 +15,7 @@ const initialValues = {
   amount: "",
 };
 
-const getValidationSchema = (type, currentBalance) =>
+const getValidationSchema = (type) =>
   Yup.object().shape({
     customer: Yup.string().required("Please choose a customer"),
     amount:
@@ -27,47 +27,64 @@ const getValidationSchema = (type, currentBalance) =>
         : Yup.number()
             .typeError("Only numbers are allowed")
             .min(10, "Please put atleast 10 birr")
-            .max(
-              currentBalance,
-              "Your balance is in sufficient for this withdrawal"
-            )
             .required("Amount is required"),
   });
 
-const handleSubmit = async (values, setSubmitting, mutate, type, history) => {
+const handleSubmit = async (
+  values,
+  setSubmitting,
+  setErrors,
+  mutate,
+  type,
+  history,
+  customers
+) => {
   setSubmitting(true);
   const transaction = {
     customer: values.customer,
     amount: parseFloat(values.amount),
     type: type,
   };
+  const currentBalance = findCustomersBalance(transaction.customer, customers);
+  if (currentBalance < transaction.amount && type === "WITHDRAW") {
+    setErrors({ amount: "Account is insufficient" });
+    setSubmitting(false);
+    return;
+  }
   try {
     await mutate({ variables: { transaction } });
-    setSubmitting(false);
     history.push("/admin/transactions");
+    return;
   } catch (err) {
     setSubmitting(false);
     return;
   }
 };
 
-const findCustomersBalance = (id, customers, setCurrentBalance) => {
+const findCustomersBalance = (id, customers) => {
   const customer = customers.find((customer) => customer._id === id);
   const currentBalance = customer?.accountBalance;
-  setCurrentBalance(currentBalance);
   return currentBalance;
 };
 
 const TransactionForm = ({ type, customers, history }) => {
   const style = transactionFormStyle();
-  const [currentBalance, setCurrentBalance] = useState(false);
+  // const [currentBalance, setCurrentBalance] = useState(false);
   const [mutate, { error }] = useMutation(MAKE_TRANSACTION);
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={getValidationSchema(type, currentBalance)}
-      onSubmit={(values, { setSubmitting }) =>
-        handleSubmit(values, setSubmitting, mutate, type, history)
+      validationSchema={getValidationSchema(type)}
+      onSubmit={(values, { setSubmitting, setErrors }) =>
+        handleSubmit(
+          values,
+          setSubmitting,
+          setErrors,
+          mutate,
+          type,
+          history,
+          customers
+        )
       }
     >
       {({ isSubmitting, values }) => (
@@ -80,11 +97,7 @@ const TransactionForm = ({ type, customers, history }) => {
                 {values.customer ? (
                   <>
                     <span className={style.amount}>
-                      {findCustomersBalance(
-                        values.customer,
-                        customers,
-                        setCurrentBalance
-                      )}
+                      {findCustomersBalance(values.customer, customers)}
                     </span>
                     <span className={style.currency}>birr</span>
                   </>

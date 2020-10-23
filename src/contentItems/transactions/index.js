@@ -13,7 +13,7 @@ const Transactions = () => {
     loading: loadingTransactions,
     error: errorLoadingTransactions,
     data: transactions,
-  } = useQuery(TRANSACTIONS);
+  } = useQuery(TRANSACTIONS, { fetchPolicy: "network-only" });
   const history = useHistory();
   const style = transactionStyle();
   if (loadingTransactions) return <Loader />;
