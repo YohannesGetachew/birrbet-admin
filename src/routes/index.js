@@ -196,16 +196,157 @@ const CategorizedSuperAdminRoutes = [
   },
 ];
 
-// const getAuthorizedRoutes = (role) => {
+const CategorizedAdminRoutes = [
+  {
+    categoryName: "Data",
+    permission: ["SUPER_ADMIN", "ADMIN"],
+    items: [
+      {
+        menuName: "Dashboard",
+        path: "/admin/dashboard",
+        icon: <DashboardRoundedIcon style={{ fontSize: "20px" }} />,
+        content: Dashboard,
+        permission: ["SUPER_ADMIN", "ADMIN"],
+      },
+      {
+        menuName: "Reports",
+        path: "/admin/reports",
+        icon: <AssessmentRoundedIcon style={{ fontSize: "20px" }} />,
+        content: Report,
+        permission: ["SUPER_ADMIN", "ADMIN"],
+      },
+    ],
+  },
 
-// }
+  {
+    categoryName: "Main",
+    permission: ["SUPER_ADMIN", "ADMIN"],
+    items: [
+      // {
+      //   menuName: "Sports",
+      //   path: "/admin/sports",
+      //   icon: <SportsBaseballRoundedIcon style={{ fontSize: "20px" }} />,
+      //   content: Dashboard,
+      //   permission: ["SUPER_ADMIN", "ADMIN"],
+      // },
+      {
+        menuName: "Tickets",
+        path: "/admin/tickets",
+        icon: <TheatersRoundedIcon style={{ fontSize: "20px" }} />,
+        content: Ticket,
+        permission: ["SUPER_ADMIN", "ADMIN"],
+      },
+      // {
+      //   menuName: "Countries",
+      //   path: "/admin/countries",
+      //   icon: <PublicRoundedIcon style={{ fontSize: "20px" }} />,
+      //   content: Dashboard,
+      //   permission: ["SUPER_ADMIN", "ADMIN"],
+      // },
+      // {
+      //   //
+      //   menuName: "Leagues",
+      //   path: "/admin/leagues",
+      //   icon: <FeaturedPlayListRoundedIcon style={{ fontSize: "20px" }} />,
+      //   content: Dashboard,
+      //   permission: ["SUPER_ADMIN", "ADMIN"],
+      // },
+      // {
+      //   menuName: "Markets",
+      //   path: "/admin/markets",
+      //   icon: <ShoppingCartRoundedIcon style={{ fontSize: "20px" }} />,
+      //   content: Dashboard,
+      //   permission: ["SUPER_ADMIN", "ADMIN"],
+      // },
+      // {
+      //   menuName: "Shops",
+      //   path: "/admin/shops",
+      //   icon: <StoreRoundedIcon style={{ fontSize: "20px" }} />,
+      //   content: Dashboard,
+      //   subRoutes: [{ path: "/create", content: Report }],
+      //   permission: ["SUPER_ADMIN", "ADMIN"],
+      // },
+      // {
+      //   menuName: "Fixtures",
+      //   path: "/admin/fixtures",
+      //   icon: <SportsKabaddiRoundedIcon style={{ fontSize: "20px" }} />,
+      //   content: Dashboard,
+      //   permission: ["SUPER_ADMIN", "ADMIN"],
+      // },
+    ],
+  },
+
+  {
+    categoryName: "Customer",
+    permission: ["SUPER_ADMIN", "ADMIN"],
+    items: [
+      {
+        menuName: "Users",
+        path: "/admin/users",
+        icon: <GroupRoundedIcon style={{ fontSize: "20px" }} />,
+        content: Users,
+        permission: ["ADMIN"],
+        subRoutes: [
+          {
+            path: "/create",
+            content: MutateUser,
+            subRouteName: "Create user",
+            permission: ["SUPER_ADMIN", "ADMIN"],
+          },
+          {
+            path: "/edit/:id",
+            content: MutateUser,
+            subRouteName: "Edit user",
+            permission: ["SUPER_ADMIN", "ADMIN"],
+          },
+        ],
+      },
+      {
+        menuName: "Transactions",
+        path: "/admin/transactions",
+        icon: <AccountBalanceWalletRoundedIcon style={{ fontSize: "20px" }} />,
+        content: Transactions,
+        permission: ["SUPER_ADMIN", "ADMIN"],
+        subRoutes: [
+          {
+            path: "/create",
+            content: MutateTransaction,
+            subRouteName: "Create transaction",
+            permission: ["SUPER_ADMIN", "ADMIN"],
+          },
+        ],
+      },
+    ],
+  },
+
+  // {
+  //   categoryName: "Application",
+  //   permission: ["SUPER_ADMIN", "ADMIN"],
+  //   items: [
+  //     {
+  //       menuName: "Advertisements",
+  //       path: "/admin/advertisements",
+  //       icon: <VisibilityRoundedIcon style={{ fontSize: "20px" }} />,
+  //       content: Dashboard,
+  //       permission: ["SUPER_ADMIN", "ADMIN"],
+  //     },
+  //     {
+  //       menuName: "Settings",
+  //       path: "/admin/settings",
+  //       icon: <SettingsRoundedIcon style={{ fontSize: "20px" }} />,
+  //       content: Dashboard,
+  //       permission: ["SUPER_ADMIN", "ADMIN"],
+  //     },
+  //   ],
+  // },
+];
 
 const getAuthorizedRoutes = (role) => {
   if (role === "SUPER_ADMIN") {
     return CategorizedSuperAdminRoutes;
   }
   if (role === "ADMIN") {
-    return CategorizedSuperAdminRoutes;
+    return CategorizedAdminRoutes;
   }
 };
 
