@@ -103,7 +103,7 @@ const CategorizedSuperAdminRoutes = [
         menuName: "Leagues",
         path: "/admin/leagues",
         icon: <FeaturedPlayListRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: Leagues,
         permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
