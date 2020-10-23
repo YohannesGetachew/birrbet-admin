@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Layout from "../components/layout";
 import TopBar from "../components/topBar";
 import SideBar from "../components/sideBar";

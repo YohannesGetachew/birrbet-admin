@@ -15,7 +15,7 @@ const User = () => {
     loading: loadingUsers,
     error: errorFetchingUsers,
     data: users,
-  } = useQuery(USERS);
+  } = useQuery(USERS, { fetchPolicy: "network-only" });
   if (loadingUsers) return <Loader />;
   if (errorFetchingUsers) return <AlertError />;
   return (

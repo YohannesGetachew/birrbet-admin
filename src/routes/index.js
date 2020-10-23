@@ -4,6 +4,9 @@ import Report from "../contentItems/report";
 import Ticket from "../contentItems/ticket";
 import Users from "../contentItems/users";
 import MutateUser from "../contentItems/users/mutateUser";
+import Transactions from "../contentItems/transactions";
+import MutateTransaction from "../contentItems/transactions/mutateTransaction";
+import Leagues from "../contentItems/league";
 // import {
 //   DashboardRounded,
 //   SportsBaseballRounded,
@@ -46,46 +49,54 @@ import AccountBalanceWalletRoundedIcon from "@material-ui/icons/AccountBalanceWa
 import AssessmentRoundedIcon from "@material-ui/icons/AssessmentTwoTone";
 import SettingsRoundedIcon from "@material-ui/icons/SettingsTwoTone";
 import SportsKabaddiRoundedIcon from "@material-ui/icons/SportsKabaddiTwoTone";
+import { RouterOutlined } from "@material-ui/icons";
 
-const CategorizedRoutes = [
+const CategorizedSuperAdminRoutes = [
   {
     categoryName: "Data",
+    permission: ["SUPER_ADMIN", "ADMIN"],
     items: [
       {
         menuName: "Dashboard",
         path: "/admin/dashboard",
         icon: <DashboardRoundedIcon style={{ fontSize: "20px" }} />,
         content: Dashboard,
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         menuName: "Reports",
         path: "/admin/reports",
         icon: <AssessmentRoundedIcon style={{ fontSize: "20px" }} />,
         content: Report,
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
     ],
   },
 
   {
     categoryName: "Main",
+    permission: ["SUPER_ADMIN", "ADMIN"],
     items: [
       {
         menuName: "Sports",
         path: "/admin/sports",
         icon: <SportsBaseballRoundedIcon style={{ fontSize: "20px" }} />,
         content: Dashboard,
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         menuName: "Tickets",
         path: "/admin/tickets",
         icon: <TheatersRoundedIcon style={{ fontSize: "20px" }} />,
         content: Ticket,
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         menuName: "Countries",
         path: "/admin/countries",
         icon: <PublicRoundedIcon style={{ fontSize: "20px" }} />,
         content: Dashboard,
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         //
@@ -93,12 +104,14 @@ const CategorizedRoutes = [
         path: "/admin/leagues",
         icon: <FeaturedPlayListRoundedIcon style={{ fontSize: "20px" }} />,
         content: Dashboard,
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         menuName: "Markets",
         path: "/admin/markets",
         icon: <ShoppingCartRoundedIcon style={{ fontSize: "20px" }} />,
         content: Dashboard,
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         menuName: "Shops",
@@ -106,55 +119,94 @@ const CategorizedRoutes = [
         icon: <StoreRoundedIcon style={{ fontSize: "20px" }} />,
         content: Dashboard,
         subRoutes: [{ path: "/create", content: Report }],
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         menuName: "Fixtures",
         path: "/admin/fixtures",
         icon: <SportsKabaddiRoundedIcon style={{ fontSize: "20px" }} />,
         content: Dashboard,
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
     ],
   },
 
   {
     categoryName: "Customer",
+    permission: ["SUPER_ADMIN", "ADMIN"],
     items: [
       {
         menuName: "Users",
         path: "/admin/users",
         icon: <GroupRoundedIcon style={{ fontSize: "20px" }} />,
         content: Users,
+        permission: ["ADMIN"],
         subRoutes: [
-          { path: "/create", content: MutateUser, subRouteName: "Create user" },
-          { path: "/edit/:id", content: MutateUser, subRouteName: "Edit user" },
+          {
+            path: "/create",
+            content: MutateUser,
+            subRouteName: "Create user",
+            permission: ["SUPER_ADMIN", "ADMIN"],
+          },
+          {
+            path: "/edit/:id",
+            content: MutateUser,
+            subRouteName: "Edit user",
+            permission: ["SUPER_ADMIN", "ADMIN"],
+          },
         ],
       },
       {
         menuName: "Transactions",
         path: "/admin/transactions",
         icon: <AccountBalanceWalletRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: Transactions,
+        permission: ["SUPER_ADMIN", "ADMIN"],
+        subRoutes: [
+          {
+            path: "/create",
+            content: MutateTransaction,
+            subRouteName: "Create transaction",
+            permission: ["SUPER_ADMIN", "ADMIN"],
+          },
+        ],
       },
     ],
   },
 
   {
     categoryName: "Application",
+    permission: ["SUPER_ADMIN", "ADMIN"],
     items: [
       {
         menuName: "Advertisements",
         path: "/admin/advertisements",
         icon: <VisibilityRoundedIcon style={{ fontSize: "20px" }} />,
         content: Dashboard,
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         menuName: "Settings",
         path: "/admin/settings",
         icon: <SettingsRoundedIcon style={{ fontSize: "20px" }} />,
         content: Dashboard,
+        permission: ["SUPER_ADMIN", "ADMIN"],
       },
     ],
   },
 ];
 
-export default CategorizedRoutes;
+// const getAuthorizedRoutes = (role) => {
+
+// }
+
+const getAuthorizedRoutes = (role) => {
+  if (role === "SUPER_ADMIN") {
+    return CategorizedSuperAdminRoutes;
+  }
+  if (role === "ADMIN") {
+    return CategorizedSuperAdminRoutes;
+  }
+};
+
+export default getAuthorizedRoutes;

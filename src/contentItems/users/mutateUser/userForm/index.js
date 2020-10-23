@@ -44,7 +44,12 @@ const getValidationSchema = (mutationMode) => {
     username: Yup.string().required("User name is required"),
     role: Yup.string().required("Role is required"),
     password: Yup.string().required("Password is required"),
-    confirmPassword: Yup.string().required("Confirm password is required"),
+    confirmPassword: Yup.string()
+      .required()
+      .label("Confirm password")
+      .test("passwords-match", "Passwords must match", function (value) {
+        return this.parent.password === value;
+      }),
   });
 };
 
@@ -54,7 +59,8 @@ const handleSubmit = async (
   mutate,
   mutationMode,
   userData,
-  history
+  history,
+  setErrors
 ) => {
   setSubmitting(true);
   delete values.confirmPassword;
@@ -68,7 +74,15 @@ const handleSubmit = async (
     setSubmitting(false);
     history.push("/admin/users");
   } catch (err) {
+    console.log(err.message);
     setSubmitting(false);
+    if (
+      err &&
+      err.message &&
+      err.message.includes("E11000 duplicate key error collection:")
+    ) {
+      setErrors({ username: "Username already taken. Please choose another" });
+    }
   }
 };
 
@@ -86,19 +100,21 @@ const UserForm = ({ mutationMode, userData, history }) => {
     <Formik
       initialValues={getInitialValues(mutationMode, userData)}
       validationSchema={getValidationSchema(mutationMode)}
-      onSubmit={(values, { setSubmitting }) =>
+      onSubmit={(values, { setSubmitting, setErrors }) =>
         handleSubmit(
           values,
           setSubmitting,
           mutate,
           mutationMode,
           userData,
-          history
+          history,
+          setErrors
         )
       }
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, errors }) => (
         <Form>
+          {console.log(errors)}
           <div>{error && <AlertError />}</div>
           <Grid container className={style.root}>
             <Grid item xs={12} md={6} className={style.formItemC}>

@@ -11,7 +11,7 @@ export const LOGIN = gql`
 `;
 
 export const CURRENT_USER = gql`
-  {
+  query {
     whoami {
       _id
       firstName

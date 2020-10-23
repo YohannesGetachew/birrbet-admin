@@ -1,11 +1,16 @@
-import React from "react";
-import Routes from "../../routes";
+import React, { useContext } from "react";
+import getAuthorizedRoutes from "../../routes";
 import { Switch, Route, Redirect } from "react-router-dom";
 import ContentHeader from "../contentHeader";
 import ContentFooter from "../contentFooter";
 import contentStyle from "./style";
+import { AuthContext } from "../../contexts/auth";
+
 const Content = () => {
+  const { authData } = useContext(AuthContext);
+  const { role } = authData.userData;
   const style = contentStyle();
+  const Routes = getAuthorizedRoutes(role);
   return (
     <div className={style.root}>
       <div className={style.headerNbodyC}>

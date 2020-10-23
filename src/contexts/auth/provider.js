@@ -5,7 +5,7 @@ import { authReducer } from "./reducer";
 import { AuthContext } from "./context";
 
 const initialAuthData = () => {
-  return Cookies.getJSON("Authorization") || null;
+  return Cookies.getJSON("AuthData") || null;
 };
 
 // authData {
@@ -17,17 +17,20 @@ const initialAuthData = () => {
 const AuthContextProvider = (props) => {
   const [authData, dispatch] = useReducer(authReducer, [], initialAuthData);
   const hasMount = useRef(false);
-
   useEffect(() => {
     if (!hasMount.current) {
       hasMount.current = true;
     } else {
       if (authData) {
-        Cookies.set("Authorization", `Bearer ${authData.accessToken}`, {
-          expires: authData.expiresIn / 86400,
-        });
+        Cookies.set(
+          "AuthData",
+          { ...authData },
+          {
+            expires: authData.expiresIn / 86400,
+          }
+        );
       } else {
-        Cookies.set("Authorization", null);
+        Cookies.set("AuthData", null);
       }
     }
   }, [authData]);

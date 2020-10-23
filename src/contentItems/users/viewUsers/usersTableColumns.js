@@ -13,7 +13,6 @@ const gerUsersTableColumns = (theme, history) => [
         return (
           <Grid container alignItems="center">
             <Avatar
-              sizes
               style={{
                 color: even
                   ? theme.palette.primary.main
