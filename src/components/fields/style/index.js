@@ -30,19 +30,19 @@ const style = makeStyles((theme) => ({
       color: theme.palette.accentOne.light,
     },
 
-    "& .MuiOutlinedInput-input": {
+    "& .MuiOutlinedInput-inputMarginDense": {
       color: (props) =>
         props.dark
           ? theme.palette.accentTwo.light
           : theme.palette.accentOne.dark,
     },
-    "& .MuiOutlinedInput-notchedOutline": {
+    "& .MuiOutlinedInput-notchedOutlineMarginDense": {
       borderColor: (props) =>
         props.dark
           ? theme.palette.accentTwo.main
           : theme.palette.accentOne.main,
     },
-    "&:hover .MuiOutlinedInput-notchedOutline": {
+    "&:hover .MuiOutlinedInput-notchedOutlineMarginDense": {
       borderColor: (props) =>
         props.dark ? theme.palette.accentTwo.light : theme.palette.primary.dark,
     },

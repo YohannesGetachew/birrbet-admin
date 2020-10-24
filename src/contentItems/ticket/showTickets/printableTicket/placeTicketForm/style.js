@@ -4,6 +4,9 @@ const style = makeStyles({
   paddingBottom: {
     paddingBottom: "10px",
   },
+  textField: {
+    marginTop: "10px",
+  },
   smallText: {
     fontSize: "14px",
   },

@@ -7,10 +7,17 @@ import { SubmitButton } from "../../../../../components/buttons";
 import * as Yup from "yup";
 import { Grid } from "@material-ui/core";
 import placeTicketFormStyle from "./style";
-import { popupError } from "../../../../../components/errors";
+import { AlertError, popupError } from "../../../../../components/errors";
 
-const handleSubmit = async (values, setSubmitting, mutate, ticketID) => {
+const handleSubmit = async (
+  values,
+  setSubmitting,
+  mutate,
+  ticketID,
+  history
+) => {
   setSubmitting(true);
+
   try {
     await mutate({
       variables: {
@@ -19,7 +26,9 @@ const handleSubmit = async (values, setSubmitting, mutate, ticketID) => {
       },
     });
     setSubmitting(false);
+    window.location.reload(false);
   } catch (err) {
+    console.log(err);
     popupError("Ticket has expired");
   }
 };
@@ -37,6 +46,7 @@ const PlaceTicketForm = ({
   ticketID,
   totalOdds,
   calculateReturns,
+  history,
 }) => {
   const [mutate, { error }] = useMutation(UPDATE_TICKET);
   const style = placeTicketFormStyle();
@@ -45,7 +55,7 @@ const PlaceTicketForm = ({
       initialValues={{ stake: initialStake }}
       validationSchema={validationSchema}
       onSubmit={(values, { setSubmitting }) =>
-        handleSubmit(values, setSubmitting, mutate, ticketID)
+        handleSubmit(values, setSubmitting, mutate, ticketID, history)
       }
     >
       {({ isSubmitting, values }) => {
@@ -54,13 +64,14 @@ const PlaceTicketForm = ({
         const returns = calculateReturns(stake, vatValue, totalOdds);
         return (
           <Form>
+            {error && <AlertError />}
             <Grid container justify="flex-end">
               <Grid item xs={8} md={4}>
                 <TextField
                   label="Stake"
                   name="stake"
                   placeholder="Stake"
-                  className={style.paddingBottom}
+                  className={`${style.paddingBottom} ${style.textField}`}
                 />
                 <p className={style.paddingBottom + " " + style.smallText}>
                   <span className={style.boldLabel}>Vat(15%):</span>
