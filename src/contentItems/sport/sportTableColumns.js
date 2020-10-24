@@ -1,29 +1,15 @@
-import { Button } from "@material-ui/core";
 import React from "react";
-import { CustomIconButton } from "../../components/buttons/iconButtons";
 import Tag from "../../components/tag";
+import { CustomIconButton } from "../../components/buttons/iconButtons";
 
-const getLeagueTableColumns = (
-  theme,
-  handleLeagueUpdate,
-  mutate,
-  isUpdating
-) => [
+const getSportTableColumns = (theme, mutate, handleSportUpdate, isUpdating) => [
   {
     name: "name",
-    label: "Name",
-  },
-  {
-    name: "order",
-    label: "Rank",
-  },
-  {
-    name: "country",
-    label: "Country",
+    label: "Sport name",
   },
   {
     name: "isAvailable",
-    label: "Available",
+    label: "Is available",
     options: {
       customBodyRender: (value) => {
         const colors = value
@@ -37,7 +23,7 @@ const getLeagueTableColumns = (
             };
         return (
           <Tag
-            label={value ? "Yes" : "No"}
+            label={value ? "YES" : "NO"}
             textColor={colors.color}
             backgroundColor={colors.backgroundColor}
           />
@@ -49,14 +35,16 @@ const getLeagueTableColumns = (
     name: "_id",
     label: "Actions",
     options: {
+      filter: false,
+      sort: false,
       customBodyRender: (value, tableMeta) => {
-        const isAvailable = tableMeta.rowData[3];
+        const isAvailable = tableMeta.rowData[1];
         return (
           <CustomIconButton
-            handleClick={() => handleLeagueUpdate(isAvailable, value, mutate)}
-            locked={!isAvailable}
             type="lock"
+            locked={!isAvailable}
             loading={isUpdating}
+            handleClick={() => handleSportUpdate(value, isAvailable, mutate)}
           />
         );
       },
@@ -64,4 +52,19 @@ const getLeagueTableColumns = (
   },
 ];
 
-export default getLeagueTableColumns;
+export default getSportTableColumns;
+
+// date: "2020-10-15T14:30:00+03:00"
+// id: 625511
+// isAvailable: true
+// league: "Svenska Cupen"
+// sport: "Soccer"
+// status: "NS"
+// teams: {__typename: "Teams", home: {…}, away: {…}}
+// teams:
+// away: {__typename: "Team", name: "Ostersunds FK"}
+// home: {__typename: "Team", name: "Nyköping"}
+// __typename: "Teams"
+// __proto__: Object
+// __typename: "Fixture"
+// _id: "5f882f576a78001cdbae78b1"

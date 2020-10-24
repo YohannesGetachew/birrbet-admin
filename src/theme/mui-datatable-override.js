@@ -32,7 +32,7 @@ const muiDatatableOverride = {
   MUIDataTableBodyRow: {
     root: {
       "&:nth-child(odd)": {
-        backgroundColor: "#E6EBF688",
+        backgroundColor: "#F4F5F7",
       },
       "&:nth-child(even)": {
         backgroundColor: "#E6EBF6DD",

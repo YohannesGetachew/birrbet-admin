@@ -12,7 +12,7 @@ const handleLeagueUpdate = async (isAvailable, id, mutate) => {
     await mutate({
       variables: {
         id,
-        updateInput: { isAvailable: isAvailable ? false : true },
+        updateInput: { isAvailable: !isAvailable },
       },
     });
     console.log("success");

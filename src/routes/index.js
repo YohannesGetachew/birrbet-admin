@@ -7,6 +7,12 @@ import MutateUser from "../contentItems/users/mutateUser";
 import Transactions from "../contentItems/transactions";
 import MutateTransaction from "../contentItems/transactions/mutateTransaction";
 import Leagues from "../contentItems/league";
+import Fixtures from "../contentItems/fixture";
+import Sports from "../contentItems/sport";
+import Countries from "../contentItems/country";
+import Markets from "../contentItems/market";
+import Shop from "../contentItems/shop";
+import MutateShop from "../contentItems/shop/mutateShop";
 // import {
 //   DashboardRounded,
 //   SportsBaseballRounded,
@@ -81,7 +87,7 @@ const CategorizedSuperAdminRoutes = [
         menuName: "Sports",
         path: "/admin/sports",
         icon: <SportsBaseballRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: Sports,
         permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
@@ -95,7 +101,7 @@ const CategorizedSuperAdminRoutes = [
         menuName: "Countries",
         path: "/admin/countries",
         icon: <PublicRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: Countries,
         permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
@@ -110,22 +116,25 @@ const CategorizedSuperAdminRoutes = [
         menuName: "Markets",
         path: "/admin/markets",
         icon: <ShoppingCartRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: Markets,
         permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         menuName: "Shops",
         path: "/admin/shops",
         icon: <StoreRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
-        subRoutes: [{ path: "/create", content: Report }],
+        content: Shop,
+        subRoutes: [
+          { path: "/create", content: MutateShop, subRouteName: "Create shop" },
+          { path: "/edit/:id", content: MutateShop, subRouteName: "Edit shop" },
+        ],
         permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         menuName: "Fixtures",
         path: "/admin/fixtures",
         icon: <SportsKabaddiRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: Fixtures,
         permission: ["SUPER_ADMIN", "ADMIN"],
       },
     ],

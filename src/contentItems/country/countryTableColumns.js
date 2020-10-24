@@ -1,29 +1,19 @@
-import { Button } from "@material-ui/core";
 import React from "react";
-import { CustomIconButton } from "../../components/buttons/iconButtons";
 import Tag from "../../components/tag";
+import { CustomIconButton } from "../../components/buttons/iconButtons";
 
-const getLeagueTableColumns = (
-  theme,
-  handleLeagueUpdate,
-  mutate,
-  isUpdating
-) => [
+const getCountryColumns = (theme, mutate, handleCountryUpdate, isUpdating) => [
   {
     name: "name",
-    label: "Name",
+    label: "Sport name",
   },
   {
     name: "order",
     label: "Rank",
   },
   {
-    name: "country",
-    label: "Country",
-  },
-  {
     name: "isAvailable",
-    label: "Available",
+    label: "Is available",
     options: {
       customBodyRender: (value) => {
         const colors = value
@@ -37,7 +27,7 @@ const getLeagueTableColumns = (
             };
         return (
           <Tag
-            label={value ? "Yes" : "No"}
+            label={value ? "YES" : "NO"}
             textColor={colors.color}
             backgroundColor={colors.backgroundColor}
           />
@@ -49,14 +39,20 @@ const getLeagueTableColumns = (
     name: "_id",
     label: "Actions",
     options: {
+      filter: false,
+      sort: false,
       customBodyRender: (value, tableMeta) => {
-        const isAvailable = tableMeta.rowData[3];
+        const isAvailable = tableMeta.rowData[2];
+        const order = tableMeta.rowData[1];
+
         return (
           <CustomIconButton
-            handleClick={() => handleLeagueUpdate(isAvailable, value, mutate)}
-            locked={!isAvailable}
             type="lock"
+            locked={!isAvailable}
             loading={isUpdating}
+            handleClick={() =>
+              handleCountryUpdate(value, isAvailable, order, mutate)
+            }
           />
         );
       },
@@ -64,4 +60,4 @@ const getLeagueTableColumns = (
   },
 ];
 
-export default getLeagueTableColumns;
+export default getCountryColumns;

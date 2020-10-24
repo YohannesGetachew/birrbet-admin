@@ -6,13 +6,12 @@ import {
   Edit,
   Delete,
   VisibilityRounded,
-  LockOpenRounded,
+  NoEncryptionRounded,
   LockRounded,
 } from "@material-ui/icons";
 import iconButtonStyle from "./style";
-import { Skeleton } from "@material-ui/lab";
 
-const getItemsByType = (type, style, disabled, isAvailable, loading) => {
+const getItemsByType = (type, style, disabled, locked, loading) => {
   switch (type) {
     case "print":
       return disabled ? (
@@ -31,23 +30,17 @@ const getItemsByType = (type, style, disabled, isAvailable, loading) => {
         return <CircularProgress variant="indeterminate" size={14} />;
       }
 
-      return isAvailable ? (
-        <LockRounded className={style.icon} />
+      return locked ? (
+        <NoEncryptionRounded className={style.icon} />
       ) : (
-        <LockOpenRounded className={style.icon} />
+        <LockRounded className={style.icon} />
       );
     default:
       return <Print className={style.icon} />;
   }
 };
 
-const CustomIconButton = ({
-  type,
-  handleClick,
-  disabled,
-  isAvailable,
-  loading,
-}) => {
+const CustomIconButton = ({ type, handleClick, disabled, locked, loading }) => {
   const style = iconButtonStyle({ type, disabled });
   return (
     <IconButton
@@ -55,7 +48,7 @@ const CustomIconButton = ({
       disabled={disabled || loading}
       className={style.root}
     >
-      {getItemsByType(type, style, disabled, isAvailable, loading)}
+      {getItemsByType(type, style, disabled, locked, loading)}
     </IconButton>
   );
 };
