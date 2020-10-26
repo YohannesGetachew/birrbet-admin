@@ -13,6 +13,8 @@ import Countries from "../contentItems/country";
 import Markets from "../contentItems/market";
 import Shop from "../contentItems/shop";
 import MutateShop from "../contentItems/shop/mutateShop";
+import Advertisement from "../contentItems/advertisement";
+import Setting from "../contentItems/setting";
 // import {
 //   DashboardRounded,
 //   SportsBaseballRounded,
@@ -56,6 +58,7 @@ import AssessmentRoundedIcon from "@material-ui/icons/AssessmentTwoTone";
 import SettingsRoundedIcon from "@material-ui/icons/SettingsTwoTone";
 import SportsKabaddiRoundedIcon from "@material-ui/icons/SportsKabaddiTwoTone";
 import { RouterOutlined } from "@material-ui/icons";
+import MutateAdvertisement from "../contentItems/advertisement/mutateAdvertisement";
 
 const CategorizedSuperAdminRoutes = [
   {
@@ -191,14 +194,26 @@ const CategorizedSuperAdminRoutes = [
         menuName: "Advertisements",
         path: "/admin/advertisements",
         icon: <VisibilityRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: Advertisement,
         permission: ["SUPER_ADMIN", "ADMIN"],
+        subRoutes: [
+          {
+            path: "/create",
+            content: MutateAdvertisement,
+            subRouteName: "Create Advertisement",
+          },
+          {
+            path: "/edit/:id",
+            content: MutateAdvertisement,
+            subRouteName: "Edit Advertisement",
+          },
+        ],
       },
       {
         menuName: "Settings",
         path: "/admin/settings",
         icon: <SettingsRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: Setting,
         permission: ["SUPER_ADMIN", "ADMIN"],
       },
     ],

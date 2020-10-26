@@ -1,10 +1,17 @@
 import React from "react";
-import PropTypes from "prop-types";
+import PropTypes, { string } from "prop-types";
 import { FieldArray, Form, Formik } from "formik";
 import { TextField, SelectField } from "../../../../components/fields";
 import { SubmitButton } from "../../../../components/buttons";
-import { Button } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import * as Yup from "yup";
+import { v4 as uuidv4 } from "uuid";
+import { CREATE_SHOP, UPDATE_SHOP } from "../../../../graphql/shop";
+import { useMutation } from "@apollo/client";
+import { AlertError } from "../../../../components/errors";
+import { useHistory } from "react-router-dom";
+import shopFormStyle from "./style";
+import { CustomIconButton } from "../../../../components/buttons/iconButtons";
 
 const getInitialValues = (mutationMode, shop) => {
   if (mutationMode === "CREATE") {
@@ -13,7 +20,7 @@ const getInitialValues = (mutationMode, shop) => {
       admin: "",
       longitude: "",
       latitude: "",
-      contacts: [{ type: "", value: "" }],
+      contacts: [{ id: uuidv4(), type: "", value: "" }],
     };
   }
   return {
@@ -21,12 +28,100 @@ const getInitialValues = (mutationMode, shop) => {
     admin: shop.admin._id,
     longitude: shop.location.lon,
     latitude: shop.location.lat,
-    contacts: shop.contacts,
+    contacts: shop.contacts.map((contact) => {
+      return { ...contact, id: uuidv4() };
+    }),
   };
+};
+const phoneRegExp = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+
+const validationSchema = Yup.object().shape({
+  branchName: Yup.string().required("Branch name is required"),
+  admin: Yup.string().required("Admin is required"),
+  longitude: Yup.string().required("Longitude is required"),
+  latitude: Yup.string().required("Latitude is required"),
+  contacts: Yup.array().of(
+    Yup.object({
+      id: Yup.string().required(),
+      type: Yup.string().required("Please choose a contact type"),
+      value: Yup.lazy((value, parent) => {
+        switch (parent.parent.type) {
+          case "E-MAIL":
+            return Yup.string()
+              .email("Please provide a valid email")
+              .required("Email is required");
+          case "PHONE":
+            return Yup.string()
+              .matches(phoneRegExp, "Please choose a valid phone number")
+              .min(10, "Please choose a valid phone number")
+              .max(13, "Please choose a valid phone number")
+              .required("Phone number is required");
+          default:
+            return Yup.string().required(
+              "Provide either an email or a password"
+            );
+        }
+      }),
+    })
+  ),
+});
+
+const getPosition = (setFieldValue) => {
+  navigator.geolocation.getCurrentPosition((position) => {
+    setFieldValue("longitude", position.coords.longitude);
+    setFieldValue("latitude", position.coords.latitude);
+  });
+};
+
+const handleSubmit = async (
+  values,
+  setSubmitting,
+  mutate,
+  mutationMode,
+  shop,
+  history
+) => {
+  setSubmitting(true);
+  const location = {
+    lat: parseFloat(values.latitude),
+    lon: parseFloat(values.longitude),
+  };
+  const contacts = values.contacts.map((contact) => {
+    return { type: contact.type, value: contact.value };
+  });
+
+  const variables = {
+    shopInput: {
+      branchName: values.branchName,
+      adminId: values.admin,
+      contacts,
+      location,
+    },
+  };
+
+  if (mutationMode === "EDIT") {
+    variables.id = shop._id;
+  }
+
+  try {
+    await mutate({ variables });
+    history.push("/admin/shops");
+  } catch (err) {
+    setSubmitting(false);
+    return;
+  }
+};
+
+const sectionHeader = (style, title, action) => {
+  return (
+    <Grid container className={style.header}>
+      {title}
+      <span className={style.action}>{action}</span>
+    </Grid>
+  );
 };
 
 const ShopForm = ({ shop, admins, mutationMode }) => {
-  console.log(shop);
   const reorganizedAdmins = admins.map((admin) => {
     return {
       _id: admin._id,
@@ -39,48 +134,141 @@ const ShopForm = ({ shop, admins, mutationMode }) => {
     { _id: "PHONE", name: "Phone number" },
   ];
 
+  const history = useHistory();
+  const style = shopFormStyle();
+
+  const mutationQuery = mutationMode === "CREATE" ? CREATE_SHOP : UPDATE_SHOP;
+  const [mutate, { error }] = useMutation(mutationQuery);
+
   return (
-    <Formik
-      initialValues={getInitialValues(mutationMode, shop)}
-      onSubmit={() => null}
-    >
-      {({ isSubmitting }) => (
-        <Form>
-          <TextField name="branchName" label="Branch name" />
-          <SelectField name="admin" label="Admin" data={reorganizedAdmins} />
-          <TextField name="longitude" label="Longitude" type="number" />
-          <TextField name="latigude" label="Latitude" type="number" />
-          <FieldArray name="contacts">
-            {({ push, remove, form }) => {
-              const { contacts } = form.values;
-              const canRemoveContacts = contacts.length > 1;
-              return contacts.map((contact, index) => (
-                <div key={contact}>
-                  <Button onClick={() => push({ type: "", value: "" })}>
-                    +
-                  </Button>
-                  <div>
-                    <SelectField
-                      name="type"
-                      label="Contact type"
-                      data={contactTypes}
-                    />
-                    <TextField name="value" label="Contact" />
-                    {canRemoveContacts && (
-                      <Button onClick={() => remove(index)}>-</Button>
-                    )}
+    <>
+      {error && <AlertError />}
+      <Formik
+        initialValues={getInitialValues(mutationMode, shop)}
+        validationSchema={validationSchema}
+        onSubmit={(values, { setSubmitting }) =>
+          handleSubmit(
+            values,
+            setSubmitting,
+            mutate,
+            mutationMode,
+            shop,
+            history
+          )
+        }
+      >
+        {({ isSubmitting, setFieldValue }) => (
+          <Form>
+            <Grid container className={style.root}>
+              <Grid item container xs={12} md={6} className={style.formRow}>
+                <Grid item xs={12} className={style.section}>
+                  {sectionHeader(style, "Basic information")}
+                  <div className={style.field}>
+                    <TextField name="branchName" label="Branch name" />
                   </div>
+                  <div className={style.field}>
+                    <SelectField
+                      name="admin"
+                      label="Admin"
+                      data={reorganizedAdmins}
+                    />
+                  </div>
+                </Grid>
+
+                <Grid item xs={12} className={style.section}>
+                  {sectionHeader(
+                    style,
+                    "Location",
+                    <CustomIconButton
+                      type="pinDrop"
+                      handleClick={() => getPosition(setFieldValue)}
+                    />
+                  )}
+
+                  <div className={style.field}>
+                    <TextField
+                      name="longitude"
+                      label="Longitude"
+                      type="number"
+                    />
+                  </div>
+                  <div className={style.field}>
+                    <TextField name="latitude" label="Latitude" type="number" />
+                  </div>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} md={6} className={style.formRow}>
+                <div className={style.section}>
+                  <FieldArray name="contacts">
+                    {({ push, remove, form }) => {
+                      const { contacts } = form.values;
+                      const canRemoveContacts = contacts.length > 1;
+                      return (
+                        <div>
+                          {sectionHeader(
+                            style,
+                            "Contact information",
+                            <CustomIconButton
+                              variant="contained"
+                              type="add"
+                              handleClick={() =>
+                                push({ id: uuidv4(), type: "", value: "" })
+                              }
+                            />
+                          )}
+
+                          {contacts.map((contact, index) => (
+                            <Grid
+                              container
+                              key={contact.id}
+                              className={style.contact}
+                            >
+                              <Grid item xs={12} md={4} className={style.field}>
+                                <SelectField
+                                  name={`contacts[${index}].type`}
+                                  label="Contact type"
+                                  data={contactTypes}
+                                />
+                              </Grid>
+                              <Grid item xs={12} md={4} className={style.field}>
+                                <TextField
+                                  name={`contacts[${index}].value`}
+                                  label="Contact"
+                                  type={"text"}
+                                />
+                              </Grid>
+
+                              <Grid item xs={2}>
+                                {canRemoveContacts && (
+                                  <Button
+                                    size="small"
+                                    variant="contained"
+                                    onClick={() => remove(index)}
+                                    className={style.removeContact}
+                                  >
+                                    -
+                                  </Button>
+                                )}
+                              </Grid>
+                            </Grid>
+                          ))}
+                        </div>
+                      );
+                    }}
+                  </FieldArray>
                 </div>
-              ));
-            }}
-          </FieldArray>
-          <SubmitButton
-            label={mutationMode === "CREATE" ? "Create" : "Edit"}
-            isSubmitting={isSubmitting}
-          />
-        </Form>
-      )}
-    </Formik>
+              </Grid>
+              <Grid item container className={style.submitButtonC}>
+                <SubmitButton
+                  label={mutationMode === "CREATE" ? "Create" : "Edit"}
+                  isSubmitting={isSubmitting}
+                />
+              </Grid>
+            </Grid>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };
 

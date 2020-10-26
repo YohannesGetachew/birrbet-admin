@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { AlertError } from "../../../components/errors";
 import Loader from "../../../components/loader";
 import { GET_SHOP } from "../../../graphql/shop";
@@ -25,9 +25,10 @@ const MutateShop = () => {
 
   if (areAdminsLoading || shopLoading) return <Loader />;
   if (adminFailed || shopFailed) return <AlertError />;
+
   return (
     <ShopForm
-      shop={shopData.shop}
+      shop={shopData?.shop}
       admins={adminData.users}
       mutationMode={mutationMode}
     />

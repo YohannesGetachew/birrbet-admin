@@ -8,6 +8,8 @@ import {
   VisibilityRounded,
   NoEncryptionRounded,
   LockRounded,
+  PinDrop,
+  Add,
 } from "@material-ui/icons";
 import iconButtonStyle from "./style";
 
@@ -25,6 +27,10 @@ const getItemsByType = (type, style, disabled, locked, loading) => {
       return <Edit className={style.icon} />;
     case "view":
       return <VisibilityRounded className={style.icon} />;
+    case "pinDrop":
+      return <PinDrop className={style.icon} />;
+    case "add":
+      return <Add className={style.icon} />;
     case "lock":
       if (loading) {
         return <CircularProgress variant="indeterminate" size={14} />;
