@@ -12,7 +12,7 @@ const DoghnutGraphCard = ({ data }) => {
       transition={{ duration: 1.4 }}
       className={style.root}
     >
-      <h3 className={style.title}>Top sports</h3>
+      <h3 className={style.title}>Top leagues</h3>
       <DoghnutGraph data={data} />
     </motion.div>
   );

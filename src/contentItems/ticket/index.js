@@ -40,7 +40,7 @@ const Tickets = () => {
         <ShowTickets tickets={ticketData.tickets} />
       </Grid>
       <Grid item xs={12} md={4}>
-        <TicketAnylitics />
+        <TicketAnylitics count={ticketData.tickets.length} />
       </Grid>
     </Grid>
   );

@@ -15,7 +15,7 @@ function createData(name, sport, league, betNumber) {
 const rows = [
   createData("Double chance", "Soccer", "Premier league", 24),
   createData("Draw", "Soccer", "Champions league", 10),
-  createData("Win-Lose", "Basketball", "Playoffs", 15),
+  createData("Win-Lose", "Soccer", "Bundesliga", 8),
   createData("Corner kick", "Soccer", "Premier league", 5),
 ];
 

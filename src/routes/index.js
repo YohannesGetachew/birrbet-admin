@@ -1,5 +1,5 @@
 import React from "react";
-import Dashboard from "../contentItems/dashboard";
+import DashboardDataFetcher from "../contentItems/dashboard";
 import Report from "../contentItems/report";
 import Ticket from "../contentItems/ticket";
 import Users from "../contentItems/users";
@@ -69,7 +69,7 @@ const CategorizedSuperAdminRoutes = [
         menuName: "Dashboard",
         path: "/admin/dashboard",
         icon: <DashboardRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: DashboardDataFetcher,
         permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {
@@ -229,7 +229,7 @@ const CategorizedAdminRoutes = [
         menuName: "Dashboard",
         path: "/admin/dashboard",
         icon: <DashboardRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Dashboard,
+        content: DashboardDataFetcher,
         permission: ["SUPER_ADMIN", "ADMIN"],
       },
       {

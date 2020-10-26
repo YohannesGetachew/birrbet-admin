@@ -49,6 +49,7 @@ export const USERS = gql`
       role
       accountBalance
       profileImage
+      createdAt
     }
   }
 `;

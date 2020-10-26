@@ -1,106 +1,114 @@
-import { Grid, useTheme } from "@material-ui/core";
+import { useQuery } from "@apollo/client";
 import React from "react";
-import { LineGraphCard, DoghnutGraphCard } from "../../components/cards";
-import FavoriteFixture from "./FavoriteFixture";
-import AnyliticsCards from "./anyliticsCards";
-import dashboardStyle from "./style";
+import { AlertError } from "../../components/errors";
+import Loader from "../../components/loader";
+import { USERS } from "../../graphql/user";
+import Dashboard from "./dashboard";
+import {
+  getCustomersAnylitics,
+  getTransactionAnylitics,
+  getTicketAnalysis,
+} from "./anyliticsCalculation";
+import { TRANSACTIONS } from "../../graphql/transaction";
+import { TICKETS } from "../../graphql/ticket";
+import { useTheme } from "@material-ui/core";
 
-const Dashboard = () => {
+const DashboardDataFetcher = () => {
   const theme = useTheme();
-  const style = dashboardStyle();
+  const {
+    data: userData,
+    loading: loadingUserData,
+    error: errorLoadingUserData,
+  } = useQuery(USERS, { variables: { role: "CUSTOMER" } });
+  const {
+    loading: loadingTransactions,
+    error: errorLoadingTransactions,
+    data: transactions,
+  } = useQuery(TRANSACTIONS);
+  const {
+    data: ticketData,
+    loading: loadingTickets,
+    error: errorFetchingTickets,
+  } = useQuery(TICKETS);
+
+  if (loadingUserData || loadingTransactions || loadingTickets)
+    return <Loader />;
+  if (errorLoadingUserData || errorLoadingTransactions || errorFetchingTickets)
+    return <AlertError />;
+
+  const {
+    fluctuation,
+    count: customerCount,
+    comparisonStartData: customerComparisonStartData,
+  } = getCustomersAnylitics(userData.users);
+  const {
+    transactionCard: {
+      count: transactionCount,
+      fluctuation: transactionFluctuation,
+      comparisonStartData: transactionComparisonStartData,
+      direction: transactionDirection,
+    },
+    transactionGraph: {
+      date: dateArray,
+      deposit: depositsArray,
+      withdrawal: withdrawalArray,
+    },
+  } = getTransactionAnylitics(transactions.transactions);
+  const { tickets, winners } = getTicketAnalysis(ticketData.tickets);
   const anyliticsCardsData = [
     {
-      analytics: { direction: "decrease", number: "7%" },
+      analytics: { direction: "increase", number: fluctuation },
       title: "Customers",
-      body: "43,345",
-      analyticsStartDate: "All time",
+      body: customerCount,
+      analyticsStartDate: customerComparisonStartData,
     },
     {
-      analytics: { direction: "increase", number: "13.2%" },
+      analytics: {
+        direction: transactionDirection,
+        number: transactionFluctuation,
+      },
       title: "Total income",
-      body: "431,345",
-      analyticsStartDate: "All time",
+      body: transactionCount,
+      analyticsStartDate: transactionComparisonStartData,
     },
     {
-      analytics: { direction: "increase", number: "7%" },
-      title: "Total bets",
-      body: "43,345",
-      analyticsStartDate: "All time",
+      analytics: { direction: tickets.direction, number: tickets.fluctuation },
+      title: "Total tickets",
+      body: tickets.count,
+      analyticsStartDate: tickets.comparisonStartData,
     },
     {
-      analytics: { direction: "decrease", number: "2%" },
-      title: "Tickets placed",
-      body: "10",
-      analyticsStartDate: "Today",
+      analytics: { direction: winners.direction, number: winners.fluctuation },
+      title: "Total winners",
+      body: winners.count,
+      analyticsStartDate: winners.comparisonStartData,
     },
   ];
+
   const lineGraphData = {
-    labels: ["10-23-12", "11-23-12", "12-23-12"],
+    labels: dateArray,
     datasets: [
       {
         label: "Deposits",
-        data: [10, 50, 40, 20],
+        data: depositsArray,
         backgroundColor: ["transparent"],
         borderColor: [theme.palette.error.main],
       },
       {
         label: "Withdrawals",
-        data: [45, 30, 10, 40],
+        data: withdrawalArray,
         backgroundColor: ["transparent"],
         borderColor: [theme.palette.accentTwo.main],
       },
     ],
   };
-  const doghhnutData = {
-    labels: ["Basketball", "Rugby", "Soccer", "Golf"],
-    datasets: [
-      {
-        label: "Deposits",
-        data: [10, 50, 40, 20],
-        backgroundColor: [
-          theme.palette.secondary.main,
-          theme.palette.warning.light,
-          theme.palette.primary.light,
-          theme.palette.accentTwo.dark,
-        ],
-        borderColor: ["#ffffff"],
-      },
-    ],
-  };
+
   return (
-    <div className={style.root}>
-      <Grid container className={style.firstRow}>
-        <Grid
-          item
-          container
-          lg={4}
-          md={12}
-          xs={12}
-          className={style.firstRowFirstColumn}
-        >
-          <AnyliticsCards data={anyliticsCardsData} />
-        </Grid>
-        <Grid
-          item
-          container
-          xs={12}
-          md={12}
-          lg={8}
-          className={style.firstRowSecondColumn}
-        >
-          <LineGraphCard data={lineGraphData} />
-        </Grid>
-      </Grid>
-      <Grid container className={style.secondRow}>
-        <Grid item className={style.secondRowFirstColumn} xs={12} md={8}>
-          <FavoriteFixture />
-        </Grid>
-        <Grid item className={style.secondRowSecondColumn} xs={12} md={4}>
-          <DoghnutGraphCard data={doghhnutData} />
-        </Grid>
-      </Grid>
-    </div>
+    <Dashboard
+      anyliticsCardsData={anyliticsCardsData}
+      lineGraphData={lineGraphData}
+    />
   );
 };
 
-export default Dashboard;
+export default DashboardDataFetcher;

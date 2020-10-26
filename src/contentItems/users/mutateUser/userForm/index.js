@@ -25,6 +25,7 @@ const getInitialValues = (mutationMode, userData) => {
     username: "",
     role: "",
     password: "",
+    confirmPassword: "",
   };
 };
 
