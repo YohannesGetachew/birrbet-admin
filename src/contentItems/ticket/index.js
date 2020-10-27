@@ -15,15 +15,6 @@ const Tickets = () => {
     error: errorFetchingTickets,
   } = useQuery(TICKETS);
 
-  const data = [
-    {
-      _id: "a",
-      ticketID: "1",
-      status: "pending",
-      updatedAt: "12-12-12",
-      isPlaced: "yes",
-    },
-  ];
   if (loadingTickets) {
     return <Loader />;
   }
@@ -34,6 +25,7 @@ const Tickets = () => {
       </div>
     );
   }
+  console.log(ticketData.tickets);
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={8}>

@@ -11,6 +11,15 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
     options: {},
   },
   {
+    name: "placementID",
+    label: "Placement code",
+    options: {
+      customBodyRender: (value) => {
+        return value ? value : "Not placed";
+      },
+    },
+  },
+  {
     name: "status",
     label: "Status",
     options: {
@@ -66,24 +75,25 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
       download: false,
       customBodyRender: (value, tableMeta, updateValue) => (
         <>
+          {console.log(tableMeta)}
           <Button
             size="small"
             style={{
-              backgroundColor: tableMeta.rowData[3]
+              backgroundColor: tableMeta.rowData[4]
                 ? theme.palette.primary.light
                 : theme.palette.accentTwo.dark,
-              color: tableMeta.rowData[3]
+              color: tableMeta.rowData[4]
                 ? theme.palette.accentOne.light
                 : theme.palette.primary.main,
               marginRight: "10px",
             }}
-            disabled={tableMeta.rowData[3]}
+            disabled={tableMeta.rowData[4]}
             onClick={() => prepareTicketPlacement(value, "PLACE")}
           >
-            {tableMeta.rowData[3] ? "Placed" : "Place"}
+            {tableMeta.rowData[4] ? "Placed" : "Place"}
           </Button>
           <CustomIconButton
-            disabled={!tableMeta.rowData[3]}
+            disabled={!tableMeta.rowData[4]}
             type="print"
             handleClick={() => prepareTicketPlacement(value, "PRINT")}
           />
