@@ -5,7 +5,7 @@ import textCardStyle from "./style";
 import DownArrow from "@material-ui/icons/ArrowDownwardRounded";
 import UpArrow from "@material-ui/icons/ArrowUpwardRounded";
 
-const TextCard = ({ anyliticsData, cardColor }) => {
+const TextCard = ({ anyliticsData, cardColor, getCardIcon }) => {
   const { title, body, analytics, analyticsStartDate } = anyliticsData;
   const style = textCardStyle({ direction: analytics.direction, cardColor });
   return (
@@ -15,6 +15,7 @@ const TextCard = ({ anyliticsData, cardColor }) => {
       transition={{ duration: 0.2 }}
       className={style.root}
     >
+      {getCardIcon(style.cardIcon)}
       <h3 className={style.title}>{title}</h3>
       <h3 className={style.body}>{body}</h3>
       <h5 className={style.analytics}>
@@ -44,5 +45,5 @@ TextCard.propTypes = {
     }),
     analyticsStartDate: PropTypes.string,
   }),
-  cardColor: PropTypes.string,
+  cardColor: PropTypes.func,
 };

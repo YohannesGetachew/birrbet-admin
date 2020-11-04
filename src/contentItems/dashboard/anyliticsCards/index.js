@@ -1,11 +1,16 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, useTheme } from "@material-ui/core";
 import { TextCard } from "../../../components/cards";
 import PropTypes from "prop-types";
+import PersonIcon from "@material-ui/icons/Person";
+import DollarIcon from "@material-ui/icons/AttachMoney";
+import TicketIcon from "@material-ui/icons/ConfirmationNumber";
+import HappyIcon from "@material-ui/icons/EmojiEmotions";
 import anyliticsCardsStyle from "./style";
 
 const AnyliticsCards = ({ data }) => {
   const style = anyliticsCardsStyle();
+  const theme = useTheme();
   const getCardColor = (theme, index) => {
     switch (index) {
       case 10:
@@ -35,6 +40,40 @@ const AnyliticsCards = ({ data }) => {
         };
     }
   };
+  const getCardIcon = (index, classname) => {
+    switch (index) {
+      case 1:
+        return (
+          <PersonIcon
+            className={classname}
+            style={{ color: theme.palette.accentTwo.main }}
+          />
+        );
+      case 2:
+        return (
+          <DollarIcon
+            className={classname}
+            style={{ color: theme.palette.success.main }}
+          />
+        );
+      case 3:
+        return (
+          <TicketIcon
+            className={classname}
+            style={{ color: theme.palette.error.main }}
+          />
+        );
+      case 4:
+        return (
+          <HappyIcon
+            className={classname}
+            style={{ color: theme.palette.primary.dark }}
+          />
+        );
+      default:
+        return <DollarIcon className={classname} />;
+    }
+  };
   return data.map((anyliticsData, index) => (
     <Grid
       key={anyliticsData.title}
@@ -49,6 +88,7 @@ const AnyliticsCards = ({ data }) => {
       <TextCard
         anyliticsData={anyliticsData}
         cardColor={(theme) => getCardColor(theme, index + 1)}
+        getCardIcon={(classname) => getCardIcon(index + 1, classname)}
       />
     </Grid>
   ));
