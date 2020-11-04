@@ -75,7 +75,7 @@ const LoginForm = () => {
   return (
     <>
       <h1 className={style.header}>
-        {/* <span className={style.logo}>B</span>irr bets */}
+        {/* <span className={style.logo}>B</span>irr bets b */}
         <img
           width="100"
           height="100"
