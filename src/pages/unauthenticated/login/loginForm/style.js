@@ -10,12 +10,13 @@ const style = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   logo: {
-    padding: "0 8px 2px 8px",
+    padding: "8px",
     borderRadius: "4px",
-    border: `3px solid ${theme.palette.accentTwo.dark}`,
-    marginRight: "2px",
-    backgroundColor: theme.palette.accentOne.dark,
-    color: theme.palette.primary.light,
+    // border: `3px solid ${theme.palette.accentTwo.dark}`,
+    // marginRight: "2px",
+    backgroundColor: `${theme.palette.primary.dark}dd`,
+    // color: theme.palette.primary.light,
+    boxShadow: theme.shadows[10],
   },
   submitBtnC: {
     paddingTop: "20px",

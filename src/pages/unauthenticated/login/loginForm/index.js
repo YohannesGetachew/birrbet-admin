@@ -8,6 +8,7 @@ import { AlertError } from "../../../../components/errors";
 import { LOGIN, CURRENT_USER, USERS } from "../../../../graphql/user";
 import { AuthContext, Actions } from "../../../../contexts/auth";
 import Cookies from "js-cookie";
+import logo from "../../../../assets/logo.png";
 import loginStyle from "./style";
 
 const initialValues = { username: "", password: "" };
@@ -74,7 +75,14 @@ const LoginForm = () => {
   return (
     <>
       <h1 className={style.header}>
-        <span className={style.logo}>B</span>irr bets
+        {/* <span className={style.logo}>B</span>irr bets */}
+        <img
+          width="100"
+          height="100"
+          src={logo}
+          alt="Birr bet"
+          className={style.logo}
+        />
       </h1>
       {checkForErrors(error) && (
         <div className={style.errorC}>

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Grid } from "@material-ui/core";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import { CollapseContext } from "../../contexts/collapse";
-import logo from "./logo.png";
+import logo from "../../assets/logo.png";
 import logoStyle from "./style";
 
 const Logo = () => {
