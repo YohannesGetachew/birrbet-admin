@@ -21,7 +21,7 @@ const style = makeStyles((theme) => ({
     overflow: "hidden",
   },
   sideBarC: {
-    backgroundColor: "#f4f5f7",
+    backgroundColor: theme.palette.primary.main,
     borderTop: `1px solid ${theme.palette.primary.dark}`,
     opacity: 1,
     flex: (props) =>

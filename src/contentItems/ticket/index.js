@@ -5,7 +5,6 @@ import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
 import { TICKETS } from "../../graphql/ticket";
 import { Grid } from "@material-ui/core";
-import TicketAnalytics from "./ticketAnylitics";
 import TicketAnylitics from "./ticketAnylitics";
 
 const Tickets = () => {
@@ -25,14 +24,27 @@ const Tickets = () => {
       </div>
     );
   }
-  console.log(ticketData.tickets);
+  const tickets = ticketData.tickets;
+  let todaysTicketCount = 0;
+  const today = Math.round(new Date().getTime());
+  const dayInMs = 86400000;
+  tickets.forEach((ticket) => {
+    if (ticket.isPlaced) {
+      const dateDifference = today - ticket.createdAt;
+      if (dateDifference <= dayInMs) {
+        todaysTicketCount = todaysTicketCount + 1;
+        return;
+      }
+    }
+  });
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={8}>
-        <ShowTickets tickets={ticketData.tickets} />
+        <ShowTickets tickets={tickets} />
       </Grid>
       <Grid item xs={12} md={4}>
-        <TicketAnylitics count={ticketData.tickets.length} />
+        <TicketAnylitics count={todaysTicketCount} />
       </Grid>
     </Grid>
   );

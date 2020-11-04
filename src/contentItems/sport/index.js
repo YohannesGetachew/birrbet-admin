@@ -30,6 +30,7 @@ const Sport = () => {
   const theme = useTheme();
   if (loadingSports) return <Loader />;
   if (errorLoadingSports) return <AlertError />;
+  console.log(sportData);
 
   return (
     <>

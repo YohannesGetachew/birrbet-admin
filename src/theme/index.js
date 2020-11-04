@@ -16,16 +16,16 @@ export const appThemeLight = {
       main: "#353535",
       dark: "#181818",
     },
-    // accentTwo: {
-    //   light: "#ffd659",
-    //   main: "#eba000",
-    //   dark: "#db8700",
-    // },
     accentTwo: {
-      light: "#942AFF",
-      main: "#6D0DCD",
-      dark: "#45008A",
+      light: "#DBC829",
+      main: "#D69606",
+      dark: "#99650A",
     },
+    // accentTwo: {
+    //   light: "#942AFF",
+    //   main: "#6D0DCD",
+    //   dark: "#45008A",
+    // },
     error: {
       light: "#fc035e",
       main: "#fc0352",

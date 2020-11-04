@@ -5,9 +5,9 @@ import textCardStyle from "./style";
 import DownArrow from "@material-ui/icons/ArrowDownwardRounded";
 import UpArrow from "@material-ui/icons/ArrowUpwardRounded";
 
-const TextCard = ({ anyliticsData }) => {
+const TextCard = ({ anyliticsData, cardColor }) => {
   const { title, body, analytics, analyticsStartDate } = anyliticsData;
-  const style = textCardStyle({ direction: analytics.direction });
+  const style = textCardStyle({ direction: analytics.direction, cardColor });
   return (
     <motion.div
       initial={{ scale: 0.9 }}
@@ -44,4 +44,5 @@ TextCard.propTypes = {
     }),
     analyticsStartDate: PropTypes.string,
   }),
+  cardColor: PropTypes.string,
 };

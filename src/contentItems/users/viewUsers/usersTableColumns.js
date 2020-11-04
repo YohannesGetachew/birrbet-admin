@@ -1,13 +1,15 @@
-import { Avatar, Grid } from "@material-ui/core";
+import { Avatar, FormControl, Grid, TextField } from "@material-ui/core";
 import React from "react";
 import Tag from "../../../components/tag";
 import { ClearRounded, CheckRounded } from "@material-ui/icons";
 import { CustomIconButton } from "../../../components/buttons/iconButtons";
+import FieldText from "../../../components/fields/TextField";
 const gerUsersTableColumns = (theme, history) => [
   {
     name: "nameAndPic",
     label: "Name",
     options: {
+      // filterType: "custom",
       customBodyRender: (value, tableMeta) => {
         const even = tableMeta.rowIndex % 2 === 0;
         return (
@@ -30,6 +32,29 @@ const gerUsersTableColumns = (theme, history) => [
             <span style={{ marginLeft: "5px" }}>{value.name}</span>
           </Grid>
         );
+      },
+      filterOptions: {
+        logic: (value, filters, row) => {
+          if (filters.length)
+            return !filters.filter((item) =>
+              value.name.toLowerCase().includes(item.toLowerCase())
+            ).length;
+          return true;
+        },
+        display: (filterList, onChange, index, column) => {
+          return (
+            <FormControl>
+              <TextField
+                label="Name"
+                value={filterList[index][0] || ""}
+                onChange={(event) => {
+                  filterList[index][0] = event.target.value;
+                  onChange(filterList[index], index, column);
+                }}
+              />
+            </FormControl>
+          );
+        },
       },
     },
   },
@@ -86,6 +111,8 @@ const gerUsersTableColumns = (theme, history) => [
     name: "_id",
     label: "Actions",
     options: {
+      filter: false,
+      sort: false,
       customBodyRender: (value) => {
         return (
           <CustomIconButton

@@ -3,8 +3,10 @@ import { makeStyles } from "@material-ui/core/styles";
 const style = makeStyles((theme) => ({
   root: {
     width: "100%",
-    backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.secondary.dark,
+    backgroundColor: (props) =>
+      props.cardColor(theme).bgc || theme.palette.primary.dark,
+    color: (props) =>
+      props.cardColor(theme).color || theme.palette.secondary.dark,
     padding: "15px 60px 15px 15px",
     borderRadius: "4px",
   },

@@ -6,7 +6,36 @@ import anyliticsCardsStyle from "./style";
 
 const AnyliticsCards = ({ data }) => {
   const style = anyliticsCardsStyle();
-  return data.map((anyliticsData) => (
+  const getCardColor = (theme, index) => {
+    switch (index) {
+      case 10:
+        return {
+          bgc: theme.palette.primary.dark,
+          color: theme.palette.secondary.dark,
+        };
+      case 20:
+        return {
+          bgc: theme.palette.secondary.main,
+          color: theme.palette.primary.dark,
+        };
+      case 30:
+        return {
+          bgc: theme.palette.accentOne.main,
+          color: theme.palette.primary.dark,
+        };
+      case 40:
+        return {
+          bgc: theme.palette.error.dark,
+          color: theme.palette.primary.light,
+        };
+      default:
+        return {
+          bgc: theme.palette.primary.dark,
+          color: theme.palette.secondary.dark,
+        };
+    }
+  };
+  return data.map((anyliticsData, index) => (
     <Grid
       key={anyliticsData.title}
       container
@@ -17,7 +46,10 @@ const AnyliticsCards = ({ data }) => {
       lg={6}
       className={style.firstRowFirstColumnItem}
     >
-      <TextCard anyliticsData={anyliticsData} />
+      <TextCard
+        anyliticsData={anyliticsData}
+        cardColor={(theme) => getCardColor(theme, index + 1)}
+      />
     </Grid>
   ));
 };
