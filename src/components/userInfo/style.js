@@ -9,7 +9,7 @@ const style = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.light,
     borderRadius: "8px",
     padding: "2px 10px",
-    boxShadow: `0 0 20px ${theme.palette.secondary.light}`,
+    boxShadow: `0 0 10px ${theme.palette.secondary.light}`,
     position: "relative",
   },
   avatar: {

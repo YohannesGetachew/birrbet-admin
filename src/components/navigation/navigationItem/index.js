@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Grid } from "@material-ui/core";
 import { Link, useRouteMatch } from "react-router-dom";
 import { CollapseContext } from "../../../contexts/collapse";
+import navCurve from "./navCurve.png";
 import navItemStyle from "./style";
 
 const NavigationItem = ({ route }) => {
@@ -15,6 +16,13 @@ const NavigationItem = ({ route }) => {
     <Grid item xs={12} className={style.root}>
       <Link to={route.path} className={style.link}>
         <Grid container className={style.iconNnameC}>
+          {match && (
+            <>
+              <img src={navCurve} alt="" className={style.navCurve1} />
+              <img src={navCurve} alt="" className={style.navCurve2} />
+            </>
+          )}
+
           <Grid item className={style.iconC}>
             {route.icon}
           </Grid>

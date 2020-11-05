@@ -3,7 +3,7 @@ const defaultOptions = (theme) => ({
   responsive: true,
   legend: {
     labels: {
-      fontColor: theme.palette.secondary.dark,
+      fontColor: theme.palette.primary.main,
       fontSize: 10,
     },
   },
@@ -12,10 +12,10 @@ const defaultOptions = (theme) => ({
       {
         display: true,
         gridLines: {
-          zeroLineColor: theme.palette.secondary.main,
+          zeroLineColor: theme.palette.primary.main,
         },
         ticks: {
-          fontColor: theme.palette.secondary.main,
+          fontColor: theme.palette.primary.main,
         },
       },
     ],
@@ -23,10 +23,10 @@ const defaultOptions = (theme) => ({
       {
         display: true,
         gridLines: {
-          zeroLineColor: theme.palette.secondary.main,
+          zeroLineColor: theme.palette.primary.main,
         },
         ticks: {
-          fontColor: theme.palette.secondary.main,
+          fontColor: theme.palette.primary.main,
           fontSize: 10,
         },
       },

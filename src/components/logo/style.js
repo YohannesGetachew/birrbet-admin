@@ -25,16 +25,18 @@ const style = makeStyles((theme) => ({
   logoName: {
     fontWeight: "700",
     fontSize: "20px",
-    marginLeft: "4px",
+    marginLeft: "8px",
     display: (props) => (props.collapsed ? "none" : "inline-block"),
-    color: theme.palette.accentTwo.dark,
+    color: "#D7BD76",
+    fontStyle: "italic",
+    marginTop: "-4px",
   },
   buttonC: {
     cursor: "pointer",
   },
   button: {
     marginBottom: "-4px",
-    color: theme.palette.accentTwo.dark,
+    color: "#D7BD76",
     marginLeft: (props) => (props.collapsed ? "24px" : 0),
   },
 }));

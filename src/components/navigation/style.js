@@ -6,7 +6,7 @@ const style = makeStyles((theme) => ({
   },
   category: {
     marginLeft: "16px",
-    color: theme.palette.secondary.main,
+    color: theme.palette.primary.main,
     opacity: "0.9",
     fontSize: "12px",
     display: (props) => (props.collapsed ? "none" : "block"),

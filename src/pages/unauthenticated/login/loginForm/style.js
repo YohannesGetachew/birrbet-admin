@@ -14,9 +14,9 @@ const style = makeStyles((theme) => ({
     borderRadius: "4px",
     // border: `3px solid ${theme.palette.accentTwo.dark}`,
     // marginRight: "2px",
-    backgroundColor: `${theme.palette.primary.dark}dd`,
+    // backgroundColor: `${theme.palette.primary.dark}dd`,
     // color: theme.palette.primary.light,
-    boxShadow: theme.shadows[10],
+    // boxShadow: theme.shadows[10],
   },
   submitBtnC: {
     paddingTop: "20px",

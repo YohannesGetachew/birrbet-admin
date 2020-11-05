@@ -1,17 +1,19 @@
-import { convertFromUnix } from "../../../utils/date";
+import {
+  convertFromUnix,
+  TODAY_IN_MS,
+  getDurationInMS,
+} from "../../../utils/date";
 const getTransactionAnylitics = (transactions) => {
-  const today = Math.round(new Date().getTime());
-  const weekInMs = 604800000;
+  const weekInMs = getDurationInMS(7);
   let netIncome = 0;
   let netIncomeThisWeek = 0;
   const depositArray = [];
   const withdrawalArray = [];
   const dates = [];
-  console.log(transactions);
   const sortedTransactions = transactions.slice().sort(sortByUnixDate);
   sortedTransactions.forEach((transaction) => {
     dates.push(transaction.createdAt);
-    const dateDifference = today - transaction.createdAt;
+    const dateDifference = TODAY_IN_MS - transaction.createdAt;
     const isCreatedThisWeek = dateDifference <= weekInMs;
     if (transaction.type === "DEPOSIT") {
       depositArray.push(transaction.amount);
@@ -29,11 +31,8 @@ const getTransactionAnylitics = (transactions) => {
   const chosenDates = [];
   if (dates.length > 0) {
     chosenDates.push(dates[0]);
-    chosenDates.push(dates[(dates.length / 2) | 0]);
-    if (dates.length > 0) {
-      chosenDates.push(dates[dates.length - 1]);
-    }
-    chosenDates.push(today);
+    dates.length > 1 && chosenDates.push(dates[(dates.length / 2) | 0]);
+    dates.length > 2 && chosenDates.push(dates[dates.length - 1]);
   }
   if (dates.length <= 0) {
     chosenDates.push(0);
@@ -42,6 +41,11 @@ const getTransactionAnylitics = (transactions) => {
   chosenDates.forEach((date) => {
     readableChosenDates.push(convertFromUnix(date));
   });
+
+  const todayReadable = convertFromUnix(TODAY_IN_MS);
+  !readableChosenDates.includes(todayReadable) &&
+    readableChosenDates.push(todayReadable);
+
   return {
     transactionCard: {
       count: netIncome.toString(),
