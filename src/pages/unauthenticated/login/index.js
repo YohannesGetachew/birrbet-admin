@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import LoginForm from "./loginForm";
 import loginStyle from "./style";
-import sports from "./sports.png";
+import sports from "./sports.jpg";
 
 const Login = () => {
   const style = loginStyle();

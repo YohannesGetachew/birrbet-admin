@@ -22,7 +22,7 @@ const handleSubmit = async (values, setSubmitting, mutate, getUser) => {
   setSubmitting(true);
   try {
     const authData = await mutate({ variables: values });
-    setSubmitting(false);
+    // setSubmitting(false);
     if (authData) {
       const token = authData?.data?.login?.accessToken;
       const expiresIn = authData?.data?.login?.expiresIn;
@@ -37,6 +37,7 @@ const handleSubmit = async (values, setSubmitting, mutate, getUser) => {
       console.log("no auth data present");
     }
   } catch (err) {
+    setSubmitting(false);
     return;
   }
 };

@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
-import { Grid } from "@material-ui/core";
-import React from "react";
+import { Grid, Tabs, Tab } from "@material-ui/core";
+import React, { useState } from "react";
 import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
 import Table from "../../components/table";
@@ -34,6 +34,12 @@ const Report = () => {
     error: errorFetchingTickets,
   } = useQuery(TICKETS);
 
+  const [currentTab, setCurrentTab] = useState(0);
+
+  const handleTabChange = (event, newValue) => {
+    setCurrentTab(newValue);
+  };
+
   const theme = useTheme();
   const style = reportStyle();
 
@@ -55,25 +61,42 @@ const Report = () => {
     columns: ticketsColumns,
   } = getTicketsAndWinnersTableInfo(ticketData.tickets);
   return (
-    <Grid container className={style.root}>
-      <Grid item xs={12} md={6} className={style.reportItemC}>
-        <Table data={ticketsReportData} columns={ticketsColumns} />
-      </Grid>
-      <Grid item xs={12} md={6} className={style.reportItemC}>
-        <Table
-          title="Daily transactions"
-          data={transactionReportData}
-          columns={transactionReportColumns}
-        />
-      </Grid>
-      <Grid item xs={12} className={style.reportItemC}>
-        <Table
-          title="Daily registered users"
-          data={userReportData}
-          columns={userReportColumns}
-        />
-      </Grid>
-    </Grid>
+    <>
+      <Tabs
+        value={currentTab}
+        onChange={handleTabChange}
+        aria-label="reports-tab"
+      >
+        <Tab label="Tickets" />
+        <Tab label="Users" />
+        <Tab label="Transactions" />
+      </Tabs>
+      <div className={style.tabBody}>
+        {currentTab === 0 && (
+          <Table
+            title="Daily tickets"
+            data={ticketsReportData}
+            columns={ticketsColumns}
+          />
+        )}
+
+        {currentTab === 1 && (
+          <Table
+            title="Daily registered users"
+            data={userReportData}
+            columns={userReportColumns}
+          />
+        )}
+
+        {currentTab === 2 && (
+          <Table
+            title="Daily transactions"
+            data={transactionReportData}
+            columns={transactionReportColumns}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

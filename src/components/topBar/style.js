@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const style = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.dark,
     height: "100%",
   },
   collapseIconC: {
@@ -16,9 +16,9 @@ const style = makeStyles((theme) => ({
     top: "50%",
     transform: "translateY(-50%)",
     cursor: "pointer",
-    color: theme.palette.secondary.main,
+    color: theme.palette.primary.light,
     "&:hover": {
-      color: theme.palette.secondary.dark,
+      color: theme.palette.primary.main,
     },
   },
 }));

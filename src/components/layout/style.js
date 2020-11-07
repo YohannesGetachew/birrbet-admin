@@ -22,7 +22,7 @@ const style = makeStyles((theme) => ({
   },
   sideBarC: {
     backgroundColor: theme.palette.secondary.dark,
-    borderTop: `1px solid ${theme.palette.primary.dark}`,
+    borderTop: `0.001em solid ${theme.palette.primary.dark}55`,
     opacity: 1,
     flex: (props) =>
       props.collapsed

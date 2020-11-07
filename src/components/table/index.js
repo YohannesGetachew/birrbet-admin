@@ -10,6 +10,7 @@ const Table = ({ ...rest }) => {
     selectableRows: "none",
     filterType: "textField",
   };
+
   return (
     <div className={style.root}>
       <MUIDataTable {...rest} options={defaultOptions} />

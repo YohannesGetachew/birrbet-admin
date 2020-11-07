@@ -39,14 +39,16 @@ const Tickets = () => {
   });
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={8}>
-        <ShowTickets tickets={tickets} />
+    <>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={8}>
+          <ShowTickets tickets={tickets} />
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <TicketAnylitics count={todaysTicketCount} />
+        </Grid>
       </Grid>
-      <Grid item xs={12} md={4}>
-        <TicketAnylitics count={todaysTicketCount} />
-      </Grid>
-    </Grid>
+    </>
   );
 };
 
