@@ -16,7 +16,6 @@ const MutateAdvertisement = () => {
   } = useQuery(APP);
   if (loadingAppData) return <Loader />;
   if (errorLoadingApp) return <AlertError />;
-  console.log(appData);
   return (
     <AdvertisementForm
       mutationMode={mutationMode}

@@ -6,6 +6,7 @@ export const MARKETS = gql`
       _id
       name
       isAvailable
+      order
     }
   }
 `;

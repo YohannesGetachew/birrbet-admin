@@ -17,10 +17,10 @@ const style = makeStyles((theme) => ({
   },
   navCurve1: {
     position: "absolute",
-    top: -17,
+    top: -14,
     right: -1,
-    width: "18px",
-    height: "18px",
+    width: "15px",
+    height: "15px",
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
@@ -28,10 +28,10 @@ const style = makeStyles((theme) => ({
   },
   navCurve2: {
     position: "absolute",
-    bottom: -17,
+    bottom: -13,
     right: -1,
-    width: "18px",
-    height: "18px",
+    width: "15px",
+    height: "15px",
     // backgroundColor: theme.palette.secondary.main,
     transform: "rotate(-90deg)",
     [theme.breakpoints.down("sm")]: {

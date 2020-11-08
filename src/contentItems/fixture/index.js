@@ -7,6 +7,8 @@ import { FIXTURES, UPDATE_FIXUTRE } from "../../graphql/fixture";
 import { LEAGUES } from "../../graphql/league";
 import { useTheme } from "@material-ui/core";
 import getFixtureTableColumns from "./fixtureTableColumns";
+import { SPORTS } from "../../graphql/sport";
+import { COUNTRIES } from "../../graphql/country";
 
 const handleFixtureUpdate = async (id, isAvailable, mutate) => {
   try {
@@ -31,6 +33,18 @@ const Fixture = () => {
     loading: loadingLeagues,
   } = useQuery(LEAGUES);
 
+  const {
+    data: sportData,
+    error: errorLoadingSport,
+    loading: loadingSport,
+  } = useQuery(SPORTS);
+
+  const {
+    data: countriesData,
+    error: errorLoadingCountries,
+    loading: loadingCountries,
+  } = useQuery(COUNTRIES);
+
   const [
     updateFixture,
     { data: league, loading: isUpdatingFixture, error: failedMutatingFixture },
@@ -38,20 +52,44 @@ const Fixture = () => {
 
   const theme = useTheme();
 
-  if (loadingFixtures || loadingLeagues) return <Loader />;
+  if (loadingFixtures || loadingLeagues || loadingSport || loadingCountries)
+    return <Loader />;
 
-  if (errorLoadingFixtures || errorLoadingLeagues) return <AlertError />;
-
-  const reorganizedFixtures = fixturesData.fixtures.map((fixture) => {
+  if (
+    errorLoadingFixtures ||
+    errorLoadingLeagues ||
+    errorLoadingSport ||
+    errorLoadingCountries
+  )
+    return <AlertError />;
+  const fixturesWithLeague = fixturesData.fixtures.map((fixture) => {
     const leagueOfFixture = leagueData?.leagues.find(
-      (league) => league.id === fixture.league.toString()
+      (league) => league.id === fixture.leagueId.toString()
     );
     if (leagueOfFixture) {
-      return { ...fixture, sport: "Soccer", league: leagueOfFixture.name };
+      return { ...fixture, league: leagueOfFixture.name };
     }
-    return { ...fixture, sport: "Soccer", league: fixture.league };
+    return { ...fixture, league: fixture.league };
   });
-  console.log(reorganizedFixtures);
+
+  const fixturesWithSport = fixturesWithLeague.map((fixture) => {
+    const sportId = fixture.sportId;
+    const sport = sportData?.sports.find((sport) => sport.id === sportId);
+    if (sport) {
+      return { ...fixture, sportName: sport.name };
+    }
+  });
+
+  const fixturesWithCountries = fixturesWithSport.map((fixture) => {
+    const countryId = fixture.countryId;
+    const country = countriesData?.countries.find(
+      (country) => country.id === countryId
+    );
+    if (country) {
+      return { ...fixture, countryName: country.name };
+    }
+  });
+
   return (
     <>
       {failedMutatingFixture && <AlertError />}
@@ -62,29 +100,10 @@ const Fixture = () => {
           handleFixtureUpdate,
           isUpdatingFixture
         )}
-        data={reorganizedFixtures}
+        data={fixturesWithCountries}
       />
     </>
   );
 };
 
 export default Fixture;
-
-// date: "2020-10-15T14:30:00+03:00"
-// id: 625511
-// isAvailable: true
-// league: 115
-// status: "NS"
-// teams: {__typename: "Teams", home: {…}, away: {…}}
-// __typename: "Fixture"
-// _id: "5f882f576a78001cdbae78b1"
-
-// date: "2020-10-15T14:30:00+03:00"
-// id: 625511
-// isAvailable: true
-// league: "Svenska Cupen"
-// sport: "Soccer"
-// status: "NS"
-// teams: {__typename: "Teams", home: {…}, away: {…}}
-// __typename: "Fixture"
-// _id: "5f882f576a78001cdbae78b1"

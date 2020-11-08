@@ -4,6 +4,7 @@ export const SPORTS = gql`
   query {
     sports {
       _id
+      id
       name
       isAvailable
     }

@@ -16,7 +16,7 @@ const style = makeStyles((theme) => ({
     color: theme.palette.secondary.main,
     margin: "16px 0 8px 0",
   },
-  submitButtonC: {
+  buttonsC: {
     textAlign: "right",
     padding: "20px",
     width: "100%",

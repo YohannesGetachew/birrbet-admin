@@ -4,6 +4,7 @@ export const COUNTRIES = gql`
   query {
     countries {
       _id
+      id
       name
       order
       isAvailable

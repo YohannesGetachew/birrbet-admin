@@ -3,29 +3,27 @@ import { gql } from "@apollo/client";
 export const FIXTURES = gql`
   query GetFixtures(
     $isAvailable: Boolean
-    $league: Int
-    $id: Int
-    $status: FixtureStatus
+    $leagueId: String
+    $id: String
+    $sportId: String
+    $status: ScoreboardStatus
   ) {
     fixtures(
       isAvailable: $isAvailable
-      league: $league
+      leagueId: $leagueId
       id: $id
+      sportId: $sportId
       status: $status
     ) {
       _id
-      id
-      league
+      leagueId
       status
-      date
-      isAvailable
-      teams {
-        home {
-          name
-        }
-        away {
-          name
-        }
+      startDate
+      sportId
+      countryId
+      participants {
+        id
+        name
       }
     }
   }

@@ -25,11 +25,8 @@ const style = (theme) => ({
     margin: "16px",
   },
   logo: {
-    backgroundColor: theme.palette.accentOne.dark,
-    border: `4px solid ${theme.palette.accentTwo.dark}`,
-    padding: "4px 8px 4px 8px",
-    borderRadius: "4px",
-    color: theme.palette.primary.light,
+    width: "80px",
+    height: "80px",
   },
   date: {
     marginBottom: "40px",

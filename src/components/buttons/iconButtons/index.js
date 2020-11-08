@@ -22,7 +22,11 @@ const getItemsByType = (type, style, disabled, locked, loading) => {
         <Print className={style.icon} />
       );
     case "delete":
-      return <Delete className={style.icon} />;
+      return loading ? (
+        <CircularProgress variant="indeterminate" size={14} />
+      ) : (
+        <Delete className={style.icon} />
+      );
     case "edit":
       return <Edit className={style.icon} />;
     case "view":

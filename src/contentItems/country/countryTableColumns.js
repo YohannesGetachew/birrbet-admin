@@ -8,10 +8,6 @@ const getCountryColumns = (theme, mutate, handleCountryUpdate, isUpdating) => [
     label: "Sport name",
   },
   {
-    name: "order",
-    label: "Rank",
-  },
-  {
     name: "isAvailable",
     label: "Is available",
     options: {

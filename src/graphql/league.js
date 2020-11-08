@@ -7,7 +7,6 @@ export const LEAGUES = gql`
       id
       name
       order
-      country
       isAvailable
     }
   }

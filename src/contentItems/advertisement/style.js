@@ -2,8 +2,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const style = makeStyles((theme) => ({
   root: {
-    backgroundColor: `${theme.palette.primary.dark}`,
-    padding: "10px",
+    // backgroundColor: `${theme.palette.primary.dark}`,
+    // padding: "10px",
+    marginTop: "10px",
   },
   addAdvertisementC: {
     textAlign: "right",
@@ -20,9 +21,13 @@ const style = makeStyles((theme) => ({
   },
   imageC: {
     padding: "20px",
-    [theme.breakpoints.down("xs")]: {
-      padding: " 20px 0 20px 0",
-    },
+    // [theme.breakpoints.down("xs")]: {
+    //   padding: " 20px 0 20px 0",
+    // },
+    // boxShadow: theme.shadows[4],
+  },
+  imageCard: {
+    boxShadow: theme.shadows[4],
   },
   image: {
     verticalAlign: "middle",
@@ -59,6 +64,9 @@ const style = makeStyles((theme) => ({
   },
   action: {
     marginRight: "8px",
+  },
+  noAdvertisements: {
+    color: theme.palette.accentOne.light,
   },
 }));
 

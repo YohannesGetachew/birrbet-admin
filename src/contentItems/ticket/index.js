@@ -6,6 +6,7 @@ import Loader from "../../components/loader";
 import { TICKETS } from "../../graphql/ticket";
 import { Grid } from "@material-ui/core";
 import TicketAnylitics from "./ticketAnylitics";
+import { TODAY_IN_MS, getDurationInMS } from "../../utils/date";
 
 const Tickets = () => {
   const {
@@ -26,11 +27,11 @@ const Tickets = () => {
   }
   const tickets = ticketData.tickets;
   let todaysTicketCount = 0;
-  const today = Math.round(new Date().getTime());
-  const dayInMs = 86400000;
+  const TODAY_IN_MS = Math.round(new Date().getTime());
+  const dayInMs = getDurationInMS(1);
   tickets.forEach((ticket) => {
     if (ticket.isPlaced) {
-      const dateDifference = today - ticket.createdAt;
+      const dateDifference = TODAY_IN_MS - ticket.createdAt;
       if (dateDifference <= dayInMs) {
         todaysTicketCount = todaysTicketCount + 1;
         return;

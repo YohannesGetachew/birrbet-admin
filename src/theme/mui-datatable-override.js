@@ -1,30 +1,30 @@
-const muiDatatableOverride = {
+const getMuiDatatableOverride = (palette) => ({
   MUIDataTable: {
     root: {
-      color: "#405568",
+      color: palette.secondary.light,
     },
     paper: {
-      boxShadow: "none",
-      backgroundColor: "#A0ABB344",
-      padding: "5px",
+      // boxShadow: "none",
+      // backgroundColor: `${palette.secondary.light}44`,
+      // padding: "5px",
     },
   },
   MuiToolbar: {
     root: {
-      backgroundColor: "#E6EBF6",
-      color: "#405568",
+      backgroundColor: `${palette.primary.dark}dd`,
+      color: palette.secondary.main,
       "& .MuiIconButton-root": {
-        color: "#405568",
+        color: palette.secondary.main,
       },
       "& .MuiIconButton-root:hover": {
-        color: "#405568",
+        color: palette.secondary.dark,
       },
     },
   },
   MUIDataTableHeadCell: {
     fixedHeader: {
-      backgroundColor: "#E6EBF6",
-      color: "#405568AA",
+      backgroundColor: `${palette.primary.dark}dd`,
+      color: `${palette.secondary.light}`,
       // borderTop: "1px solid #000000",
     },
   },
@@ -32,10 +32,16 @@ const muiDatatableOverride = {
   MUIDataTableBodyRow: {
     root: {
       "&:nth-child(odd)": {
-        backgroundColor: "#F4F5F7",
+        backgroundColor: palette.primary.light,
+        "&:hover": {
+          backgroundColor: palette.primary.dark,
+        },
       },
       "&:nth-child(even)": {
-        backgroundColor: "#E6EBF6DD",
+        backgroundColor: `${palette.accentOne.light}0B`,
+        "&:hover": {
+          backgroundColor: palette.primary.dark,
+        },
       },
     },
   },
@@ -43,7 +49,7 @@ const muiDatatableOverride = {
     root: {
       // backgroundColor: "#E6EBF6",
       // padding: "3px 8px 3px 8px",
-      color: "#405568CC",
+      color: `${palette.secondary.main}`,
       "@media print": {
         backgroundColor: "#ffffff",
       },
@@ -51,12 +57,12 @@ const muiDatatableOverride = {
   },
   MuiTableFooter: {
     root: {
-      backgroundColor: "#E6EBF6",
+      backgroundColor: palette.primary.dark,
       "& .MuiToolbar-root": {
-        backgroundColor: "#E6EBF6",
+        backgroundColor: palette.primary.dark,
       },
     },
   },
-};
+});
 
-export default muiDatatableOverride;
+export default getMuiDatatableOverride;

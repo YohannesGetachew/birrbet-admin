@@ -1,3 +1,4 @@
+import getMuiDatatableOverride from "./mui-datatable-override";
 import muiDatatableOverride from "./mui-datatable-override";
 import getTextFieldOverride from "./textFieldOverride";
 
@@ -39,7 +40,7 @@ export const appThemeLight = {
     ...palette,
   },
   overrides: {
-    ...muiDatatableOverride,
+    ...getMuiDatatableOverride(palette),
     ...getTextFieldOverride(palette),
   },
 };

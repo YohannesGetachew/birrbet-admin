@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
 import printableTicketStyle from "./style";
 import PlaceTicketForm from "./placeTicketForm";
-import style from "../../../../components/fields/style";
+import logo from "../../../../assets/logo.png";
 
 class PrintableTicket extends React.Component {
   COMPANY_NAME = "BIRR BETS";
@@ -30,7 +30,7 @@ class PrintableTicket extends React.Component {
       <div className={classes.root}>
         <div className={classes.ticketItem}>
           <h1 className={classes.header + " " + classes.alignTextCenter}>
-            <span className={classes.logo}>B</span>
+            <img src={logo} alt="Birr bet" className={classes.logo} />
           </h1>
           <p className={classes.alignTextCenter + " " + classes.smallText}>
             {actionMode === "PLACE" ? (

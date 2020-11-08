@@ -12,6 +12,7 @@ import { v4 as uuidv1 } from "uuid";
 import * as Yup from "yup";
 import { SubmitButton } from "../../../../components/buttons";
 import { AlertError } from "../../../../components/errors";
+import CancelButton from "../../../../components/buttons/cancelButton";
 
 const getInitialValues = (mutationMode, ads, adToEditId) => {
   if (mutationMode === "EDIT") {
@@ -46,9 +47,7 @@ const handleSubmit = (
   history
 ) => {
   setSubmitting(true);
-  console.log("submistti");
   let variables = {};
-  console.log(ads);
   const adsWithoutTypeName = ads.map((ad) => {
     const adWithoutTypeName = {};
     if (ad.__typename) {
@@ -136,7 +135,8 @@ const AdvertisementForm = ({ mutationMode, ads, adToEditId, appId }) => {
                   </span>
                   <FileUpload setFile={setFile} max={1} accept="image/*" />
                 </Grid>
-                <div className={style.submitButtonC}>
+                <div className={style.buttonsC}>
+                  <CancelButton redirectRoute="/admin/advertisements" />
                   <SubmitButton
                     isSubmitting={isSubmitting}
                     className={style.submitButton}
