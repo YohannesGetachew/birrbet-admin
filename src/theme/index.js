@@ -42,5 +42,10 @@ export const appThemeLight = {
   overrides: {
     ...getMuiDatatableOverride(palette),
     ...getTextFieldOverride(palette),
+    MuiButton: {
+      textPrimary: {
+        color: palette.secondary.main,
+      },
+    },
   },
 };

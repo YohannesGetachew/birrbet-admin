@@ -60,8 +60,9 @@ const PlaceTicketForm = ({
     >
       {({ isSubmitting, values }) => {
         const { stake } = values;
-        const vatValue = (stake * 15) / 100;
-        const returns = calculateReturns(stake, vatValue, totalOdds);
+        const vatValue = stake * 0.15;
+        const returns = calculateReturns(stake, vatValue, totalOdds)
+          .estimatedReturns;
         return (
           <Form>
             {error && <AlertError />}

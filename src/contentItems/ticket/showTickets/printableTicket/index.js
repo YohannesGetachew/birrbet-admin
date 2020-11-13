@@ -12,8 +12,12 @@ class PrintableTicket extends React.Component {
   //     }
   // }
   calculateReturns = (stake, vatValue, totalOdds) => {
-    return (stake * totalOdds - vatValue).toFixed(2);
+    const returnWithoutComission = (stake - vatValue) * totalOdds;
+    const comission = (returnWithoutComission * 0.15).toFixed(2);
+    const estimatedReturns = (returnWithoutComission - comission).toFixed(2);
+    return { estimatedReturns: estimatedReturns, comission: comission };
   };
+
   render() {
     const {
       placementID,
@@ -83,12 +87,20 @@ class PrintableTicket extends React.Component {
                 </p>
                 <p className={classes.smallText}>
                   <span className={classes.boldFont}>Vat(15%): </span>
-                  <span className={classes.lightText}>{vatValue}</span>
+                  <span className={classes.lightText}>
+                    {
+                      this.calculateReturns(stake, vatValue, totalOdds)
+                        .comission
+                    }
+                  </span>
                 </p>
                 <p className={classes.smallText}>
                   <span className={classes.boldFont}>Est Return : </span>
                   <span className={classes.lightText}>
-                    {this.calculateReturns(stake, vatValue, totalOdds)}
+                    {
+                      this.calculateReturns(stake, vatValue, totalOdds)
+                        .estimatedReturns
+                    }
                   </span>
                 </p>
               </Grid>

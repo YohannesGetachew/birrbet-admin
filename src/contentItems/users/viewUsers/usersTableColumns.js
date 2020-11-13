@@ -1,15 +1,17 @@
-import { Avatar, FormControl, Grid, TextField } from "@material-ui/core";
 import React from "react";
+import { Avatar, Grid } from "@material-ui/core";
 import Tag from "../../../components/tag";
+import getCustomFilterListOptions from "../../../components/table/DefaultColumnConfigs";
+import { SelectFieldFilter } from "../../../components/fields/muiDatatableFilters";
 import { ClearRounded, CheckRounded } from "@material-ui/icons";
 import { CustomIconButton } from "../../../components/buttons/iconButtons";
-import FieldText from "../../../components/fields/TextField";
+
 const gerUsersTableColumns = (theme, history) => [
   {
     name: "nameAndPic",
     label: "Name",
     options: {
-      // filterType: "custom",
+      ...getCustomFilterListOptions("Name"),
       customBodyRender: (value, tableMeta) => {
         const even = tableMeta.rowIndex % 2 === 0;
         return (
@@ -41,31 +43,46 @@ const gerUsersTableColumns = (theme, history) => [
             ).length;
           return true;
         },
-        display: (filterList, onChange, index, column) => {
-          return (
-            <FormControl>
-              <TextField
-                label="Name"
-                value={filterList[index][0] || ""}
-                onChange={(event) => {
-                  filterList[index][0] = event.target.value;
-                  onChange(filterList[index], index, column);
-                }}
-              />
-            </FormControl>
-          );
-        },
       },
     },
   },
   {
     name: "username",
     label: "Username",
+    options: {
+      ...getCustomFilterListOptions("UserName"),
+    },
   },
   {
     name: "role",
     label: "Role",
     options: {
+      ...getCustomFilterListOptions("Role", (value) => value[0]),
+      filterType: "custom",
+      filterOptions: {
+        logic: (value, filters, row) => {
+          const filter = filters[0];
+          if (filter === "All" || filter === undefined) {
+            return false;
+          }
+          return !(value === filter);
+        },
+        display: (filterList, onChange, index, column) => {
+          const selectFieldData = [
+            { value: "All", label: "All" },
+            { value: "SUPER_ADMIN", label: "SUPER_ADMIN" },
+            { value: "ADMIN", label: "ADMIN" },
+            { value: "CUSTOMER", label: "CUSTOMER" },
+          ];
+          return (
+            <SelectFieldFilter
+              label="Role"
+              data={selectFieldData}
+              displayProps={{ filterList, onChange, index, column }}
+            />
+          );
+        },
+      },
       customBodyRender: (value) => {
         const tagColor = {
           CUSTOMER: {
@@ -95,6 +112,33 @@ const gerUsersTableColumns = (theme, history) => [
     name: "isActive",
     label: "Is active",
     options: {
+      filterType: "custom",
+      ...getCustomFilterListOptions("Is active", (value) =>
+        value[0] === "All" ? "All" : value[0] ? "Yes" : "No"
+      ),
+      filterOptions: {
+        logic: (value, filters, row) => {
+          const filter = filters[0];
+          if (filter === "All" || filter === undefined) {
+            return false;
+          }
+          return !(value === filter);
+        },
+        display: (filterList, onChange, index, column) => {
+          const selectFieldData = [
+            { value: "All", label: "All" },
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
+          ];
+          return (
+            <SelectFieldFilter
+              label="Is active"
+              data={selectFieldData}
+              displayProps={{ filterList, onChange, index, column }}
+            />
+          );
+        },
+      },
       customBodyRender: (value) => {
         const style = {
           color: value ? theme.palette.success.main : theme.palette.error.light,

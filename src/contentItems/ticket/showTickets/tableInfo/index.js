@@ -2,6 +2,11 @@ import React from "react";
 import { ClearRounded, CheckRounded } from "@material-ui/icons";
 import { CustomIconButton } from "../../../../components/buttons/iconButtons";
 import { convertFromUnix } from "../../../../utils/date";
+import {
+  DatePicker,
+  SelectFieldFilter,
+} from "../../../../components/fields/muiDatatableFilters";
+import getCustomFilterListOptions from "../../../../components/table/DefaultColumnConfigs";
 import { Button } from "@material-ui/core";
 
 const getTicketColumn = (theme, prepareTicketPlacement) => [
@@ -42,14 +47,33 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
           </span>
         );
       },
-    },
-  },
-  {
-    name: "updatedAt",
-    label: "Date",
-    options: {
-      customBodyRender: (values) => {
-        return convertFromUnix(values);
+      ...getCustomFilterListOptions("Status", (value) =>
+        value[0] === "All" ? "All" : value[0]
+      ),
+      filterType: "custom",
+      filterOptions: {
+        logic: (value, filters, row) => {
+          const filter = filters[0];
+          if (filter === "All" || filter === undefined) {
+            return false;
+          }
+          return !(value === filter);
+        },
+        display: (filterList, onChange, index, column) => {
+          const selectFieldData = [
+            { value: "All", label: "All" },
+            { value: "PENDING", label: "PENDING" },
+            { value: "WIN", label: "WIN" },
+            { value: "LOSE", label: "LOSE" },
+          ];
+          return (
+            <SelectFieldFilter
+              label="Placed"
+              data={selectFieldData}
+              displayProps={{ filterList, onChange, index, column }}
+            />
+          );
+        },
       },
     },
   },
@@ -63,6 +87,63 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
         ) : (
           <ClearRounded style={{ color: theme.palette.error.main }} />
         ),
+      ...getCustomFilterListOptions("Placed", (value) =>
+        value[0] === "All" ? "All" : value[0] ? "Yes" : "No"
+      ),
+      filterType: "custom",
+      filterOptions: {
+        logic: (value, filters, row) => {
+          const filter = filters[0];
+          if (filter === "All" || filter === undefined) {
+            return false;
+          }
+          return !(value === filter);
+        },
+        display: (filterList, onChange, index, column) => {
+          const selectFieldData = [
+            { value: "All", label: "All" },
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
+          ];
+          return (
+            <SelectFieldFilter
+              label="Placed"
+              data={selectFieldData}
+              displayProps={{ filterList, onChange, index, column }}
+            />
+          );
+        },
+      },
+    },
+  },
+  {
+    name: "updatedAt",
+    label: "Date",
+    options: {
+      ...getCustomFilterListOptions("Date", null, "date"),
+      customBodyRender: (values) => {
+        return convertFromUnix(values);
+      },
+      filterType: "custom",
+      filterOptions: {
+        fullWidth: true,
+        logic: (value, filters, row) => {
+          let startDate = filters[0];
+          let endDate = filters[1];
+          const currentDate = new Date(value);
+          if (filters.length) {
+            startDate = new Date(startDate);
+            endDate = new Date(endDate);
+            if (currentDate <= endDate && currentDate >= startDate)
+              return false;
+            else return true;
+          }
+          return false;
+        },
+        display: (filterList, onChange, index, column) => (
+          <DatePicker displayProps={{ filterList, onChange, index, column }} />
+        ),
+      },
     },
   },
   {
@@ -75,7 +156,6 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
       download: false,
       customBodyRender: (value, tableMeta, updateValue) => (
         <>
-          {console.log(tableMeta)}
           <Button
             size="small"
             style={{

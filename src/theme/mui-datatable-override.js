@@ -21,6 +21,17 @@ const getMuiDatatableOverride = (palette) => ({
       },
     },
   },
+  MuiChip: {
+    root: {
+      backgroundColor: palette.secondary.light,
+      margin: "6px !important",
+      border: `2px solid ${palette.secondary.dark}88`,
+      color: palette.primary.light,
+    },
+    deleteIcon: {
+      color: palette.primary.light,
+    },
+  },
   MUIDataTableHeadCell: {
     fixedHeader: {
       backgroundColor: `${palette.primary.dark}dd`,
