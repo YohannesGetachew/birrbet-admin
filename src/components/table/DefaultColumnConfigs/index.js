@@ -8,6 +8,9 @@ const getCustomFilterListOptions = (columnName, renderCustomValue, type) => {
         if (type === "date") {
           if (value.length && value.length === 2)
             valueToReturn = `From:${value[0]} - To:${value[1]}`;
+          else {
+            valueToReturn = `From: ${value[2]} ( ${value[0]} ) - To:${value[1]}`;
+          }
         } else {
           valueToReturn = renderCustomValue ? renderCustomValue(value) : value;
         }

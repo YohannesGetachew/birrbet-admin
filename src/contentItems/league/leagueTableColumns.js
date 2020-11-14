@@ -13,14 +13,14 @@ const getLeagueTableColumns = (
     name: "name",
     label: "Name",
   },
-  {
-    name: "order",
-    label: "Rank",
-  },
-  {
-    name: "country",
-    label: "Country",
-  },
+  // {
+  //   name: "order",
+  //   label: "Rank",
+  // },
+  // {
+  //   name: "country",
+  //   label: "Country",
+  // },
   {
     name: "isAvailable",
     label: "Available",

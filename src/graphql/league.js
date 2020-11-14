@@ -19,7 +19,6 @@ export const UPDATE_LEAGUE = gql`
       id
       name
       order
-      country
       isAvailable
     }
   }
