@@ -8,7 +8,6 @@ import { convertFromUnix } from "../../../utils/date";
 const getTicketsAndWinnersTableInfo = (tickets) => {
   const ticketsReportData = [];
   tickets.forEach((ticket) => {
-    console.log(ticket);
     const ticketUpdatedDate = convertFromUnix(ticket.updatedAt);
     const isTicketWinner = ticket.status === "WIN";
     const dateIndex = ticketsReportData.findIndex(

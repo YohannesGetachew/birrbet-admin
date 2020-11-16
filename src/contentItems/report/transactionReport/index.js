@@ -17,17 +17,25 @@ const getTransactionsReportTableInfo = (transactions, theme) => {
     if (dateIndex < 0) {
       transactionsReportData.push({
         date: transaction.createdAt,
-        depositCount: transactionType === "DEPOSIT" ? 1 : 0,
-        withdrawalCount: transactionType === "WITHDRAW" ? 1 : 0,
+        deposit: transactionType === "DEPOSIT" ? transaction.amount : 0,
+        withdrawal: transactionType === "WITHDRAW" ? 1 : 0,
+        net:
+          transactionType === "DEPOSIT"
+            ? transaction.amount
+            : -transaction.amount,
       });
     } else {
       if (transactionType === "DEPOSIT") {
-        transactionsReportData[dateIndex].depositCount =
-          transactionsReportData[dateIndex].depositCount + 1;
+        transactionsReportData[dateIndex].deposit =
+          transactionsReportData[dateIndex].deposit + transaction.amount;
+        transactionsReportData[dateIndex].net =
+          transactionsReportData[dateIndex].net + transaction.amount;
       }
       if (transactionType === "WITHDRAW") {
-        transactionsReportData[dateIndex].withdrawalCount =
-          transactionsReportData[dateIndex].withdrawalCount + 1;
+        transactionsReportData[dateIndex].withdrawal =
+          transactionsReportData[dateIndex].withdrawal + transaction.amount;
+        transactionsReportData[dateIndex].net =
+          transactionsReportData[dateIndex].net - transaction.amount;
       }
     }
   });
@@ -38,17 +46,24 @@ const getTransactionsReportTableInfo = (transactions, theme) => {
       ...getDateConfig(),
     },
     {
-      name: "depositCount",
-      label: "Deposit count",
+      name: "deposit",
+      label: "Deposit",
       options: {
-        ...getCustomFilterListOptions("Deposit count"),
+        ...getCustomFilterListOptions("Deposit"),
       },
     },
     {
-      name: "withdrawalCount",
-      label: "Withdrawal count",
+      name: "withdrawal",
+      label: "Withdrawal",
       options: {
-        ...getCustomFilterListOptions("Deposit count"),
+        ...getCustomFilterListOptions("Withdrawal"),
+      },
+    },
+    {
+      name: "net",
+      label: "Net",
+      options: {
+        ...getCustomFilterListOptions("Net"),
       },
     },
   ];
