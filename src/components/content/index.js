@@ -34,7 +34,12 @@ const Content = () => {
                 path={routeItem.path}
                 children={({ match }) =>
                   match &&
-                  match.isExact && <ContentHeader title={routeItem.menuName} />
+                  match.isExact && (
+                    <ContentHeader
+                      title={routeItem.menuName}
+                      description={routeItem.description}
+                    />
+                  )
                 }
               ></Route>
             </div>

@@ -6,7 +6,10 @@ import {
   DatePicker,
   SelectFieldFilter,
 } from "../../../../components/fields/muiDatatableFilters";
-import getCustomFilterListOptions from "../../../../components/table/DefaultColumnConfigs";
+import {
+  getCustomFilterListOptions,
+  getDateConfig,
+} from "../../../../components/table/DefaultColumnConfigs";
 import { Button } from "@material-ui/core";
 
 const getTicketColumn = (theme, prepareTicketPlacement) => [
@@ -68,7 +71,7 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
           ];
           return (
             <SelectFieldFilter
-              label="Placed"
+              label="Status"
               data={selectFieldData}
               displayProps={{ filterList, onChange, index, column }}
             />
@@ -119,32 +122,7 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
   {
     name: "updatedAt",
     label: "Date",
-    options: {
-      ...getCustomFilterListOptions("Date", null, "date"),
-      customBodyRender: (values) => {
-        return convertFromUnix(values);
-      },
-      filterType: "custom",
-      filterOptions: {
-        fullWidth: true,
-        logic: (value, filters, row) => {
-          let startDate = filters[0];
-          let endDate = filters[1];
-          const currentDate = new Date(value);
-          if (filters.length) {
-            startDate = new Date(startDate);
-            endDate = new Date(endDate);
-            if (currentDate <= endDate && currentDate >= startDate)
-              return false;
-            else return true;
-          }
-          return false;
-        },
-        display: (filterList, onChange, index, column) => (
-          <DatePicker displayProps={{ filterList, onChange, index, column }} />
-        ),
-      },
-    },
+    ...getDateConfig(),
   },
   {
     name: "_id",
@@ -154,31 +132,34 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
       filter: false,
       sort: false,
       download: false,
-      customBodyRender: (value, tableMeta, updateValue) => (
-        <>
-          <Button
-            size="small"
-            style={{
-              backgroundColor: tableMeta.rowData[4]
-                ? theme.palette.primary.light
-                : theme.palette.accentTwo.dark,
-              color: tableMeta.rowData[4]
-                ? theme.palette.accentOne.light
-                : theme.palette.primary.main,
-              marginRight: "10px",
-            }}
-            disabled={tableMeta.rowData[4]}
-            onClick={() => prepareTicketPlacement(value, "PLACE")}
-          >
-            {tableMeta.rowData[4] ? "Placed" : "Place"}
-          </Button>
-          <CustomIconButton
-            disabled={!tableMeta.rowData[4]}
-            type="print"
-            handleClick={() => prepareTicketPlacement(value, "PRINT")}
-          />
-        </>
-      ),
+      customBodyRender: (value, tableMeta, updateValue) => {
+        const isPlaced = tableMeta.rowData[3];
+        return (
+          <>
+            <Button
+              size="small"
+              style={{
+                backgroundColor: isPlaced
+                  ? theme.palette.primary.light
+                  : theme.palette.accentTwo.dark,
+                color: isPlaced
+                  ? theme.palette.accentOne.light
+                  : theme.palette.primary.main,
+                marginRight: "10px",
+              }}
+              disabled={isPlaced}
+              onClick={() => prepareTicketPlacement(value, "PLACE")}
+            >
+              {isPlaced ? "Placed" : "Place"}
+            </Button>
+            <CustomIconButton
+              disabled={!isPlaced}
+              type="print"
+              handleClick={() => prepareTicketPlacement(value, "PRINT")}
+            />
+          </>
+        );
+      },
     },
   },
 ];

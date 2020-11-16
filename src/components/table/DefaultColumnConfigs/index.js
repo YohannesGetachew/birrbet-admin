@@ -1,4 +1,6 @@
 import React from "react";
+import { convertFromUnix } from "../../../utils/date";
+import { DatePicker } from "../../fields/muiDatatableFilters";
 
 const getCustomFilterListOptions = (columnName, renderCustomValue, type) => {
   return {
@@ -21,8 +23,43 @@ const getCustomFilterListOptions = (columnName, renderCustomValue, type) => {
           </>
         );
       },
+      update: (filterList, filterPos, index) => {
+        filterList[index] = [];
+        return filterList;
+      },
     },
   };
 };
 
-export default getCustomFilterListOptions;
+const getDateConfig = () => {
+  return {
+    options: {
+      ...getCustomFilterListOptions("Date", null, "date"),
+      customBodyRender: (values) => {
+        return convertFromUnix(values);
+      },
+      filterType: "custom",
+      filterOptions: {
+        fullWidth: true,
+        logic: (value, filters, row) => {
+          let startDate = filters[0];
+          let endDate = filters[1];
+          const currentDate = new Date(value);
+          if (filters.length) {
+            startDate = new Date(startDate);
+            endDate = new Date(endDate);
+            if (currentDate <= endDate && currentDate >= startDate)
+              return false;
+            else return true;
+          }
+          return false;
+        },
+        display: (filterList, onChange, index, column) => (
+          <DatePicker displayProps={{ filterList, onChange, index, column }} />
+        ),
+      },
+    },
+  };
+};
+
+export { getCustomFilterListOptions, getDateConfig };

@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, Grid } from "@material-ui/core";
 import Tag from "../../../components/tag";
-import getCustomFilterListOptions from "../../../components/table/DefaultColumnConfigs";
+import { getCustomFilterListOptions } from "../../../components/table/DefaultColumnConfigs";
 import { SelectFieldFilter } from "../../../components/fields/muiDatatableFilters";
 import { ClearRounded, CheckRounded } from "@material-ui/icons";
 import { CustomIconButton } from "../../../components/buttons/iconButtons";

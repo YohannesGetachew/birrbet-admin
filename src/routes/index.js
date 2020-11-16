@@ -67,6 +67,7 @@ const CategorizedSuperAdminRoutes = [
     items: [
       {
         menuName: "Dashboard",
+        description: "View a summary about tickets, users, transactions ...",
         path: "/admin/dashboard",
         icon: <DashboardRoundedIcon style={{ fontSize: "20px" }} />,
         content: DashboardDataFetcher,
@@ -74,6 +75,8 @@ const CategorizedSuperAdminRoutes = [
       },
       {
         menuName: "Reports",
+        description:
+          "View a detailed report about tickets, users, transactions ...",
         path: "/admin/reports",
         icon: <AssessmentRoundedIcon style={{ fontSize: "20px" }} />,
         content: Report,
@@ -88,6 +91,7 @@ const CategorizedSuperAdminRoutes = [
     items: [
       {
         menuName: "Sports",
+        description: "View the sports present in your app",
         path: "/admin/sports",
         icon: <SportsBaseballRoundedIcon style={{ fontSize: "20px" }} />,
         content: Sports,
@@ -95,6 +99,7 @@ const CategorizedSuperAdminRoutes = [
       },
       {
         menuName: "Tickets",
+        description: "View, place and print tickets",
         path: "/admin/tickets",
         icon: <TheatersRoundedIcon style={{ fontSize: "20px" }} />,
         content: Ticket,
@@ -102,6 +107,7 @@ const CategorizedSuperAdminRoutes = [
       },
       {
         menuName: "Countries",
+        description: "View the countries present in your app",
         path: "/admin/countries",
         icon: <PublicRoundedIcon style={{ fontSize: "20px" }} />,
         content: Countries,
@@ -110,6 +116,7 @@ const CategorizedSuperAdminRoutes = [
       {
         //
         menuName: "Leagues",
+        description: "View the leagues present in your app",
         path: "/admin/leagues",
         icon: <FeaturedPlayListRoundedIcon style={{ fontSize: "20px" }} />,
         content: Leagues,
@@ -117,6 +124,7 @@ const CategorizedSuperAdminRoutes = [
       },
       {
         menuName: "Markets",
+        description: "View the markets present in your app",
         path: "/admin/markets",
         icon: <ShoppingCartRoundedIcon style={{ fontSize: "20px" }} />,
         content: Markets,
@@ -124,6 +132,7 @@ const CategorizedSuperAdminRoutes = [
       },
       {
         menuName: "Shops",
+        description: "View, create and edit shops",
         path: "/admin/shops",
         icon: <StoreRoundedIcon style={{ fontSize: "20px" }} />,
         content: Shop,
@@ -135,6 +144,7 @@ const CategorizedSuperAdminRoutes = [
       },
       {
         menuName: "Fixtures",
+        description: "View fixtures present in your app",
         path: "/admin/fixtures",
         icon: <SportsKabaddiRoundedIcon style={{ fontSize: "20px" }} />,
         content: Fixtures,
@@ -149,6 +159,7 @@ const CategorizedSuperAdminRoutes = [
     items: [
       {
         menuName: "Users",
+        description: "View, create and edit the users of your app",
         path: "/admin/users",
         icon: <GroupRoundedIcon style={{ fontSize: "20px" }} />,
         content: Users,
@@ -170,6 +181,7 @@ const CategorizedSuperAdminRoutes = [
       },
       {
         menuName: "Transactions",
+        description: "View and undergo transactions",
         path: "/admin/transactions",
         icon: <AccountBalanceWalletRoundedIcon style={{ fontSize: "20px" }} />,
         content: Transactions,
@@ -192,6 +204,7 @@ const CategorizedSuperAdminRoutes = [
     items: [
       {
         menuName: "Advertisements",
+        description: "View and edit advertisements",
         path: "/admin/advertisements",
         icon: <VisibilityRoundedIcon style={{ fontSize: "20px" }} />,
         content: Advertisement,
@@ -211,6 +224,7 @@ const CategorizedSuperAdminRoutes = [
       },
       {
         menuName: "Settings",
+        description: "Maintain the settings of your app",
         path: "/admin/settings",
         icon: <SettingsRoundedIcon style={{ fontSize: "20px" }} />,
         content: Setting,

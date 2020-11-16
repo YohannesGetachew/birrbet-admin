@@ -1,3 +1,7 @@
+import {
+  getCustomFilterListOptions,
+  getDateConfig,
+} from "../../../components/table/DefaultColumnConfigs";
 import { convertFromUnix } from "../../../utils/date";
 
 const getUsersReportTableInfo = (users) => {
@@ -8,7 +12,7 @@ const getUsersReportTableInfo = (users) => {
       (report) => report.date === userCreatedDate
     );
     if (dateIndex < 0) {
-      usersReportData.push({ date: userCreatedDate, count: 1 });
+      usersReportData.push({ date: user.createdAt, count: 1 });
     } else {
       usersReportData[dateIndex].count = usersReportData[dateIndex].count + 1;
     }
@@ -17,10 +21,14 @@ const getUsersReportTableInfo = (users) => {
     {
       name: "date",
       label: "Date",
+      ...getDateConfig(),
     },
     {
       name: "count",
-      label: "Count",
+      label: "Customers registered",
+      options: {
+        ...getCustomFilterListOptions("Customers registered"),
+      },
     },
   ];
   return { data: usersReportData, columns: usersReportColumns };

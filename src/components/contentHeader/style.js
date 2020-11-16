@@ -10,6 +10,10 @@ const style = makeStyles((theme) => ({
     fontSize: "30px",
     fontWeight: "500",
   },
+  subtitle: {
+    fontSize: "14px",
+    color: theme.palette.secondary.main,
+  },
 }));
 
 export default style;

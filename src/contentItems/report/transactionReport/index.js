@@ -1,4 +1,8 @@
 import React from "react";
+import {
+  getCustomFilterListOptions,
+  getDateConfig,
+} from "../../../components/table/DefaultColumnConfigs";
 import Tag from "../../../components/tag";
 import { convertFromUnix } from "../../../utils/date";
 
@@ -12,7 +16,7 @@ const getTransactionsReportTableInfo = (transactions, theme) => {
     );
     if (dateIndex < 0) {
       transactionsReportData.push({
-        date: transactionCreatedDate,
+        date: transaction.createdAt,
         depositCount: transactionType === "DEPOSIT" ? 1 : 0,
         withdrawalCount: transactionType === "WITHDRAW" ? 1 : 0,
       });
@@ -31,14 +35,21 @@ const getTransactionsReportTableInfo = (transactions, theme) => {
     {
       name: "date",
       label: "Date",
+      ...getDateConfig(),
     },
     {
       name: "depositCount",
       label: "Deposit count",
+      options: {
+        ...getCustomFilterListOptions("Deposit count"),
+      },
     },
     {
       name: "withdrawalCount",
       label: "Withdrawal count",
+      options: {
+        ...getCustomFilterListOptions("Deposit count"),
+      },
     },
   ];
   return { data: transactionsReportData, columns: transactionsReportColumns };

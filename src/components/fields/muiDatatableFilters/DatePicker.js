@@ -99,7 +99,7 @@ const DatePicker = ({ displayProps }) => {
     const selectedDateSpanData = dateSpanSelectData.filter(
       (item) => item.value === event.target.value
     );
-    filterList[index][2] = selectedDateSpanData[0].value;
+    filterList[index][2] = selectedDateSpanData[0].label;
     defaultDateChangeHandler(date, "start");
   };
 
