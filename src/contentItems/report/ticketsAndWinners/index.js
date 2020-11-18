@@ -8,14 +8,15 @@ import { convertFromUnix } from "../../../utils/date";
 const getTicketsAndWinnersTableInfo = (tickets) => {
   const ticketsReportData = [];
   tickets.forEach((ticket) => {
-    const ticketUpdatedDate = convertFromUnix(ticket.updatedAt);
+    const ticketUpdatedDate = ticket.updatedAt;
     const isTicketWinner = ticket.status === "WIN";
     const dateIndex = ticketsReportData.findIndex(
-      (report) => report.date === ticketUpdatedDate
+      (report) =>
+        convertFromUnix(report.date) === convertFromUnix(ticketUpdatedDate)
     );
     if (dateIndex < 0) {
       ticketsReportData.push({
-        date: ticket.updatedAt,
+        date: ticketUpdatedDate,
         placedTicketCount: ticket.isPlaced ? 1 : 0,
         winnerCount: isTicketWinner ? 1 : 0,
       });

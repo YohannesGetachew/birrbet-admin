@@ -1,9 +1,7 @@
-import React from "react";
 import {
   getCustomFilterListOptions,
   getDateConfig,
 } from "../../../components/table/DefaultColumnConfigs";
-import Tag from "../../../components/tag";
 import { convertFromUnix } from "../../../utils/date";
 
 const getTransactionsReportTableInfo = (transactions, theme) => {
