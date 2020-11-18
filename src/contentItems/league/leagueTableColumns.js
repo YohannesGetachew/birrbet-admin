@@ -3,12 +3,7 @@ import React from "react";
 import { CustomIconButton } from "../../components/buttons/iconButtons";
 import Tag from "../../components/tag";
 
-const getLeagueTableColumns = (
-  theme,
-  handleLeagueUpdate,
-  mutate,
-  isUpdating
-) => [
+const getLeagueTableColumns = (theme, handleModalOpen) => [
   {
     name: "name",
     label: "Name",
@@ -22,8 +17,8 @@ const getLeagueTableColumns = (
   //   label: "Country",
   // },
   {
-    name: "isAvailable",
-    label: "Available",
+    name: "isTop",
+    label: "Is top",
     options: {
       customBodyRender: (value) => {
         const colors = value
@@ -49,15 +44,24 @@ const getLeagueTableColumns = (
     name: "_id",
     label: "Actions",
     options: {
+      sort: false,
+      filter: false,
       customBodyRender: (value, tableMeta) => {
-        const isAvailable = tableMeta.rowData[3];
+        const isTop = tableMeta.rowData[1];
         return (
-          <CustomIconButton
-            handleClick={() => handleLeagueUpdate(isAvailable, value, mutate)}
-            locked={!isAvailable}
-            type="lock"
-            loading={isUpdating}
-          />
+          <Button
+            size="small"
+            variant="contained"
+            style={{
+              backgroundColor: isTop
+                ? theme.palette.accentTwo.dark
+                : theme.palette.secondary.main,
+              color: theme.palette.primary.light,
+            }}
+            onClick={() => handleModalOpen(isTop, value)}
+          >
+            {isTop ? "Remove from top" : "Make top"}
+          </Button>
         );
       },
     },

@@ -7,16 +7,19 @@ export const SPORTS = gql`
       id
       name
       isAvailable
+      order
     }
   }
 `;
 
 export const UPDATE_SPORT = gql`
-  mutation UpdateSport($id: String!, $updateInput: AvailabilityDTO!) {
+  mutation UpdateSport($id: String!, $updateInput: SportDTO!) {
     updateSport(id: $id, updateInput: $updateInput) {
       _id
+      id
       name
       isAvailable
+      order
     }
   }
 `;

@@ -1,8 +1,9 @@
 import React from "react";
 import Tag from "../../components/tag";
 import { CustomIconButton } from "../../components/buttons/iconButtons";
+import { Button } from "@material-ui/core";
 
-const getSportTableColumns = (theme, mutate, handleSportUpdate, isUpdating) => [
+const getSportTableColumns = (theme, handleModalOpen, sportCount) => [
   {
     name: "name",
     label: "Sport name",
@@ -32,20 +33,45 @@ const getSportTableColumns = (theme, mutate, handleSportUpdate, isUpdating) => [
     },
   },
   {
+    name: "order",
+    label: "Order",
+    options: {
+      customBodyRender: (value) => (value ? value : "Not assigned"),
+      sortCompare: (order) => {
+        return (obj1, obj2) => {
+          let val1 = parseInt(obj1.data);
+          let val2 = parseInt(obj2.data);
+          const notAssignedToNum = sportCount + 1;
+          if (isNaN(val1)) val1 = notAssignedToNum;
+          if (isNaN(val2)) val2 = notAssignedToNum;
+          return (val1 - val2) * (order === "asc" ? -1 : 1);
+        };
+      },
+    },
+  },
+
+  {
     name: "_id",
     label: "Actions",
     options: {
       filter: false,
       sort: false,
-      customBodyRender: (value, tableMeta) => {
+      customBodyRender: (id, tableMeta) => {
+        const name = tableMeta.rowData[0];
         const isAvailable = tableMeta.rowData[1];
+        const order = tableMeta.rowData[2];
         return (
-          <CustomIconButton
-            type="lock"
-            locked={!isAvailable}
-            loading={isUpdating}
-            handleClick={() => handleSportUpdate(value, isAvailable, mutate)}
-          />
+          <Button
+            size="small"
+            variant="contained"
+            style={{
+              backgroundColor: theme.palette.accentTwo.dark,
+              color: theme.palette.primary.light,
+            }}
+            onClick={() => handleModalOpen(id, order, name, isAvailable)}
+          >
+            Change order
+          </Button>
         );
       },
     },
@@ -53,18 +79,3 @@ const getSportTableColumns = (theme, mutate, handleSportUpdate, isUpdating) => [
 ];
 
 export default getSportTableColumns;
-
-// date: "2020-10-15T14:30:00+03:00"
-// id: 625511
-// isAvailable: true
-// league: "Svenska Cupen"
-// sport: "Soccer"
-// status: "NS"
-// teams: {__typename: "Teams", home: {…}, away: {…}}
-// teams:
-// away: {__typename: "Team", name: "Ostersunds FK"}
-// home: {__typename: "Team", name: "Nyköping"}
-// __typename: "Teams"
-// __proto__: Object
-// __typename: "Fixture"
-// _id: "5f882f576a78001cdbae78b1"

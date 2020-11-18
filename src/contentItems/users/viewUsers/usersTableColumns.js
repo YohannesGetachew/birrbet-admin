@@ -157,11 +157,13 @@ const gerUsersTableColumns = (theme, history) => [
     options: {
       filter: false,
       sort: false,
-      customBodyRender: (value) => {
+      customBodyRender: (value, tableMeta) => {
+        const isUserCustomer = tableMeta.rowData[2] === "CUSTOMER";
         return (
           <CustomIconButton
             type="edit"
             handleClick={() => history.push(`/admin/users/edit/${value}`)}
+            disabled={isUserCustomer}
           />
         );
       },

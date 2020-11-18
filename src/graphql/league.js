@@ -8,6 +8,7 @@ export const LEAGUES = gql`
       name
       order
       isAvailable
+      isTop
     }
   }
 `;
@@ -20,6 +21,7 @@ export const UPDATE_LEAGUE = gql`
       name
       order
       isAvailable
+      isTop
     }
   }
 `;

@@ -4,14 +4,22 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Button } from "@material-ui/core";
 import submitBtnStyle from "./style";
 
-const SubmitButton = ({ isSubmitting, label, progressSize, dark, ...rest }) => {
+const SubmitButton = ({
+  isSubmitting,
+  label,
+  progressSize,
+  dark,
+  customAction,
+  ...rest
+}) => {
   const style = submitBtnStyle({ dark });
   return (
     <Button
       {...rest}
-      type="submit"
+      type={customAction ? "button" : "submit"}
       className={style.btn}
       disabled={isSubmitting}
+      onClick={customAction ? customAction : null}
     >
       {isSubmitting ? (
         <CircularProgress className={style.progress} size={progressSize} />

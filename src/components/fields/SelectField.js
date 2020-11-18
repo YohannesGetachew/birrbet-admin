@@ -23,6 +23,7 @@ const FieldSelect = ({ name, data, dark, dataDetails, ...rest }) => {
             <MenuItem
               key={option[dataDetails.accessor]}
               value={option[dataDetails.accessor]}
+              disabled={option.disabled}
             >
               {option[dataDetails.accessed]}
             </MenuItem>

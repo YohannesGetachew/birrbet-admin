@@ -4,13 +4,17 @@ import { Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import cancelButtonStyle from "./style";
 
-const CancelButton = ({ redirectRoute }) => {
+const CancelButton = ({ redirectRoute, customClickHandler }) => {
   const history = useHistory();
   const style = cancelButtonStyle();
   return (
     <Button
       className={style.cancelBtn}
-      onClick={() => history.push(redirectRoute)}
+      onClick={
+        customClickHandler
+          ? customClickHandler
+          : () => history.push(redirectRoute)
+      }
     >
       CANCEL
     </Button>
