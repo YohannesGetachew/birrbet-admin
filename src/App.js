@@ -5,7 +5,6 @@ import { appThemeLight } from "./theme";
 import Login from "./pages/unauthenticated/login";
 import MainPage from "./pages";
 import { AuthContext } from "./contexts/auth";
-import { DatePicker } from "./components/fields/muiDatatableFilters";
 
 const renderByAuthorization = (authData) => {
   return authData ? <MainPage /> : <Login />;

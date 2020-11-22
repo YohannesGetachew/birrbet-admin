@@ -5,9 +5,8 @@ import * as Yup from "yup";
 import { TextField } from "../../../../components/fields";
 import { SubmitButton } from "../../../../components/buttons";
 import { AlertError } from "../../../../components/errors";
-import { LOGIN, CURRENT_USER, USERS } from "../../../../graphql/user";
+import { LOGIN, IS_USER_EXISTS } from "../../../../graphql/user";
 import { AuthContext, Actions } from "../../../../contexts/auth";
-import Cookies from "js-cookie";
 import logo from "../../../../assets/logo.png";
 import loginStyle from "./style";
 
@@ -22,16 +21,10 @@ const handleSubmit = async (values, setSubmitting, mutate, getUser) => {
   setSubmitting(true);
   try {
     const authData = await mutate({ variables: values });
-    // setSubmitting(false);
     if (authData) {
       const token = authData?.data?.login?.accessToken;
-      const expiresIn = authData?.data?.login?.expiresIn;
       if (token) {
-        Cookies.set("Authorization", `Bearer ${token}`);
-        Cookies.set("Expires_in", expiresIn);
-        if (Cookies.getJSON("Authorization") && Cookies.getJSON("Expires_in")) {
-          getUser();
-        }
+        getUser({ variables: { phoneNumber: values.username } });
       }
     } else {
       console.log("no auth data present");
@@ -44,24 +37,27 @@ const handleSubmit = async (values, setSubmitting, mutate, getUser) => {
 
 const LoginForm = () => {
   const { dispatch } = useContext(AuthContext);
-  const [mutate, { error }] = useMutation(LOGIN);
-  // const [unauthenticated, setUnauthenticated] = useState(false);
-  const [getUser, { data, loading }] = useLazyQuery(CURRENT_USER, {
-    onCompleted: (data) => {
-      if (data?.whoami?.role === "CUSTOMER") {
+  const [mutate, { error: errorLoadingAuthData, data: authData }] = useMutation(
+    LOGIN
+  );
+  const [getUser, { loading: loadingUser }] = useLazyQuery(IS_USER_EXISTS, {
+    onCompleted: (userData) => {
+      if (userData?.isUserExists?.role === "CUSTOMER") {
         return;
       }
-      const token = Cookies.getJSON("Authorization");
-      const expiresIn = Cookies.getJSON("Expires_in");
+      const token = authData?.login?.accessToken;
+      const expiresIn = authData?.login?.expiresIn;
+      const user = userData.isUserExists;
       dispatch(
         Actions.addAuthData({
-          token: token,
-          userData: data.whoami,
-          expiresIn: expiresIn,
+          token,
+          expiresIn,
+          userData: user,
         })
       );
     },
   });
+
   const style = loginStyle();
   const checkForErrors = (error) => {
     if (
@@ -76,7 +72,6 @@ const LoginForm = () => {
   return (
     <>
       <h1 className={style.header}>
-        {/* <span className={style.logo}>B</span>irr bets b */}
         <img
           width="100"
           height="100"
@@ -85,7 +80,7 @@ const LoginForm = () => {
           className={style.logo}
         />
       </h1>
-      {checkForErrors(error) && (
+      {checkForErrors(errorLoadingAuthData) && (
         <div className={style.errorC}>
           <AlertError message="Wrong credentials" />
         </div>
@@ -110,7 +105,7 @@ const LoginForm = () => {
               <SubmitButton
                 label="LOGIN"
                 fullWidth={true}
-                isSubmitting={isSubmitting}
+                isSubmitting={isSubmitting || loadingUser}
               />
             </div>
           </Form>

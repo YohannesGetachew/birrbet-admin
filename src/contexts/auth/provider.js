@@ -5,30 +5,27 @@ import { authReducer } from "./reducer";
 import { AuthContext } from "./context";
 
 const initialAuthData = () => {
-  return Cookies.getJSON("AuthData") || null;
+  const authData = Cookies.getJSON("AuthData") || null;
+  return authData;
 };
 
-// authData {
-//   accessToken: String!
-//   refreshToken: String!
-//   tokenType: String
-//   expiresIn: Float!
-// }
 const AuthContextProvider = (props) => {
   const [authData, dispatch] = useReducer(authReducer, [], initialAuthData);
   const hasMount = useRef(false);
+
   useEffect(() => {
     if (!hasMount.current) {
       hasMount.current = true;
     } else {
       if (authData) {
-        Cookies.set(
-          "AuthData",
-          { ...authData },
-          {
-            expires: authData.expiresIn / 86400,
-          }
-        );
+        const authDataWithoutProfile = {
+          ...authData,
+          userData: { ...authData.userData, profileImage: undefined },
+        };
+        Cookies.set("AuthData", JSON.stringify(authDataWithoutProfile), {
+          expires: authData.expiresIn / 86400,
+        });
+        localStorage.setItem("profileImage", authData.userData.profileImage);
       } else {
         Cookies.set("AuthData", null);
       }

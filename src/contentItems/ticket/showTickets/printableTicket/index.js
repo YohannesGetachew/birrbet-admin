@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
 import printableTicketStyle from "./style";
 import PlaceTicketForm from "./placeTicketForm";
+import { calculateTicketReturns } from "../helper";
 import logo from "../../../../assets/logo.png";
 
 class PrintableTicket extends React.Component {
@@ -11,12 +12,6 @@ class PrintableTicket extends React.Component {
 
   //     }
   // }
-  calculateReturns = (stake, vatValue, totalOdds) => {
-    const returnWithoutComission = (stake - vatValue) * totalOdds;
-    const comission = (returnWithoutComission * 0.15).toFixed(2);
-    const estimatedReturns = (returnWithoutComission - comission).toFixed(2);
-    return { estimatedReturns: estimatedReturns, comission: comission };
-  };
 
   render() {
     const {
@@ -89,7 +84,7 @@ class PrintableTicket extends React.Component {
                   <span className={classes.boldFont}>Vat(15%): </span>
                   <span className={classes.lightText}>
                     {
-                      this.calculateReturns(stake, vatValue, totalOdds)
+                      calculateTicketReturns(stake, stake * 0.15, totalOdds)
                         .comission
                     }
                   </span>
@@ -98,7 +93,7 @@ class PrintableTicket extends React.Component {
                   <span className={classes.boldFont}>Est Return : </span>
                   <span className={classes.lightText}>
                     {
-                      this.calculateReturns(stake, vatValue, totalOdds)
+                      calculateTicketReturns(stake, stake * 0.15, totalOdds)
                         .estimatedReturns
                     }
                   </span>
@@ -110,7 +105,7 @@ class PrintableTicket extends React.Component {
               initialStake={stake}
               ticketID={id}
               totalOdds={totalOdds}
-              calculateReturns={this.calculateReturns}
+              calculateReturns={calculateTicketReturns}
             />
           )}
 

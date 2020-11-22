@@ -27,6 +27,23 @@ export const CURRENT_USER = gql`
   }
 `;
 
+export const IS_USER_EXISTS = gql`
+  query IsUserExists($phoneNumber: String!) {
+    isUserExists(phoneNumber: $phoneNumber) {
+      _id
+      firstName
+      lastName
+      username
+      isVerified
+      isActive
+      role
+      accountBalance
+      profileImage
+      createdAt
+    }
+  }
+`;
+
 export const USERS = gql`
   query GetUsers(
     $firstName: String
@@ -78,6 +95,7 @@ export const UPDATE_USER = gql`
       role
       accountBalance
       profileImage
+      createdAt
     }
   }
 `;

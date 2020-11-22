@@ -16,6 +16,7 @@ const UserInfo = () => {
     );
   };
   const { dispatch } = useContext(AuthContext);
+  const profileImage = localStorage.getItem("profileImage");
   const logout = () => dispatch(Actions.removeAuthData());
   const style = userInfoStyle({ expanded, navCollapsed });
   return (
@@ -32,6 +33,7 @@ const UserInfo = () => {
       </div>
       <Grid item>
         <Avatar
+          src={profileImage}
           className={style.avatar}
           onClick={() => handleExpand("AVATAR")}
         />

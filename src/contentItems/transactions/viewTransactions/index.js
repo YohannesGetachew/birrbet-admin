@@ -13,6 +13,7 @@ const ViewTransactions = ({ transactions }) => {
       transactionType: transaction.type,
       amount: transaction.amount,
       date: convertFromUnix(transaction.createdAt),
+      accountBalance: transaction.customer.accountBalance.toFixed(2),
     };
   });
   const theme = useTheme();

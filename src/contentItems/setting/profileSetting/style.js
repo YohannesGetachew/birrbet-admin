@@ -6,7 +6,8 @@ const style = makeStyles((theme) => ({
     padding: "10px",
   },
   profileUploaderC: {
-    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
   },
   avatar: {
     widht: "50px",

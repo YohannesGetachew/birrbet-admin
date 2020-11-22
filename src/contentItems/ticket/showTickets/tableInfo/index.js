@@ -10,6 +10,7 @@ import {
   getCustomFilterListOptions,
   getDateConfig,
 } from "../../../../components/table/DefaultColumnConfigs";
+import { calculateTicketReturns } from "../helper";
 import { Button } from "@material-ui/core";
 
 const getTicketColumn = (theme, prepareTicketPlacement) => [
@@ -24,6 +25,33 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
     options: {
       customBodyRender: (value) => {
         return value ? value : "Not placed";
+      },
+    },
+  },
+  {
+    name: "stake",
+    label: "Stake",
+  },
+  {
+    name: "totalOdds",
+    options: {
+      display: "exclude",
+      filter: false,
+    },
+  },
+  {
+    name: "vatValue",
+    label: "Possible win",
+    options: {
+      customBodyRender: (vatValue, tableMeta) => {
+        const stake = tableMeta.rowData[2];
+        const totalOdds = tableMeta.rowData[3];
+        const ticketReturns = calculateTicketReturns(
+          stake,
+          vatValue,
+          totalOdds
+        );
+        return ticketReturns.estimatedReturns;
       },
     },
   },
@@ -133,7 +161,7 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
       sort: false,
       download: false,
       customBodyRender: (value, tableMeta, updateValue) => {
-        const isPlaced = tableMeta.rowData[3];
+        const isPlaced = tableMeta.rowData[6];
         return (
           <>
             <Button

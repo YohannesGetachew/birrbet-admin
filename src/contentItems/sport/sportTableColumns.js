@@ -56,6 +56,7 @@ const getSportTableColumns = (theme, handleModalOpen, sportCount) => [
     options: {
       filter: false,
       sort: false,
+      sortDescFirst: true,
       customBodyRender: (id, tableMeta) => {
         const name = tableMeta.rowData[0];
         const isAvailable = tableMeta.rowData[1];

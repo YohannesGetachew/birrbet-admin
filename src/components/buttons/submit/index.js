@@ -15,10 +15,10 @@ const SubmitButton = ({
   const style = submitBtnStyle({ dark });
   return (
     <Button
-      {...rest}
       type={customAction ? "button" : "submit"}
       className={style.btn}
       disabled={isSubmitting}
+      {...rest}
       onClick={customAction ? customAction : null}
     >
       {isSubmitting ? (

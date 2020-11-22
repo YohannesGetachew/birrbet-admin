@@ -11,14 +11,15 @@ const httpLink = new HttpLink({
 });
 
 const request = async (operation) => {
-  const token = Cookies.get("Authorization");
+  const token = Cookies.getJSON("AuthData")?.token;
   // set the token in the request header for authorization
   operation.setContext({
     headers: {
-      Authorization: `${token}`,
+      Authorization: `bearer ${token}`,
     },
   });
 };
+
 export const requestLink = new ApolloLink(
   (operation, forward) =>
     new Observable((observer) => {
@@ -60,6 +61,7 @@ const errorLink = onError(
       return popupError(graphQLMessge);
     }
     if (networkError) {
+      console.log(networkError);
       return popupError("Connection error");
     }
   }
@@ -68,3 +70,13 @@ const errorLink = onError(
 const customLink = from([errorLink, requestLink, httpLink]);
 
 export default customLink;
+
+// const authMiddleware = new ApolloLink((operation, forward) => {
+//   const token = Cookies.getJSON("AuthData")?.token;
+//   operation.setContext({
+//     headers: {
+//       Authorization: `bearer ${token}`,
+//     },
+//   });
+//   return forward(operation);
+// })

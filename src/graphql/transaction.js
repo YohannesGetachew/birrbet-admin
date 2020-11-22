@@ -24,6 +24,7 @@ export const TRANSACTIONS = gql`
         firstName
         lastName
         username
+        accountBalance
       }
       cashier {
         _id
