@@ -6,7 +6,6 @@ export const SPORTS = gql`
       _id
       id
       name
-      isAvailable
       order
     }
   }
@@ -18,7 +17,6 @@ export const UPDATE_SPORT = gql`
       _id
       id
       name
-      isAvailable
       order
     }
   }
