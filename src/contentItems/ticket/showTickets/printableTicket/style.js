@@ -10,6 +10,9 @@ const style = (theme) => ({
   smallText: {
     fontSize: "13px",
   },
+  lrPadding: {
+    padding: "10px 30px 0px",
+  },
   lightText: {
     color: theme.palette.accentOne.main,
     opacity: 0.9,
@@ -30,6 +33,9 @@ const style = (theme) => ({
   },
   date: {
     marginBottom: "40px",
+  },
+  bMargin: {
+    marginBottom: "5px",
   },
   betName: {
     fontWeight: "600",

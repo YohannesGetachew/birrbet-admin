@@ -4,6 +4,7 @@ import printableTicketStyle from "./style";
 import PlaceTicketForm from "./placeTicketForm";
 import { calculateTicketReturns } from "../helper";
 import logo from "../../../../assets/logo.png";
+import style from "./style";
 
 class PrintableTicket extends React.Component {
   COMPANY_NAME = "BIRR BETS";
@@ -58,64 +59,65 @@ class PrintableTicket extends React.Component {
               {new Date().toLocaleDateString("en-GB")}
             </span>
           </p>
-          {bets.map((bet) => (
-            <article key={bet._id} className="ticket-item_bet">
-              <p className={classes.betName}>{bet.fixtureName}</p>
-              <span className={classes.betDetails + " " + classes.lightText}>
-                {bet.type}
-              </span>
-              <span className={classes.betDetails + " " + classes.lightText}>
-                {bet.value}
-              </span>
-              <span className={classes.betDetails + " " + classes.lightText}>
-                {bet.oddValue}
-              </span>
-              <hr />
-            </article>
-          ))}
-          {actionMode === "PRINT" ? (
-            <Grid container className={classes.summary}>
-              <Grid item xs={6} md={4}>
-                <p className={classes.smallText}>
-                  <span className={classes.boldFont}>Bet Amt:</span>
-                  <span className={classes.lightText}>{stake}</span>
-                </p>
-                <p className={classes.smallText}>
-                  <span className={classes.boldFont}>Vat(15%): </span>
-                  <span className={classes.lightText}>
-                    {
-                      calculateTicketReturns(stake, stake * 0.15, totalOdds)
-                        .comission
-                    }
-                  </span>
-                </p>
-                <p className={classes.smallText}>
-                  <span className={classes.boldFont}>Est Return : </span>
-                  <span className={classes.lightText}>
-                    {
-                      calculateTicketReturns(stake, stake * 0.15, totalOdds)
-                        .estimatedReturns
-                    }
-                  </span>
-                </p>
+          <div className={classes.lrPadding}>
+            {bets.map((bet) => (
+              <article key={bet._id} className="ticket-item_bet">
+                <p className={classes.betName}>{bet.fixtureName}</p>
+                <span className={classes.betDetails + " " + classes.lightText}>
+                  {bet.type}
+                </span>
+                <span className={classes.betDetails + " " + classes.lightText}>
+                  {bet.value}
+                </span>
+                <span className={classes.betDetails + " " + classes.lightText}>
+                  {bet.oddValue}
+                </span>
+                <hr />
+              </article>
+            ))}
+            {actionMode === "PRINT" ? (
+              <Grid container className={classes.summary}>
+                <Grid item className={classes.summarySecondRow}>
+                  <p className={classes.smallText + " " + classes.bMargin}>
+                    <span className={classes.boldFont}>Bet Amt:</span>
+                    <span className={classes.lightText}>{stake}</span>
+                  </p>
+                  <p className={classes.smallText + " " + classes.bMargin}>
+                    <span className={classes.boldFont}>Vat(15%): </span>
+                    <span className={classes.lightText}>
+                      {
+                        calculateTicketReturns(stake, stake * 0.15, totalOdds)
+                          .comission
+                      }
+                    </span>
+                  </p>
+                  <p className={classes.smallText + " " + classes.bMargin}>
+                    <span className={classes.boldFont}>Est Return : </span>
+                    <span className={classes.lightText}>
+                      {
+                        calculateTicketReturns(stake, stake * 0.15, totalOdds)
+                          .estimatedReturns
+                      }
+                    </span>
+                  </p>
+                </Grid>
               </Grid>
-            </Grid>
-          ) : (
-            <PlaceTicketForm
-              initialStake={stake}
-              ticketID={id}
-              totalOdds={totalOdds}
-              calculateReturns={calculateTicketReturns}
-            />
-          )}
-
+            ) : (
+              <PlaceTicketForm
+                initialStake={stake}
+                ticketID={id}
+                totalOdds={totalOdds}
+                calculateReturns={calculateTicketReturns}
+              />
+            )}
+          </div>
           {actionMode === "PRINT" && (
-            <>
+            <div style={{ padding: "0 30px 0 30px" }}>
               <hr />
               <div className={classes.terms + " " + classes.alignTextCenter}>
                 Terms and conditions apply as set by {this.COMPANY_NAME}
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>
