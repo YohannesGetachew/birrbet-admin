@@ -10,12 +10,12 @@ const style = (theme) => ({
   smallText: {
     fontSize: "13px",
   },
-  lrPadding: {
-    padding: "10px 30px 0px",
+  padding: {
+    padding: "10px 30px 10px",
   },
   lightText: {
     color: theme.palette.accentOne.main,
-    opacity: 0.9,
+    fontWeight: "600",
   },
   boldFont: {
     fontSize: "14px",
@@ -30,9 +30,6 @@ const style = (theme) => ({
   logo: {
     width: "80px",
     height: "80px",
-  },
-  date: {
-    marginBottom: "40px",
   },
   bMargin: {
     marginBottom: "5px",

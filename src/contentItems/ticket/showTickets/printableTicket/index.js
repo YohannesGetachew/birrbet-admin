@@ -3,7 +3,7 @@ import { Grid, withStyles } from "@material-ui/core";
 import printableTicketStyle from "./style";
 import PlaceTicketForm from "./placeTicketForm";
 import { calculateTicketReturns } from "../helper";
-import logo from "../../../../assets/logo.png";
+import logo from "./birrBetPrint.png";
 import style from "./style";
 
 class PrintableTicket extends React.Component {
@@ -32,7 +32,15 @@ class PrintableTicket extends React.Component {
           <h1 className={classes.header + " " + classes.alignTextCenter}>
             <img src={logo} alt="Birr bet" className={classes.logo} />
           </h1>
-          <p className={classes.alignTextCenter + " " + classes.smallText}>
+          <p
+            className={
+              classes.alignTextCenter +
+              " " +
+              classes.smallText +
+              " " +
+              classes.bMargin
+            }
+          >
             {actionMode === "PLACE" ? (
               <>
                 <span className={classes.boldFont}>Ticket ID:</span>{" "}
@@ -51,7 +59,7 @@ class PrintableTicket extends React.Component {
               " " +
               classes.smallText +
               " " +
-              classes.date
+              classes.bMargin
             }
           >
             <span className={classes.boldFont}>Date:</span>{" "}
@@ -59,7 +67,31 @@ class PrintableTicket extends React.Component {
               {new Date().toLocaleDateString("en-GB")}
             </span>
           </p>
-          <div className={classes.lrPadding}>
+          <p
+            className={
+              classes.alignTextCenter +
+              " " +
+              classes.smallText +
+              " " +
+              classes.bMargin
+            }
+          >
+            <span className={classes.boldFont}>Phone number:</span>
+            <span className={classes.lightText}>0966415868</span>
+          </p>
+          <p
+            className={
+              classes.alignTextCenter +
+              " " +
+              classes.smallText +
+              " " +
+              classes.bMargin
+            }
+          >
+            <span className={classes.boldFont}>Branch:</span>
+            <span className={classes.lightText}>22</span>
+          </p>
+          <div className={classes.padding}>
             {bets.map((bet) => (
               <article key={bet._id} className="ticket-item_bet">
                 <p className={classes.betName}>{bet.fixtureName}</p>
@@ -112,7 +144,7 @@ class PrintableTicket extends React.Component {
             )}
           </div>
           {actionMode === "PRINT" && (
-            <div style={{ padding: "0 30px 0 30px" }}>
+            <div className={classes.padding}>
               <hr />
               <div className={classes.terms + " " + classes.alignTextCenter}>
                 Terms and conditions apply as set by {this.COMPANY_NAME}

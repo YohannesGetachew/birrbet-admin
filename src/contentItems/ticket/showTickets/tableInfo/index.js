@@ -48,10 +48,10 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
         const totalOdds = tableMeta.rowData[3];
         const ticketReturns = calculateTicketReturns(
           stake,
-          vatValue,
+          stake * 0.15,
           totalOdds
-        );
-        return ticketReturns.estimatedReturns;
+        ).estimatedReturns;
+        return ticketReturns;
       },
     },
   },
