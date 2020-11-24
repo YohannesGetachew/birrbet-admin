@@ -47,10 +47,10 @@ const Tickets = () => {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={9}>
           <ShowTickets tickets={tickets} />
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <TicketAnylitics count={todaysTicketCount} />
         </Grid>
       </Grid>

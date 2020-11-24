@@ -153,10 +153,6 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
         const isPlaced = tableMeta.rowData[5];
         return (
           <>
-            <CustomIconButton
-              type="view"
-              handleClick={() => prepareTicketPlacement(value, "VIEW")}
-            />
             <Button
               size="small"
               style={{
@@ -173,10 +169,16 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
             >
               {isPlaced ? "Placed" : "Place"}
             </Button>
+            <span style={{ marginLeft: "8px", marginTop: "8px" }}></span>
             <CustomIconButton
               disabled={!isPlaced}
               type="print"
               handleClick={() => prepareTicketPlacement(value, "PRINT")}
+            />
+            <span style={{ marginLeft: "8px", marginTop: "8px" }}></span>
+            <CustomIconButton
+              type="view"
+              handleClick={() => prepareTicketPlacement(value, "VIEW")}
             />
           </>
         );
