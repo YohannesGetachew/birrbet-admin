@@ -2,17 +2,12 @@ import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
 import printableTicketStyle from "./style";
 import PlaceTicketForm from "./placeTicketForm";
-import { calculateTicketReturns } from "../helper";
+import { calculateTicketReturns } from "../ticketCalculation";
 import logo from "./birrBetPrint.png";
-import style from "./style";
+import { getFormattedDate } from "../../../../utils/date";
 
 class PrintableTicket extends React.Component {
-  COMPANY_NAME = "BIRR BETS";
-  // componentDidUpdate(prevProps, prevState) {
-  //     if(prevProps !== this.props){
-
-  //     }
-  // }
+  COMPANY_NAME = "BIRR BET";
 
   render() {
     const {
@@ -20,7 +15,6 @@ class PrintableTicket extends React.Component {
       ticketID,
       bets,
       stake,
-      vatValue,
       totalOdds,
       _id: id,
     } = this.props?.ticket;
@@ -64,7 +58,7 @@ class PrintableTicket extends React.Component {
           >
             <span className={classes.boldFont}>Date:</span>{" "}
             <span className={classes.lightText}>
-              {new Date().toLocaleDateString("en-GB")}
+              {getFormattedDate(new Date())}
             </span>
           </p>
           <p
@@ -107,41 +101,57 @@ class PrintableTicket extends React.Component {
                 <hr />
               </article>
             ))}
-            {actionMode === "PRINT" ? (
-              <Grid container className={classes.summary}>
-                <Grid item className={classes.summarySecondRow}>
+            <Grid container className={classes.summary}>
+              {actionMode === "PRINT" || actionMode === "VIEW" ? (
+                <Grid item>
                   <p className={classes.smallText + " " + classes.bMargin}>
-                    <span className={classes.boldFont}>Bet Amt:</span>
+                    <span className={classes.boldFont}>Stake:</span>
                     <span className={classes.lightText}>{stake}</span>
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
-                    <span className={classes.boldFont}>Vat(15%): </span>
+                    <span className={classes.boldFont}>Vat: </span>
                     <span className={classes.lightText}>
-                      {
-                        calculateTicketReturns(stake, stake * 0.15, totalOdds)
-                          .comission
-                      }
+                      {calculateTicketReturns(stake, totalOdds).vatOnStake}
                     </span>
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
-                    <span className={classes.boldFont}>Est Return : </span>
+                    <span className={classes.boldFont}>Stake after vat:</span>
                     <span className={classes.lightText}>
-                      {
-                        calculateTicketReturns(stake, stake * 0.15, totalOdds)
-                          .estimatedReturns
-                      }
+                      {calculateTicketReturns(stake, totalOdds).stakeAfterVat}
+                    </span>
+                  </p>
+                  <p className={classes.smallText + " " + classes.bMargin}>
+                    <span className={classes.boldFont}>Total odds:</span>
+                    <span className={classes.lightText}>
+                      {totalOdds.toFixed(2)}
+                    </span>
+                  </p>
+                  <p className={classes.smallText + " " + classes.bMargin}>
+                    <span className={classes.boldFont}>Total bets:</span>
+                    <span className={classes.lightText}>{bets.length}</span>
+                  </p>
+                  <p className={classes.smallText + " " + classes.bMargin}>
+                    <span className={classes.boldFont}>Income tax: </span>
+                    <span className={classes.lightText}>
+                      {calculateTicketReturns(stake, totalOdds).incomeTax}
+                    </span>
+                  </p>
+                  <p className={classes.smallText + " " + classes.bMargin}>
+                    <span className={classes.boldFont}>Possible win : </span>
+                    <span className={classes.lightText}>
+                      {calculateTicketReturns(stake, totalOdds).possibleWin}
                     </span>
                   </p>
                 </Grid>
-              </Grid>
-            ) : (
-              <PlaceTicketForm
-                initialStake={stake}
-                ticketID={id}
-                totalOdds={totalOdds}
-                calculateReturns={calculateTicketReturns}
-              />
-            )}
+              ) : (
+                <PlaceTicketForm
+                  initialStake={stake}
+                  ticketID={id}
+                  totalOdds={totalOdds}
+                  totalBets={bets.length}
+                />
+              )}
+            </Grid>
           </div>
           {actionMode === "PRINT" && (
             <div className={classes.padding}>

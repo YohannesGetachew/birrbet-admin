@@ -6,6 +6,7 @@ import { UPDATE_TICKET } from "../../../../../graphql/ticket";
 import { SubmitButton } from "../../../../../components/buttons";
 import * as Yup from "yup";
 import { Grid } from "@material-ui/core";
+import { calculateTicketReturns } from "../../ticketCalculation";
 import placeTicketFormStyle from "./style";
 import { AlertError, popupError } from "../../../../../components/errors";
 
@@ -45,7 +46,7 @@ const PlaceTicketForm = ({
   initialStake,
   ticketID,
   totalOdds,
-  calculateReturns,
+  totalBets,
   history,
 }) => {
   const [mutate, { error }] = useMutation(UPDATE_TICKET);
@@ -60,31 +61,47 @@ const PlaceTicketForm = ({
     >
       {({ isSubmitting, values }) => {
         const { stake } = values;
-        const vatValue = stake * 0.15;
-        const returns = calculateReturns(stake, vatValue, totalOdds)
-          .estimatedReturns;
+        const {
+          vatOnStake,
+          possibleWin,
+          incomeTax,
+          stakeAfterVat,
+        } = calculateTicketReturns(stake, totalOdds);
+
         return (
           <Form>
             {error && <AlertError />}
-            <Grid container justify="flex-end">
-              <Grid item xs={8} md={4}>
-                <TextField
-                  label="Stake"
-                  name="stake"
-                  placeholder="Stake"
-                  className={`${style.paddingBottom} ${style.textField}`}
-                />
-                <p className={style.paddingBottom + " " + style.smallText}>
-                  <span className={style.boldLabel}>Vat(15%):</span>
-                  {vatValue}
-                </p>
-                <p className={style.paddingBottom + " " + style.smallText}>
-                  <span className={style.boldLabel}>Est.return:</span>
-                  {returns}
-                </p>
-                <SubmitButton isSubmitting={isSubmitting} label="PLACE" />
-              </Grid>
-            </Grid>
+            <TextField
+              label="Stake"
+              name="stake"
+              placeholder="Stake"
+              className={`${style.paddingBottom} ${style.textField}`}
+            />
+            <p className={style.paddingBottom + " " + style.smallText}>
+              <span className={style.boldLabel}>Vat:</span>
+              {vatOnStake}
+            </p>
+            <p className={style.paddingBottom + " " + style.smallText}>
+              <span className={style.boldLabel}>Stake after vat:</span>
+              {stakeAfterVat}
+            </p>
+            <p className={style.paddingBottom + " " + style.smallText}>
+              <span className={style.boldLabel}>Total odds:</span>
+              {totalOdds.toFixed(2)}
+            </p>
+            <p className={style.paddingBottom + " " + style.smallText}>
+              <span className={style.boldLabel}>Total bets:</span>
+              {totalBets}
+            </p>
+            <p className={style.paddingBottom + " " + style.smallText}>
+              <span className={style.boldLabel}>Income tax:</span>
+              {incomeTax}
+            </p>
+            <p className={style.paddingBottom + " " + style.smallText}>
+              <span className={style.boldLabel}>Possible win:</span>
+              {possibleWin}
+            </p>
+            <SubmitButton isSubmitting={isSubmitting} label="PLACE" />
           </Form>
         );
       }}

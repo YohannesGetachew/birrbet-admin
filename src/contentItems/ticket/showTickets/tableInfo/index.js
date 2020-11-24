@@ -10,7 +10,7 @@ import {
   getCustomFilterListOptions,
   getDateConfig,
 } from "../../../../components/table/DefaultColumnConfigs";
-import { calculateTicketReturns } from "../helper";
+import { calculateTicketReturns } from "../ticketCalculation";
 import { Button } from "@material-ui/core";
 
 const getTicketColumn = (theme, prepareTicketPlacement) => [
@@ -34,24 +34,13 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
   },
   {
     name: "totalOdds",
-    options: {
-      display: "exclude",
-      filter: false,
-    },
-  },
-  {
-    name: "vatValue",
     label: "Possible win",
     options: {
-      customBodyRender: (vatValue, tableMeta) => {
+      customBodyRender: (totalOdds, tableMeta) => {
         const stake = tableMeta.rowData[2];
-        const totalOdds = tableMeta.rowData[3];
-        const ticketReturns = calculateTicketReturns(
-          stake,
-          stake * 0.15,
-          totalOdds
-        ).estimatedReturns;
-        return ticketReturns;
+        const possibleWin = calculateTicketReturns(stake, totalOdds)
+          .possibleWin;
+        return possibleWin;
       },
     },
   },
@@ -59,7 +48,7 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
     name: "status",
     label: "Status",
     options: {
-      customBodyRender: (value, tableMeta, updateValue) => {
+      customBodyRender: (value) => {
         const colors = {
           PENDING: theme.palette.warning.dark,
           LOSE: theme.palette.error.dark,
@@ -112,7 +101,7 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
     name: "isPlaced",
     label: "Placed",
     options: {
-      customBodyRender: (value, tableMeta, updateValue) =>
+      customBodyRender: (value) =>
         value ? (
           <CheckRounded style={{ color: theme.palette.success.main }} />
         ) : (
@@ -160,10 +149,14 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
       filter: false,
       sort: false,
       download: false,
-      customBodyRender: (value, tableMeta, updateValue) => {
-        const isPlaced = tableMeta.rowData[6];
+      customBodyRender: (value, tableMeta) => {
+        const isPlaced = tableMeta.rowData[5];
         return (
           <>
+            <CustomIconButton
+              type="view"
+              handleClick={() => prepareTicketPlacement(value, "VIEW")}
+            />
             <Button
               size="small"
               style={{
