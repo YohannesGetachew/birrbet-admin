@@ -76,8 +76,11 @@ const handleSubmit = async (
   delete values.confirmPassword;
   const variables =
     mutationMode === "EDIT"
-      ? { id: userData._id, updateInput: values }
-      : { userInput: values };
+      ? {
+          id: userData._id,
+          updateInput: { ...values, adminPermissions: ["CREATE_USER"] },
+        }
+      : { userInput: { ...values } };
 
   try {
     await mutate({ variables: variables });

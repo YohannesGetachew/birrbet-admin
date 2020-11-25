@@ -29,8 +29,8 @@ const style = (theme) => ({
     margin: "16px",
   },
   logo: {
-    width: "80px",
-    height: "80px",
+    width: "100px",
+    height: "100px",
   },
   bMargin: {
     marginBottom: "5px",
