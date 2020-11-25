@@ -9,7 +9,7 @@ const getUsersReportTableInfo = (users) => {
   users.forEach((user) => {
     const userCreatedDate = convertFromUnix(user.createdAt);
     const dateIndex = usersReportData.findIndex(
-      (report) => report.date === userCreatedDate
+      (report) => convertFromUnix(report.date) === userCreatedDate
     );
     if (dateIndex < 0) {
       usersReportData.push({ date: user.createdAt, count: 1 });

@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
 import printableTicketStyle from "./style";
 import PlaceTicketForm from "./placeTicketForm";
-import { calculateTicketReturns } from "../ticketCalculation";
+import { calculateTicketReturns } from "../../../../utils/ticketCalculation";
 import logo from "./birrBetPrint.png";
 import { getFormattedDate } from "../../../../utils/date";
 
@@ -18,8 +18,15 @@ class PrintableTicket extends React.Component {
       totalOdds,
       _id: id,
     } = this.props?.ticket;
+    const { maxWin } = this.props?.app;
     const { classes, actionMode } = this.props;
-    console.log(actionMode);
+    const {
+      stakeAfterVat,
+      vatOnStake,
+      roundedTotalOdds,
+      incomeTax,
+      possibleWin,
+    } = calculateTicketReturns(stake, totalOdds, maxWin);
     return (
       <div className={classes.root}>
         <div className={classes.ticketItem}>
@@ -110,20 +117,16 @@ class PrintableTicket extends React.Component {
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Vat: </span>
-                    <span className={classes.lightText}>
-                      {calculateTicketReturns(stake, totalOdds).vatOnStake}
-                    </span>
+                    <span className={classes.lightText}>{vatOnStake}</span>
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Stake after vat:</span>
-                    <span className={classes.lightText}>
-                      {calculateTicketReturns(stake, totalOdds).stakeAfterVat}
-                    </span>
+                    <span className={classes.lightText}>{stakeAfterVat}</span>
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Total odds:</span>
                     <span className={classes.lightText}>
-                      {totalOdds.toFixed(2)}
+                      {roundedTotalOdds}
                     </span>
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
@@ -132,15 +135,11 @@ class PrintableTicket extends React.Component {
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Income tax: </span>
-                    <span className={classes.lightText}>
-                      {calculateTicketReturns(stake, totalOdds).incomeTax}
-                    </span>
+                    <span className={classes.lightText}>{incomeTax}</span>
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Possible win : </span>
-                    <span className={classes.lightText}>
-                      {calculateTicketReturns(stake, totalOdds).possibleWin}
-                    </span>
+                    <span className={classes.lightText}>{possibleWin}</span>
                   </p>
                 </Grid>
               ) : (
@@ -149,6 +148,7 @@ class PrintableTicket extends React.Component {
                   ticketID={id}
                   totalOdds={totalOdds}
                   totalBets={bets.length}
+                  app={this.props.app}
                 />
               )}
             </Grid>

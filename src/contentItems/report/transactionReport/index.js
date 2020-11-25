@@ -10,7 +10,7 @@ const getTransactionsReportTableInfo = (transactions, theme) => {
     const transactionCreatedDate = convertFromUnix(transaction.createdAt);
     const transactionType = transaction.type;
     const dateIndex = transactionsReportData.findIndex(
-      (report) => report.date === transactionCreatedDate
+      (report) => convertFromUnix(report.date) === transactionCreatedDate
     );
     if (dateIndex < 0) {
       transactionsReportData.push({

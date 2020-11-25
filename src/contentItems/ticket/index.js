@@ -5,13 +5,9 @@ import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
 import { TICKETS } from "../../graphql/ticket";
 import { Grid } from "@material-ui/core";
+import { APP } from "../../graphql/app";
 import TicketAnylitics from "./ticketAnylitics";
-import {
-  TODAY_IN_MS,
-  getDurationInMS,
-  getFormattedDate,
-  convertFromUnix,
-} from "../../utils/date";
+import { getFormattedDate, convertFromUnix } from "../../utils/date";
 
 const Tickets = () => {
   const {
@@ -19,11 +15,15 @@ const Tickets = () => {
     loading: loadingTickets,
     error: errorFetchingTickets,
   } = useQuery(TICKETS);
-
-  if (loadingTickets) {
+  const {
+    data: appData,
+    loading: loadingApp,
+    error: errorLoadingApp,
+  } = useQuery(APP);
+  if (loadingTickets || loadingApp) {
     return <Loader />;
   }
-  if (errorFetchingTickets) {
+  if (errorFetchingTickets || errorLoadingApp) {
     return (
       <div style={{ display: "inline-block" }}>
         <AlertError message="Something has went wrong. Try reloading or check connection." />
@@ -48,7 +48,7 @@ const Tickets = () => {
     <>
       <Grid container spacing={2}>
         <Grid item xs={12} md={9}>
-          <ShowTickets tickets={tickets} />
+          <ShowTickets tickets={tickets} app={appData.app} />
         </Grid>
         <Grid item xs={12} md={3}>
           <TicketAnylitics count={todaysTicketCount} />

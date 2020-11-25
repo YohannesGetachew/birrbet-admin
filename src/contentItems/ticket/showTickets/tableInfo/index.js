@@ -1,19 +1,16 @@
 import React from "react";
 import { ClearRounded, CheckRounded } from "@material-ui/icons";
 import { CustomIconButton } from "../../../../components/buttons/iconButtons";
-import { convertFromUnix } from "../../../../utils/date";
-import {
-  DatePicker,
-  SelectFieldFilter,
-} from "../../../../components/fields/muiDatatableFilters";
+
+import { SelectFieldFilter } from "../../../../components/fields/muiDatatableFilters";
 import {
   getCustomFilterListOptions,
   getDateConfig,
 } from "../../../../components/table/DefaultColumnConfigs";
-import { calculateTicketReturns } from "../ticketCalculation";
+import { calculateTicketReturns } from "../../../../utils/ticketCalculation";
 import { Button } from "@material-ui/core";
 
-const getTicketColumn = (theme, prepareTicketPlacement) => [
+const getTicketColumn = (theme, prepareTicketPlacement, maxWin) => [
   {
     name: "ticketID",
     label: "Ticket code",
@@ -38,7 +35,7 @@ const getTicketColumn = (theme, prepareTicketPlacement) => [
     options: {
       customBodyRender: (totalOdds, tableMeta) => {
         const stake = tableMeta.rowData[2];
-        const possibleWin = calculateTicketReturns(stake, totalOdds)
+        const possibleWin = calculateTicketReturns(stake, totalOdds, maxWin)
           .possibleWin;
         return possibleWin;
       },

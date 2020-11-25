@@ -12,6 +12,7 @@ import { useTheme } from "@material-ui/core";
 import getUsersReportTableInfo from "./usersReport";
 import reportStyle from "./style";
 import getTicketsAndWinnersTableInfo from "./ticketsAndWinners";
+import { APP } from "../../graphql/app";
 
 // daily tickets
 // daily winners
@@ -33,6 +34,11 @@ const Report = () => {
     loading: loadingTickets,
     error: errorFetchingTickets,
   } = useQuery(TICKETS);
+  const {
+    data: appData,
+    loading: loadingApp,
+    error: errorLoadingApp,
+  } = useQuery(APP);
 
   const [currentTab, setCurrentTab] = useState(0);
 
@@ -43,9 +49,14 @@ const Report = () => {
   const theme = useTheme();
   const style = reportStyle();
 
-  if (loadingUserData || loadingTransactions || loadingTickets)
+  if (loadingUserData || loadingTransactions || loadingTickets || loadingApp)
     return <Loader />;
-  if (errorLoadingUserData || errorLoadingTransactions || errorFetchingTickets)
+  if (
+    errorLoadingUserData ||
+    errorLoadingTransactions ||
+    errorFetchingTickets ||
+    errorLoadingApp
+  )
     return <AlertError />;
 
   const {
@@ -59,7 +70,8 @@ const Report = () => {
   const {
     data: ticketsReportData,
     columns: ticketsColumns,
-  } = getTicketsAndWinnersTableInfo(ticketData.tickets);
+    allTimeTicketIncome,
+  } = getTicketsAndWinnersTableInfo(ticketData.tickets, appData.app);
   return (
     <>
       <Tabs
@@ -73,11 +85,21 @@ const Report = () => {
       </Tabs>
       <div className={style.tabBody}>
         {currentTab === 0 && (
-          <Table
-            title="Daily tickets"
-            data={ticketsReportData}
-            columns={ticketsColumns}
-          />
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <Table
+                title="Daily tickets"
+                data={ticketsReportData}
+                columns={ticketsColumns}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <div className={style.allTimeTicketIncome}>
+                <h2 className={style.allTimeTitle}>All time user won</h2>
+                <h6 className={style.allTimeNumber}>{allTimeTicketIncome}</h6>
+              </div>
+            </Grid>
+          </Grid>
         )}
 
         {currentTab === 1 && (

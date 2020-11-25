@@ -7,7 +7,7 @@ import CustomModal from "../../../components/modal";
 import PrintableTicket from "./printableTicket";
 import { useReactToPrint } from "react-to-print";
 
-const Ticket = ({ tickets }) => {
+const Ticket = ({ tickets, app }) => {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -35,8 +35,12 @@ const Ticket = ({ tickets }) => {
     }
     setActionTriggered(false);
   }, [currentTicket, actionTriggered]);
-  const ticketColumn = getTicketColumn(theme, prepareTicketPlacement);
   const style = ticketStyle();
+  const ticketColumn = getTicketColumn(
+    theme,
+    prepareTicketPlacement,
+    app.maxWin
+  );
   return (
     <div>
       <CustomModal ref={placeTicketModalRef}>
@@ -44,6 +48,7 @@ const Ticket = ({ tickets }) => {
           <div className={style.modalContent}>
             <PrintableTicket
               ticket={currentTicket}
+              app={app}
               actionMode={actionMode}
               ref={componentRef}
             />

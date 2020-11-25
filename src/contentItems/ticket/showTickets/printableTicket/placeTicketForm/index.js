@@ -5,8 +5,7 @@ import { TextField } from "../../../../../components/fields/index";
 import { UPDATE_TICKET } from "../../../../../graphql/ticket";
 import { SubmitButton } from "../../../../../components/buttons";
 import * as Yup from "yup";
-import { Grid } from "@material-ui/core";
-import { calculateTicketReturns } from "../../ticketCalculation";
+import { calculateTicketReturns } from "../../../../../utils/ticketCalculation";
 import placeTicketFormStyle from "./style";
 import { AlertError, popupError } from "../../../../../components/errors";
 
@@ -18,7 +17,6 @@ const handleSubmit = async (
   history
 ) => {
   setSubmitting(true);
-
   try {
     await mutate({
       variables: {
@@ -34,13 +32,15 @@ const handleSubmit = async (
   }
 };
 
-const validationSchema = Yup.object().shape({
-  stake: Yup.number()
-    .typeError("Stake must be a number")
-    .integer("Stake must be an integer")
-    .min(30, "Stake must be at least 30 birr")
-    .required("Stake is required"),
-});
+const getValidationSchema = (minStake, maxStake, maxWin) =>
+  Yup.object().shape({
+    stake: Yup.number()
+      .typeError("Stake must be a number")
+      .integer("Stake must be an integer")
+      .min(minStake, `Stake must be at least ${minStake} birr`)
+      .max(maxStake, `Stake must not be greater than ${maxStake}`)
+      .required("Stake is required"),
+  });
 
 const PlaceTicketForm = ({
   initialStake,
@@ -48,13 +48,18 @@ const PlaceTicketForm = ({
   totalOdds,
   totalBets,
   history,
+  app,
 }) => {
   const [mutate, { error }] = useMutation(UPDATE_TICKET);
   const style = placeTicketFormStyle();
   return (
     <Formik
       initialValues={{ stake: initialStake }}
-      validationSchema={validationSchema}
+      validationSchema={getValidationSchema(
+        app.minStake,
+        app.maxStake,
+        app.maxWin
+      )}
       onSubmit={(values, { setSubmitting }) =>
         handleSubmit(values, setSubmitting, mutate, ticketID, history)
       }
@@ -66,7 +71,8 @@ const PlaceTicketForm = ({
           possibleWin,
           incomeTax,
           stakeAfterVat,
-        } = calculateTicketReturns(stake, totalOdds);
+          roundedTotalOdds,
+        } = calculateTicketReturns(stake, totalOdds, app.maxWin);
 
         return (
           <Form>
@@ -87,7 +93,7 @@ const PlaceTicketForm = ({
             </p>
             <p className={style.paddingBottom + " " + style.smallText}>
               <span className={style.boldLabel}>Total odds:</span>
-              {totalOdds.toFixed(2)}
+              {roundedTotalOdds}
             </p>
             <p className={style.paddingBottom + " " + style.smallText}>
               <span className={style.boldLabel}>Total bets:</span>
