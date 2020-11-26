@@ -11,9 +11,15 @@ const style = makeStyles((theme) => ({
   allTimeTicketIncome: {
     borderRadius: "4px",
     backgroundColor: theme.palette.primary.light,
-    padding: "8px",
+    padding: "12px",
     boxShadow: theme.shadows[4],
+  },
+  allTimeUserWon: {
     borderRight: `4px solid ${theme.palette.accentTwo.main}`,
+  },
+  allTimeSystemWon: {
+    marginTop: "10px",
+    borderRight: `4px solid ${theme.palette.secondary.main}`,
   },
   allTimeTitle: {
     color: theme.palette.secondary.main,

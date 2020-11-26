@@ -42,6 +42,7 @@ export const TICKETS = gql`
         type
         value
         oddValue
+        status
       }
       isExpired
     }

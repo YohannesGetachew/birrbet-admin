@@ -93,21 +93,38 @@ class PrintableTicket extends React.Component {
             <span className={classes.lightText}>22</span>
           </p>
           <div className={classes.padding}>
-            {bets.map((bet) => (
-              <article key={bet._id} className="ticket-item_bet">
-                <p className={classes.betName}>{bet.fixtureName}</p>
-                <span className={classes.betDetails + " " + classes.lightText}>
-                  {bet.type}
-                </span>
-                <span className={classes.betDetails + " " + classes.lightText}>
-                  {bet.value}
-                </span>
-                <span className={classes.betDetails + " " + classes.lightText}>
-                  {bet.oddValue}
-                </span>
-                <hr />
-              </article>
-            ))}
+            {bets.map((bet) => {
+              const { status } = bet;
+              const betStatusStyle = !status
+                ? classes.pending
+                : status === 2
+                ? classes.win
+                : classes.lose;
+              return (
+                <article
+                  key={bet._id}
+                  className={classes.bet + " " + betStatusStyle}
+                >
+                  <p className={classes.betName}>{bet.fixtureName}</p>
+                  <span
+                    className={classes.betDetails + " " + classes.lightText}
+                  >
+                    {bet.type}
+                  </span>
+                  <span
+                    className={classes.betDetails + " " + classes.lightText}
+                  >
+                    {bet.value}
+                  </span>
+                  <span
+                    className={classes.betDetails + " " + classes.lightText}
+                  >
+                    {bet.oddValue}
+                  </span>
+                  <hr />
+                </article>
+              );
+            })}
             <Grid container className={classes.summary}>
               {actionMode === "PRINT" || actionMode === "VIEW" ? (
                 <Grid item>

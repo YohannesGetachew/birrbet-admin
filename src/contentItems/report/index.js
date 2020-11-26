@@ -70,7 +70,8 @@ const Report = () => {
   const {
     data: ticketsReportData,
     columns: ticketsColumns,
-    allTimeTicketIncome,
+    allTimeUserWon,
+    allTimeSystemWon,
   } = getTicketsAndWinnersTableInfo(ticketData.tickets, appData.app);
   return (
     <>
@@ -86,17 +87,30 @@ const Report = () => {
       <div className={style.tabBody}>
         {currentTab === 0 && (
           <Grid container spacing={2}>
-            <Grid item xs={8}>
+            <Grid item xs={12} md={8}>
               <Table
                 title="Daily tickets"
                 data={ticketsReportData}
                 columns={ticketsColumns}
               />
             </Grid>
-            <Grid item xs={4}>
-              <div className={style.allTimeTicketIncome}>
+            <Grid item xs={12} md={4}>
+              <div
+                className={
+                  style.allTimeTicketIncome + " " + style.allTimeUserWon
+                }
+              >
                 <h2 className={style.allTimeTitle}>All time user won</h2>
-                <h6 className={style.allTimeNumber}>{allTimeTicketIncome}</h6>
+                <h6 className={style.allTimeNumber}>{allTimeUserWon}</h6>
+              </div>
+
+              <div
+                className={
+                  style.allTimeTicketIncome + " " + style.allTimeSystemWon
+                }
+              >
+                <h2 className={style.allTimeTitle}>All time system won</h2>
+                <h6 className={style.allTimeNumber}>{allTimeSystemWon}</h6>
               </div>
             </Grid>
           </Grid>

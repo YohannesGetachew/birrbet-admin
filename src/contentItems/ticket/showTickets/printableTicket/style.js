@@ -35,6 +35,27 @@ const style = (theme) => ({
   bMargin: {
     marginBottom: "5px",
   },
+  pending: {},
+  win: {
+    backgroundColor: `${theme.palette.success.light}44`,
+    paddingLeft: "4px",
+    borderRadius: "4px",
+    "@media print": {
+      backgroundColor: "transparent",
+      borderRadius: 0,
+      padding: 0,
+    },
+  },
+  lose: {
+    backgroundColor: `${theme.palette.error.dark}22`,
+    paddingLeft: "4px",
+    borderRadius: "4px",
+    "@media print": {
+      backgroundColor: "transparent",
+      borderRadius: 0,
+      padding: 0,
+    },
+  },
   betName: {
     fontWeight: "600",
     color: theme.palette.accentOne.dark,

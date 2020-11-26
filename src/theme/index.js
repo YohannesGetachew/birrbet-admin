@@ -31,7 +31,7 @@ export const palette = {
   error: {
     light: "#fc035e",
     main: "#fc0352",
-    dak: "#fc0345",
+    dark: "#fc0345",
   },
 };
 
