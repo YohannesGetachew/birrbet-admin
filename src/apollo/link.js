@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+console.log(API_URL);
+
 const httpLink = new HttpLink({
   uri: API_URL,
   credentials: "same-origin",

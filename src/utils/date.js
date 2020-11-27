@@ -1,11 +1,11 @@
-const convertFromUnix = (timestamp) => {
+const convertFromUnix = (timestamp, includeTime) => {
   const dateTime = new Date(parseInt(timestamp));
   // const readableDateFormat = dateObject.toLocaleString("en-GB", {
   //   year: "numeric",
   //   month: "numeric",
   //   day: "numeric",
   // });
-  const formattedDate = getFormattedDate(dateTime);
+  const formattedDate = getFormattedDate(dateTime, includeTime);
   return formattedDate;
 };
 
@@ -48,12 +48,14 @@ const getDateRelativeToToday = (numberOfDaysFromToday) => {
   return getFormattedDate(today);
 };
 
-const getFormattedDate = (dateTime) => {
+const getFormattedDate = (dateTime, includeTime) => {
   const year = dateTime.getFullYear();
   const month = dateTime.getMonth() + 1;
   const day = dateTime.getDate();
-
-  const formattedDate = `${month}/${day}/${year}`;
+  const hour = ("0" + dateTime.getHours()).slice(-2);
+  const minutes = ("0" + dateTime.getMinutes()).slice(-2);
+  let formattedDate = `${month}/${day}/${year}`;
+  if (includeTime) formattedDate = formattedDate + ` (${hour}:${minutes})`;
   return formattedDate;
 };
 

@@ -31,12 +31,12 @@ const getCustomFilterListOptions = (columnName, renderCustomValue, type) => {
   };
 };
 
-const getDateConfig = () => {
+const getDateConfig = (includeTime) => {
   return {
     options: {
       ...getCustomFilterListOptions("Date", null, "date"),
       customBodyRender: (values) => {
-        return convertFromUnix(values);
+        return convertFromUnix(values, includeTime);
       },
       filterType: "custom",
       filterOptions: {

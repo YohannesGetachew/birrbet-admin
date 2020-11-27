@@ -78,9 +78,9 @@ const handleSubmit = async (
     mutationMode === "EDIT"
       ? {
           id: userData._id,
-          updateInput: { ...values, adminPermissions: ["CREATE_USER"] },
+          updateInput: values,
         }
-      : { userInput: { ...values } };
+      : { userInput: values };
 
   try {
     await mutate({ variables: variables });

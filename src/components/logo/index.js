@@ -15,7 +15,7 @@ const Logo = () => {
         <Grid container alignItems="center">
           <img width="40" height="40" src={logo} alt="Birr bet" />
           {/* <span className={style.onlyLogo}>B</span> */}
-          <span className={style.logoName}>Birr Bets</span>
+          <span className={style.logoName}>Birr Bet</span>
         </Grid>
       </Grid>
       <Grid item className={style.buttonC} onClick={handleCollapse}>

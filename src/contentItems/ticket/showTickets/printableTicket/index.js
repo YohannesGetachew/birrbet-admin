@@ -3,7 +3,7 @@ import { Grid, withStyles } from "@material-ui/core";
 import printableTicketStyle from "./style";
 import PlaceTicketForm from "./placeTicketForm";
 import { calculateTicketReturns } from "../../../../utils/ticketCalculation";
-import logo from "./birrBetPrint.png";
+import logo from "./birrBetTicketPrint.png";
 import { getFormattedDate } from "../../../../utils/date";
 
 class PrintableTicket extends React.Component {

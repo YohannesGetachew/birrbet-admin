@@ -136,7 +136,7 @@ const getTicketColumn = (theme, prepareTicketPlacement, maxWin) => [
   {
     name: "updatedAt",
     label: "Date",
-    ...getDateConfig(),
+    ...getDateConfig(true),
   },
   {
     name: "_id",
