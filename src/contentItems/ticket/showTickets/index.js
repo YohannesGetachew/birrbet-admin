@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Table from "../../../components/table";
 import getTicketColumn from "./tableInfo";
 import ticketStyle from "./style";
@@ -6,12 +6,14 @@ import { Button, useTheme } from "@material-ui/core";
 import CustomModal from "../../../components/modal";
 import PrintableTicket from "./printableTicket";
 import { useReactToPrint } from "react-to-print";
+import { AuthContext } from "../../../contexts/auth";
 
 const Ticket = ({ tickets, app }) => {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const { authData } = useContext(AuthContext);
   const [currentTicketID, setCurrentTicketID] = useState(null);
   // const [actionTriggered, setActionTriggered] = useState(false);
   const currentTicket = tickets.find(
@@ -39,7 +41,8 @@ const Ticket = ({ tickets, app }) => {
   const ticketColumn = getTicketColumn(
     theme,
     prepareTicketPlacement,
-    app.maxWin
+    app.maxWin,
+    authData.userData.role
   );
   return (
     <div>

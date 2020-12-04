@@ -67,6 +67,8 @@ export const USERS = gql`
       accountBalance
       profileImage
       createdAt
+      belongsToShop
+      cashierPermissions
     }
   }
 `;
@@ -79,6 +81,8 @@ export const GET_USER = gql`
       lastName
       username
       role
+      belongsToShop
+      cashierPermissions
     }
   }
 `;

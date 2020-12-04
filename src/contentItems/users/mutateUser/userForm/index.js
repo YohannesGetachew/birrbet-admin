@@ -10,6 +10,7 @@ import { CREATE_USER, UPDATE_USER } from "../../../../graphql/user";
 import { AlertError } from "../../../../components/errors";
 import userFormStyle from "./style";
 import CancelButton from "../../../../components/buttons/cancelButton";
+import FieldMultiSelect from "../../../../components/fields/MultiSelectField";
 
 const getInitialValues = (mutationMode, userData) => {
   if (mutationMode === "EDIT") {
@@ -18,6 +19,9 @@ const getInitialValues = (mutationMode, userData) => {
       lastName: userData.lastName,
       username: userData.username,
       role: userData.role,
+      belongsToShop: userData.role !== "CASHIER" ? "" : userData.belongsToShop,
+      cashierPermissions:
+        userData.role !== "CASHIER" ? "" : userData.cashierPermissions, // either null or an array
     };
   }
   return {
@@ -27,6 +31,8 @@ const getInitialValues = (mutationMode, userData) => {
     role: "",
     password: "",
     confirmPassword: "",
+    belongsToShop: "",
+    cashierPermissions: [],
   };
 };
 
@@ -41,6 +47,26 @@ const commonValidations = {
     .max(13, "Please choose a valid phone number")
     .required("Phone number is required"),
   role: Yup.string().required("Role is required"),
+  belongsToShop: Yup.string().test(
+    "cashier belongs to shop",
+    "A cashier must belong to a shop",
+    function (value) {
+      return (
+        (this.parent.role === "CASHIER" && !!value) ||
+        this.parent.role !== "CASHIER"
+      );
+    }
+  ),
+  cashierPermissions: Yup.array().test(
+    "cashier has permissions",
+    "A cashier must have atleast one permission selected",
+    function (value) {
+      return (
+        (this.parent.role === "CASHIER" && !!value.length) ||
+        this.parent.role !== "CASHIER"
+      );
+    }
+  ),
 };
 
 const getValidationSchema = (mutationMode) => {
@@ -74,6 +100,12 @@ const handleSubmit = async (
 ) => {
   setSubmitting(true);
   delete values.confirmPassword;
+  if (!values.belongsToShop) {
+    delete values.belongsToShop;
+  }
+  if (!values.cashierPermissions) {
+    delete values.cashierPermissions;
+  }
   const variables =
     mutationMode === "EDIT"
       ? {
@@ -99,14 +131,24 @@ const handleSubmit = async (
   }
 };
 
-const UserForm = ({ mutationMode, userData, history }) => {
+const UserForm = ({ mutationMode, userData, shops, history }) => {
   const mutationToUse = mutationMode === "EDIT" ? UPDATE_USER : CREATE_USER;
   const [mutate, { error }] = useMutation(mutationToUse);
   const roles = [
     { _id: "ADMIN", name: "Admin" },
     { _id: "SUPER_ADMIN", name: "Super admin" },
     { _id: "CUSTOMER", name: "Customer", disabled: true },
+    { _id: "CASHIER", name: "Cashier" },
   ];
+  const CASHIER_PERMISSIONS = [
+    "CREATE_DEPOSIT",
+    "CREATE_WITHDRAWAL",
+    "HANDLE_DEPOSIT_REQUEST",
+    "PLACE_TICKETS",
+  ];
+  const selectableShops = shops.map((shop) => {
+    return { _id: shop._id, name: shop.branchName };
+  });
   const style = userFormStyle();
   return (
     <Formik
@@ -124,7 +166,7 @@ const UserForm = ({ mutationMode, userData, history }) => {
         )
       }
     >
-      {({ isSubmitting, errors }) => (
+      {({ isSubmitting, errors, values }) => (
         <Form>
           <div>{error && <AlertError />}</div>
           <Grid container className={style.root}>
@@ -140,20 +182,39 @@ const UserForm = ({ mutationMode, userData, history }) => {
             <Grid item xs={12} md={6} className={style.formItemC}>
               <SelectField name="role" label="Role" data={roles} />
             </Grid>
-            {mutationMode === "CREATE" && (
-              <Grid item xs={12} md={6} className={style.formItemC}>
-                <TextField name="password" label="Password" type="password" />
-              </Grid>
-            )}
+            {values.role === "CASHIER" && (
+              <>
+                <Grid item xs={12} md={6} className={style.formItemC}>
+                  <SelectField
+                    name="belongsToShop"
+                    label="Belongs to shop"
+                    data={selectableShops}
+                  />
+                </Grid>
 
+                <Grid item xs={12} md={6} className={style.formItemC}>
+                  <FieldMultiSelect
+                    name="cashierPermissions"
+                    label="Cashier permissions"
+                    data={CASHIER_PERMISSIONS}
+                    defaultValue={values.cashierPermissions}
+                  />
+                </Grid>
+              </>
+            )}
             {mutationMode === "CREATE" && (
-              <Grid item xs={12} md={6} className={style.formItemC}>
-                <TextField
-                  name="confirmPassword"
-                  label="Confirm password"
-                  type="password"
-                />
-              </Grid>
+              <>
+                <Grid item xs={12} md={6} className={style.formItemC}>
+                  <TextField name="password" label="Password" type="password" />
+                </Grid>
+                <Grid item xs={12} md={6} className={style.formItemC}>
+                  <TextField
+                    name="confirmPassword"
+                    label="Confirm password"
+                    type="password"
+                  />
+                </Grid>
+              </>
             )}
 
             <Grid item container className={style.createButtonC}>

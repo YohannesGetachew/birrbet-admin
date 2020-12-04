@@ -50,7 +50,9 @@ class PrintableTicket extends React.Component {
             ) : (
               <>
                 <span className={classes.boldFont}>Placement ID:</span>
-                <span className={classes.lightText}>{placementID}</span>
+                <span className={classes.lightText}>
+                  {placementID ? placementID : "Not placed"}
+                </span>
               </>
             )}
           </p>

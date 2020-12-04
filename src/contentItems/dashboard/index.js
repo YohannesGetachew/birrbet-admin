@@ -1,17 +1,18 @@
-import { useQuery } from "@apollo/client";
 import React from "react";
 import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
-import { USERS } from "../../graphql/user";
 import Dashboard from "./dashboard";
 import {
   getCustomersAnylitics,
   getTransactionAnylitics,
   getTicketAnalysis,
 } from "./anyliticsCalculation";
-import { TRANSACTIONS } from "../../graphql/transaction";
-import { TICKETS } from "../../graphql/ticket";
 import { useTheme } from "@material-ui/core";
+import {
+  useGetUsers,
+  useGetTransactions,
+  useGetTickets,
+} from "../../customHooks/dataFetchers";
 
 const DashboardDataFetcher = () => {
   const theme = useTheme();
@@ -19,17 +20,17 @@ const DashboardDataFetcher = () => {
     data: userData,
     loading: loadingUserData,
     error: errorLoadingUserData,
-  } = useQuery(USERS, { variables: { role: "CUSTOMER" } });
+  } = useGetUsers();
   const {
     loading: loadingTransactions,
     error: errorLoadingTransactions,
     data: transactions,
-  } = useQuery(TRANSACTIONS);
+  } = useGetTransactions();
   const {
     data: ticketData,
     loading: loadingTickets,
     error: errorFetchingTickets,
-  } = useQuery(TICKETS);
+  } = useGetTickets();
 
   if (loadingUserData || loadingTransactions || loadingTickets)
     return <Loader />;

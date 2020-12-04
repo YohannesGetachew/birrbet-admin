@@ -1,23 +1,44 @@
-import { useQuery } from "@apollo/client";
-import { Button } from "@material-ui/core";
-import React from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import { Button, Tab, Tabs } from "@material-ui/core";
+import React, { useState } from "react";
 import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
 import { TRANSACTIONS } from "../../graphql/transaction";
 import ViewTransactions from "./viewTransactions";
 import transactionStyle from "./style";
 import { useHistory } from "react-router-dom";
+import { MESSAGES, UPDATE_MESSAGE } from "../../graphql/message";
+import ViewDepositRequests from "./viewDepositRequests";
+import {
+  useGetDepositRequests,
+  useGetTransactions,
+} from "../../customHooks/dataFetchers";
 
 const Transactions = () => {
   const {
     loading: loadingTransactions,
     error: errorLoadingTransactions,
     data: transactions,
-  } = useQuery(TRANSACTIONS, { fetchPolicy: "network-only" });
+  } = useGetTransactions();
+  const {
+    loading: loadingDepositRequests,
+    error: errorLoadingDepositRequests,
+    data: depositRequests,
+  } = useGetDepositRequests();
+
+  const [currentTab, setCurrentTab] = useState(0);
+  const handleTabChange = (event, newValue) => {
+    setCurrentTab(newValue);
+  };
+
   const history = useHistory();
   const style = transactionStyle();
-  if (loadingTransactions) return <Loader />;
-  if (errorLoadingTransactions) return <AlertError />;
+
+  if (loadingTransactions || loadingDepositRequests) return <Loader />;
+
+  if (errorLoadingTransactions || errorLoadingDepositRequests)
+    return <AlertError />;
+
   return (
     <div>
       <div className={style.buttonC}>
@@ -30,7 +51,22 @@ const Transactions = () => {
           + Create transaction
         </Button>
       </div>
-      <ViewTransactions transactions={transactions.transactions} />
+      <Tabs
+        value={currentTab}
+        onChange={handleTabChange}
+        aria-label="reports-tab"
+      >
+        <Tab label="Pending" />
+        <Tab label="Completed" />
+      </Tabs>
+      {currentTab === 0 && (
+        <ViewDepositRequests
+          depositRequests={depositRequests.depositRequests}
+        />
+      )}
+      {currentTab === 1 && (
+        <ViewTransactions transactions={transactions.transactions} />
+      )}
     </div>
   );
 };

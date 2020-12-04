@@ -97,6 +97,10 @@ const gerUsersTableColumns = (theme, history) => [
             textColor: theme.palette.secondary.dark,
             backgroundColor: theme.palette.secondary.light,
           },
+          CASHIER: {
+            textColor: theme.palette.secondary.dark,
+            backgroundColor: theme.palette.success.main,
+          },
         };
         return (
           <Tag

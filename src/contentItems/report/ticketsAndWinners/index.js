@@ -5,6 +5,16 @@ import {
 } from "../../../components/table/DefaultColumnConfigs";
 import { convertFromUnix } from "../../../utils/date";
 
+// function compateDates(a, b) {
+//   if (a.ticketUpdatedDate < b.ticketUpdatedDate) {
+//     return -1;
+//   }
+//   if (a.ticketUpdatedDate > b.ticketUpdatedDate) {
+//     return 1;
+//   }
+//   return 0;
+// }
+
 const getTicketsAndWinnersTableInfo = (tickets, app) => {
   const ticketsReportData = [];
   let allTimeUserWon = 0;

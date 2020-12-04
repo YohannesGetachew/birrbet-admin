@@ -27,8 +27,7 @@ const handleSubmit = async (
     setSubmitting(false);
     window.location.reload(false);
   } catch (err) {
-    console.log(err);
-    popupError("Ticket has expired");
+    popupError(err);
   }
 };
 

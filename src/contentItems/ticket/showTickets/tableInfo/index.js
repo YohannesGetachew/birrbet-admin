@@ -10,7 +10,7 @@ import {
 import { calculateTicketReturns } from "../../../../utils/ticketCalculation";
 import { Button } from "@material-ui/core";
 
-const getTicketColumn = (theme, prepareTicketPlacement, maxWin) => [
+const getTicketColumn = (theme, prepareTicketPlacement, maxWin, role) => [
   {
     name: "ticketID",
     label: "Ticket code",
@@ -150,29 +150,34 @@ const getTicketColumn = (theme, prepareTicketPlacement, maxWin) => [
         const isPlaced = tableMeta.rowData[5];
         return (
           <>
-            <Button
-              size="small"
-              style={{
-                backgroundColor: isPlaced
-                  ? theme.palette.primary.light
-                  : theme.palette.accentTwo.dark,
-                color: isPlaced
-                  ? theme.palette.accentOne.light
-                  : theme.palette.primary.main,
-                marginRight: "10px",
-              }}
-              disabled={isPlaced}
-              onClick={() => prepareTicketPlacement(value, "PLACE")}
-            >
-              {isPlaced ? "Placed" : "Place"}
-            </Button>
-            <span style={{ marginLeft: "8px", marginTop: "8px" }}></span>
-            <CustomIconButton
-              disabled={!isPlaced}
-              type="print"
-              handleClick={() => prepareTicketPlacement(value, "PRINT")}
-            />
-            <span style={{ marginLeft: "8px", marginTop: "8px" }}></span>
+            {role === "CASHIER" && (
+              <>
+                <Button
+                  size="small"
+                  style={{
+                    backgroundColor: isPlaced
+                      ? theme.palette.primary.light
+                      : theme.palette.accentTwo.dark,
+                    color: isPlaced
+                      ? theme.palette.accentOne.light
+                      : theme.palette.primary.main,
+                    marginRight: "10px",
+                  }}
+                  disabled={isPlaced}
+                  onClick={() => prepareTicketPlacement(value, "PLACE")}
+                >
+                  {isPlaced ? "Placed" : "Place"}
+                </Button>
+                <span style={{ marginLeft: "8px", marginTop: "8px" }}></span>
+                <CustomIconButton
+                  disabled={!isPlaced}
+                  type="print"
+                  handleClick={() => prepareTicketPlacement(value, "PRINT")}
+                />
+                <span style={{ marginLeft: "8px", marginTop: "8px" }}></span>
+              </>
+            )}
+
             <CustomIconButton
               type="view"
               handleClick={() => prepareTicketPlacement(value, "VIEW")}
