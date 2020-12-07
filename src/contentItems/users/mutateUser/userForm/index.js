@@ -9,8 +9,9 @@ import { SubmitButton } from "../../../../components/buttons";
 import { CREATE_USER, UPDATE_USER } from "../../../../graphql/user";
 import { AlertError } from "../../../../components/errors";
 import userFormStyle from "./style";
-import CancelButton from "../../../../components/buttons/cancelButton";
+import { CancelButton } from "../../../../components/buttons";
 import FieldMultiSelect from "../../../../components/fields/MultiSelectField";
+import { useGetCurrentUserRole } from "../../../../customHooks/helpers";
 
 const getInitialValues = (mutationMode, userData) => {
   if (mutationMode === "EDIT") {
@@ -131,15 +132,27 @@ const handleSubmit = async (
   }
 };
 
+const getRoles = (currentUserRole) => {
+  switch (currentUserRole) {
+    case "SUPER_ADMIN":
+      return [
+        { _id: "ADMIN", name: "Admin" },
+        { _id: "SUPER_ADMIN", name: "Super admin" },
+        // { _id: "CUSTOMER", name: "Customer", disabled: true },
+        { _id: "CASHIER", name: "Cashier" },
+      ];
+    case "ADMIN":
+      return [{ _id: "CASHIER", name: "Cashier" }];
+    default:
+      return [];
+  }
+};
+
 const UserForm = ({ mutationMode, userData, shops, history }) => {
   const mutationToUse = mutationMode === "EDIT" ? UPDATE_USER : CREATE_USER;
   const [mutate, { error }] = useMutation(mutationToUse);
-  const roles = [
-    { _id: "ADMIN", name: "Admin" },
-    { _id: "SUPER_ADMIN", name: "Super admin" },
-    { _id: "CUSTOMER", name: "Customer", disabled: true },
-    { _id: "CASHIER", name: "Cashier" },
-  ];
+  const currentUserRole = useGetCurrentUserRole();
+  const roles = getRoles(currentUserRole);
   const CASHIER_PERMISSIONS = [
     "CREATE_DEPOSIT",
     "CREATE_WITHDRAWAL",

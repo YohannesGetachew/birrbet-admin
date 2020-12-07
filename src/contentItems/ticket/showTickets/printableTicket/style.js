@@ -33,7 +33,7 @@ const style = (theme) => ({
     height: "100px",
   },
   bMargin: {
-    marginBottom: "5px",
+    marginBottom: "10px",
   },
   pending: {},
   win: {

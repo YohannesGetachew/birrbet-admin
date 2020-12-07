@@ -84,11 +84,11 @@ const PlaceTicketForm = ({
             />
             <p className={style.paddingBottom + " " + style.smallText}>
               <span className={style.boldLabel}>Vat:</span>
-              {vatOnStake}
+              {vatOnStake} ETB
             </p>
             <p className={style.paddingBottom + " " + style.smallText}>
               <span className={style.boldLabel}>Stake after vat:</span>
-              {stakeAfterVat}
+              {stakeAfterVat} ETB
             </p>
             <p className={style.paddingBottom + " " + style.smallText}>
               <span className={style.boldLabel}>Total odds:</span>
@@ -100,11 +100,11 @@ const PlaceTicketForm = ({
             </p>
             <p className={style.paddingBottom + " " + style.smallText}>
               <span className={style.boldLabel}>Income tax:</span>
-              {incomeTax}
+              {incomeTax} ETB
             </p>
             <p className={style.paddingBottom + " " + style.smallText}>
               <span className={style.boldLabel}>Possible win:</span>
-              {possibleWin}
+              {possibleWin} ETB
             </p>
             <SubmitButton isSubmitting={isSubmitting} label="PLACE" />
           </Form>

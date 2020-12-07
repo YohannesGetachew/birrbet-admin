@@ -24,7 +24,33 @@ const style = makeStyles((theme) => ({
   evidenceImage: {
     width: "100%",
     height: "100%",
-    boxShadow: theme.shadows[10],
+    boxShadow: theme.shadows[5],
+  },
+  confirmActionModal: {
+    backgroundColor: theme.palette.primary.light,
+    padding: "20px",
+    color: theme.palette.accentOne.main,
+  },
+  amountField: {
+    marginBottom: "20px",
+  },
+  messageC: {
+    fontStyle: "italic",
+    fontWeight: "500",
+    lineHeight: "30px",
+  },
+  amount: {
+    color: theme.palette.accentTwo.dark,
+    fontWeight: "bold",
+  },
+  actionType: {
+    backgroundColor: `${theme.palette.warning.light}AA`,
+    color: theme.palette.secondary.dark,
+    margin: "4px",
+    padding: "2px 4px 4px 4px",
+    fontWeight: "bold",
+    borderRadius: "2px",
+    boxShadow: theme.shadows[4],
   },
 }));
 

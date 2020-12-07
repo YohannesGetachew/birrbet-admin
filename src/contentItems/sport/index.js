@@ -8,7 +8,7 @@ import { useTheme } from "@material-ui/core";
 import getSportTableColumns from "./sportTableColumns";
 import CustomModal from "../../components/modal";
 import sportStyle from "./style";
-import CancelButton from "../../components/buttons/cancelButton";
+import { CancelButton } from "../../components/buttons";
 import { SubmitButton } from "../../components/buttons";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -110,7 +110,7 @@ const Sport = () => {
               <Form>
                 <FieldText type="number" label="Order" name="order" />
                 <div className={style.buttonsC}>
-                  <CancelButton customClickHandler={handleModalClose} />
+                  <CancelButton onClick={handleModalClose} />
                   <SubmitButton label="Save" isSubmitting={isSubmitting} />
                 </div>
               </Form>

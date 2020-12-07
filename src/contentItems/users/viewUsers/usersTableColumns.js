@@ -73,6 +73,7 @@ const gerUsersTableColumns = (theme, history) => [
             { value: "SUPER_ADMIN", label: "SUPER_ADMIN" },
             { value: "ADMIN", label: "ADMIN" },
             { value: "CUSTOMER", label: "CUSTOMER" },
+            { value: "CASHIER", label: "CASHIER" },
           ];
           return (
             <SelectFieldFilter
@@ -113,11 +114,11 @@ const gerUsersTableColumns = (theme, history) => [
     },
   },
   {
-    name: "isActive",
-    label: "Is active",
+    name: "isVerified",
+    label: "Is verified",
     options: {
       filterType: "custom",
-      ...getCustomFilterListOptions("Is active", (value) =>
+      ...getCustomFilterListOptions("Is verified", (value) =>
         value[0] === "All" ? "All" : value[0] ? "Yes" : "No"
       ),
       filterOptions: {

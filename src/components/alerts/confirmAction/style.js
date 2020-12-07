@@ -1,8 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const style = makeStyles((theme) => ({
-  root: {
+  buttonsC: {
+    marginTop: "20px",
     textAlign: "right",
+    padding: "4px",
   },
 }));
 

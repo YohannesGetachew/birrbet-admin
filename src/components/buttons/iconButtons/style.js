@@ -19,8 +19,8 @@ const getStyleByType = (type, theme) => {
       };
     case "view":
       return {
-        iconColor: theme.palette.primary.dark,
-        backgroundColor: theme.palette.success.main,
+        iconColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.secondary.light,
       };
     default:
       return {

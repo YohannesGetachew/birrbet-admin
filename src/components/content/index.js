@@ -11,6 +11,10 @@ const Content = () => {
   const { role } = authData.userData;
   const style = contentStyle();
   const Routes = getAuthorizedRoutes(role);
+  const defaultRoute =
+    role === "SUPER_ADMIN" || role === "ADMIN"
+      ? "/admin/dashboard"
+      : "/admin/tickets";
   return (
     <div className={style.root}>
       <div className={style.headerNbodyC}>
@@ -73,8 +77,8 @@ const Content = () => {
                   : null
               )
             )}
-            <Redirect from="/admin" to="/admin/dashboard" />
-            <Redirect from="/" to="/admin/dashboard" />
+            <Redirect from="/admin" to={defaultRoute} />
+            <Redirect from="/" to={defaultRoute} />
           </Switch>
         </div>
       </div>

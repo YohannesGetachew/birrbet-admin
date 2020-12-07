@@ -16,8 +16,11 @@ class PrintableTicket extends React.Component {
       bets,
       stake,
       totalOdds,
+      placerType,
+      user,
       _id: id,
     } = this.props?.ticket;
+    console.log(this.props.ticket);
     const { maxWin } = this.props?.app;
     const { classes, actionMode } = this.props;
     const {
@@ -65,9 +68,27 @@ class PrintableTicket extends React.Component {
               classes.bMargin
             }
           >
-            <span className={classes.boldFont}>Date:</span>{" "}
+            <span className={classes.boldFont}>Date:</span>
             <span className={classes.lightText}>
-              {getFormattedDate(new Date())}
+              {getFormattedDate(new Date(), true)}
+            </span>
+          </p>
+          <p
+            className={
+              classes.alignTextCenter +
+              " " +
+              classes.smallText +
+              " " +
+              classes.bMargin
+            }
+          >
+            <span className={classes.boldFont}>Cashier:</span>
+            <span className={classes.lightText}>
+              {placerType === "CUSTOMER"
+                ? "Placed online"
+                : placerType === "GUEST"
+                ? "Not placed"
+                : "Comming soon"}
             </span>
           </p>
           <p
@@ -108,21 +129,23 @@ class PrintableTicket extends React.Component {
                   className={classes.bet + " " + betStatusStyle}
                 >
                   <p className={classes.betName}>{bet.fixtureName}</p>
-                  <span
-                    className={classes.betDetails + " " + classes.lightText}
-                  >
-                    {bet.type}
-                  </span>
-                  <span
-                    className={classes.betDetails + " " + classes.lightText}
-                  >
-                    {bet.value}
-                  </span>
-                  <span
-                    className={classes.betDetails + " " + classes.lightText}
-                  >
-                    {bet.oddValue}
-                  </span>
+                  <Grid container justify="space-between">
+                    <span
+                      className={classes.betDetails + " " + classes.lightText}
+                    >
+                      {bet.type}
+                    </span>
+                    <span
+                      className={classes.betDetails + " " + classes.lightText}
+                    >
+                      {bet.value}
+                    </span>
+                    <span
+                      className={classes.betDetails + " " + classes.lightText}
+                    >
+                      {bet.oddValue}
+                    </span>
+                  </Grid>
                   <hr />
                 </article>
               );
@@ -132,15 +155,17 @@ class PrintableTicket extends React.Component {
                 <Grid item>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Stake:</span>
-                    <span className={classes.lightText}>{stake}</span>
+                    <span className={classes.lightText}>{stake} ETB</span>
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Vat: </span>
-                    <span className={classes.lightText}>{vatOnStake}</span>
+                    <span className={classes.lightText}>{vatOnStake} ETB</span>
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Stake after vat:</span>
-                    <span className={classes.lightText}>{stakeAfterVat}</span>
+                    <span className={classes.lightText}>
+                      {stakeAfterVat} ETB
+                    </span>
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Total odds:</span>
@@ -154,11 +179,11 @@ class PrintableTicket extends React.Component {
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Income tax: </span>
-                    <span className={classes.lightText}>{incomeTax}</span>
+                    <span className={classes.lightText}>{incomeTax} ETB</span>
                   </p>
                   <p className={classes.smallText + " " + classes.bMargin}>
                     <span className={classes.boldFont}>Possible win : </span>
-                    <span className={classes.lightText}>{possibleWin}</span>
+                    <span className={classes.lightText}>{possibleWin} ETB</span>
                   </p>
                 </Grid>
               ) : (

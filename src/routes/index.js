@@ -324,20 +324,20 @@ const CategorizedAdminRoutes = [
         icon: <GroupRoundedIcon style={{ fontSize: "20px" }} />,
         content: Users,
         permission: ["ADMIN"],
-        // subRoutes: [
-        //   {
-        //     path: "/create",
-        //     content: MutateUser,
-        //     subRouteName: "Create user",
-        //     permission: ["SUPER_ADMIN", "ADMIN"],
-        //   },
-        //   {
-        //     path: "/edit/:id",
-        //     content: MutateUser,
-        //     subRouteName: "Edit user",
-        //     permission: ["SUPER_ADMIN", "ADMIN"],
-        //   },
-        // ],
+        subRoutes: [
+          {
+            path: "/create",
+            content: MutateUser,
+            subRouteName: "Create user",
+            permission: ["SUPER_ADMIN", "ADMIN"],
+          },
+          {
+            path: "/edit/:id",
+            content: MutateUser,
+            subRouteName: "Edit user",
+            permission: ["SUPER_ADMIN", "ADMIN"],
+          },
+        ],
       },
       {
         menuName: "Transactions",
@@ -442,6 +442,14 @@ const CategorizedCashierRoutes = [
     categoryName: "Customer",
     permission: ["SUPER_ADMIN", "ADMIN"],
     items: [
+      {
+        menuName: "Users",
+        path: "/admin/users",
+        icon: <GroupRoundedIcon style={{ fontSize: "20px" }} />,
+        content: Users,
+        permission: ["ADMIN"],
+        subRoutes: [],
+      },
       {
         menuName: "Transactions",
         path: "/admin/transactions",

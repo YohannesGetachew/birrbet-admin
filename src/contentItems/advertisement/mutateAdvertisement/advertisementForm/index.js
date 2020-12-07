@@ -12,7 +12,7 @@ import { v4 as uuidv1 } from "uuid";
 import * as Yup from "yup";
 import { SubmitButton } from "../../../../components/buttons";
 import { AlertError } from "../../../../components/errors";
-import CancelButton from "../../../../components/buttons/cancelButton";
+import { CancelButton } from "../../../../components/buttons";
 
 const getInitialValues = (mutationMode, ads, adToEditId) => {
   if (mutationMode === "EDIT") {

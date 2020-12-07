@@ -7,7 +7,7 @@ import { LEAGUES, UPDATE_LEAGUE } from "../../graphql/league";
 import getLeagueTableColumns from "./leagueTableColumns";
 import CustomModal from "../../components/modal";
 import { Button, useTheme } from "@material-ui/core";
-import CancelButton from "../../components/buttons/cancelButton";
+import { CancelButton } from "../../components/buttons";
 import leagueStyle from "./style";
 import { SubmitButton } from "../../components/buttons";
 import { ErrorOutlineSharp } from "@material-ui/icons";
@@ -66,7 +66,7 @@ const Leagues = () => {
         <div className={style.modalContent}>
           <p> {modalMessage}</p>
           <div className={style.buttonsC}>
-            <CancelButton customClickHandler={handleModalClose} />
+            <CancelButton onClick={handleModalClose} />
             <SubmitButton
               label="Yes"
               isSubmitting={isUpdating}

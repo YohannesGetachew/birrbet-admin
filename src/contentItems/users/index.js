@@ -1,33 +1,29 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
-import { USERS } from "../../graphql/user";
 import Loader from "../../components/loader";
 import { AlertError } from "../../components/errors";
 import ViewUsers from "./viewUsers";
-import { Button } from "@material-ui/core";
 import usersStyle from "./style";
-import { useHistory } from "react-router-dom";
+import { useGetUsers } from "../../customHooks/dataFetchers";
+import { AddButton } from "../../components/buttons";
+import { useGetCurrentUserRole } from "../../customHooks/helpers";
 
 const User = () => {
+  const currentUserRole = useGetCurrentUserRole();
   const style = usersStyle();
-  const history = useHistory();
   const {
     loading: loadingUsers,
     error: errorFetchingUsers,
     data: users,
-  } = useQuery(USERS, { fetchPolicy: "network-only" });
+  } = useGetUsers();
   if (loadingUsers) return <Loader />;
   if (errorFetchingUsers) return <AlertError />;
   return (
     <div className={style.root}>
-      <Button
-        onClick={() => history.push("/admin/users/create")}
-        variant="contained"
-        size="small"
-        className={style.addBtn}
-      >
-        + Add user
-      </Button>
+      <AddButton
+        label="+ Add User"
+        redirectRoute="/admin/users/create"
+        dontRender={currentUserRole === "CASHIER"}
+      />
       <ViewUsers users={users.users} />
     </div>
   );

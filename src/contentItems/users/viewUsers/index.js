@@ -13,7 +13,7 @@ const ViewUsers = ({ users }) => {
         name: `${user.firstName} ${user.lastName}`,
         pic: user.profileImage,
       },
-      isActive: user.isActive,
+      isVerified: user.isVerified,
       role: user.role,
       username: user.username,
     };

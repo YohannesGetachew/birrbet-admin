@@ -9,6 +9,7 @@ const Table = ({ ...rest }) => {
   const defaultOptions = {
     selectableRows: "none",
     filterType: "textField",
+    enableNestedDataAccess: ".",
   };
 
   return (
