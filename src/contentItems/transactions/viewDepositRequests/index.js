@@ -250,17 +250,7 @@ const ViewDepositRequests = ({ depositRequests }) => {
         )}
       </CustomModal>
 
-      <Table
-        columns={columns}
-        data={[
-          {
-            _id: "2",
-            evidence: "a",
-            evidenceType: "TRANSACTION_ID",
-            customer: { firstName: "a", lastName: "b", username: "c" },
-          },
-        ]}
-      />
+      <Table columns={columns} data={depositRequests} />
     </>
   );
 };
