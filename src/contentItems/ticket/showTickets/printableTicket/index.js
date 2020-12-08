@@ -88,7 +88,7 @@ class PrintableTicket extends React.Component {
                 ? "Placed online"
                 : placerType === "GUEST"
                 ? "Not placed"
-                : "Comming soon"}
+                : `${user.firstName} ${user.lastName}`}
             </span>
           </p>
           <p

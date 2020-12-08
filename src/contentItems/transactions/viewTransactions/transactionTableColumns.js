@@ -40,8 +40,8 @@ const getTransactionTableColumns = (theme) => [
     label: "Amount",
   },
   {
-    name: "accountBalance",
-    label: "Current balance",
+    name: "balanceAfterTransaction",
+    label: "Balance after",
   },
   {
     name: "date",
