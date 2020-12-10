@@ -9,6 +9,28 @@ import { getFormattedDate } from "../../../../utils/date";
 class PrintableTicket extends React.Component {
   COMPANY_NAME = "BIRR BET";
 
+  getBetStatusInfo = (status) => {
+    const { classes } = this.props;
+    switch (status) {
+      case -1:
+        return { style: classes.cancelled, text: "CANCELLED" };
+      case 1:
+        return { style: classes.loser, text: "LOSE" };
+      case 2:
+        return { style: classes.winner, text: "WIN" };
+      case 3:
+        return { style: classes.refund, text: "REFUND" };
+      case 4:
+        return { style: classes.halfLost, text: "HALF LOST" };
+      case 5:
+        return { style: classes.halfWon, text: "HALF WON" };
+      case null:
+        return { style: classes.pending, text: "PENDING" };
+      default:
+        return { style: classes.pending, text: "UNKNOWN" };
+    }
+  };
+
   render() {
     const {
       placementID,
@@ -118,15 +140,13 @@ class PrintableTicket extends React.Component {
           <div className={classes.padding}>
             {bets.map((bet) => {
               const { status } = bet;
-              const betStatusStyle = !status
-                ? classes.pending
-                : status === 2
-                ? classes.win
-                : classes.lose;
+              const statusInfo = this.getBetStatusInfo(status);
+              const betStatusStyle = statusInfo.style;
               return (
                 <article
                   key={bet._id}
                   className={classes.bet + " " + betStatusStyle}
+                  title={statusInfo.text}
                 >
                   <p className={classes.betName}>{bet.fixtureName}</p>
                   <Grid container justify="space-between">
