@@ -9,6 +9,7 @@ const AvatarUpload = ({ getFile, initialFile, label }) => {
 
   useEffect(() => {
     if (currentFile) {
+      // here is where you do the upload logic
       getFile(currentFile);
     }
   }, [currentFile, getFile]);

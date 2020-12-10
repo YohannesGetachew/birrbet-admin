@@ -43,7 +43,6 @@ const LoginForm = () => {
   );
   const [getUser, { loading: loadingUser }] = useLazyQuery(IS_USER_EXISTS, {
     onCompleted: (userData) => {
-      console.log(userData);
       if (userData?.isUserExists?.role === "CUSTOMER") {
         return;
       }

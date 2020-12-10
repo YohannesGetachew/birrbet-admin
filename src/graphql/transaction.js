@@ -19,6 +19,7 @@ export const TRANSACTIONS = gql`
       type
       amount
       createdAt
+      balanceAfterTransaction
       customer {
         _id
         firstName

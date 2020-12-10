@@ -5,6 +5,7 @@ import getTransactionTableColumns from "./transactionTableColumns";
 import { useTheme } from "@material-ui/core";
 
 const ViewTransactions = ({ transactions }) => {
+  console.log(transactions);
   const reorganizedTransactions = transactions.map((transaction) => {
     return {
       customer: transaction.customer.username,
