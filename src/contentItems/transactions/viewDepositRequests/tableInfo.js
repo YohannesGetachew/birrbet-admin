@@ -44,6 +44,10 @@ const getDepositRequestTableColumns = (
     },
   },
   {
+    name: "requestId",
+    label: "Request id",
+  },
+  {
     name: "transferSource",
     label: "Source",
   },
@@ -59,7 +63,7 @@ const getDepositRequestTableColumns = (
     label: "Status",
     options: {
       customBodyRender: (confirmed, tableMeta) => {
-        const denied = tableMeta.rowData[4];
+        const denied = tableMeta.rowData[5];
         let tagInfo;
         if (confirmed)
           tagInfo = {
@@ -134,8 +138,8 @@ const getDepositRequestTableColumns = (
     options: {
       sort: false,
       customBodyRender: (id, tableMeta) => {
-        const denied = tableMeta.rowData[4];
-        const confirmed = tableMeta.rowData[5];
+        const denied = tableMeta.rowData[5];
+        const confirmed = tableMeta.rowData[6];
         const disabled = confirmed || denied;
         const username = tableMeta.rowData[0];
         const firstName = tableMeta.rowData[1];

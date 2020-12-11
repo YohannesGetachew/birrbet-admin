@@ -8,6 +8,7 @@ export const GET_DEPOSIT_REQUESTS = gql`
       evidenceType
       confirmed
       denied
+      requestId
       customer {
         _id
         firstName
