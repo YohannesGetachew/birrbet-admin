@@ -100,7 +100,9 @@ const getDepositRequestTableColumns = (
     name: "transactionId",
     label: "Transaction id",
     options: {
-      customBodyRender: (value) => (value ? "Not confirmed" : value),
+      customBodyRender: (value) => {
+        return value ? value : "NOT CONFIRMED";
+      },
     },
   },
   {

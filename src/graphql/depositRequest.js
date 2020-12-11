@@ -7,9 +7,12 @@ export const GET_DEPOSIT_REQUESTS = gql`
       evidence
       evidenceType
       confirmed
+      denied
       customer {
         _id
         firstName
+        lastName
+        username
       }
       transferSource
       transactionId

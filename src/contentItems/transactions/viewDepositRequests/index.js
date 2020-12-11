@@ -16,17 +16,18 @@ import { TextField } from "../../../components/fields";
 import * as Yup from "yup";
 
 const ViewDepositRequests = ({ depositRequests }) => {
+  console.log(depositRequests);
   const [
     confirmDepositRequest,
-    { confirmDepositRequestLoading },
+    { loading: confirmDepositRequestLoading },
   ] = useConfirmDepositRequest();
   const [
     denyDepositRequest,
-    { denyDepositREquestLoading },
+    { loading: denyDepositRequestLoading },
   ] = useDenyDepositRequest();
   const [
     deleteDepositRequest,
-    { deleteDepositRequestLoading },
+    { loading: deleteDepositRequestLoading },
   ] = useDeleteDepositRequest();
   const theme = useTheme();
 
@@ -77,6 +78,7 @@ const ViewDepositRequests = ({ depositRequests }) => {
           id,
         },
       });
+      window.location.reload(false);
     } catch (err) {
       console.log(err);
     }
@@ -89,6 +91,7 @@ const ViewDepositRequests = ({ depositRequests }) => {
           id,
         },
       });
+      window.location.reload(false);
     } catch (err) {
       console.log(err);
     }
@@ -101,6 +104,7 @@ const ViewDepositRequests = ({ depositRequests }) => {
           id,
         },
       });
+      window.location.reload(false);
     } catch (err) {
       console.log(err);
     }
@@ -143,7 +147,7 @@ const ViewDepositRequests = ({ depositRequests }) => {
       case "CONFIRM":
         return confirmDepositRequestLoading;
       case "DENY":
-        return denyDepositREquestLoading;
+        return denyDepositRequestLoading;
       case "DELETE":
         return deleteDepositRequestLoading;
       default:
