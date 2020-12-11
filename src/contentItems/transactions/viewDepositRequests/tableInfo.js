@@ -122,7 +122,7 @@ const getDepositRequestTableColumns = (
     label: "Evidence",
     options: {
       customBodyRender: (value, tableMeta) => {
-        const evidenceType = tableMeta.rowData[8];
+        const evidenceType = tableMeta.rowData[9];
         return (
           <CustomIconButton
             type="view"
