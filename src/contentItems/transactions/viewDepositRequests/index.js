@@ -16,7 +16,6 @@ import { TextField } from "../../../components/fields";
 import * as Yup from "yup";
 
 const ViewDepositRequests = ({ depositRequests }) => {
-  console.log(depositRequests);
   const [
     confirmDepositRequest,
     { loading: confirmDepositRequestLoading },

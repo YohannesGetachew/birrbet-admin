@@ -21,7 +21,6 @@ const handleSubmit = async (values, setSubmitting, mutate, getUser) => {
   setSubmitting(true);
   try {
     const authData = await mutate({ variables: values });
-    console.log(authData);
     if (authData) {
       const token = authData?.data?.login?.accessToken;
       if (token) {

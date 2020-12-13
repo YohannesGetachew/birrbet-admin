@@ -40,11 +40,13 @@ export const TICKETS = gql`
       }
       bets {
         _id
+        fixtureId
         fixtureName
         type
         value
         oddValue
         status
+        betId
       }
       isExpired
     }

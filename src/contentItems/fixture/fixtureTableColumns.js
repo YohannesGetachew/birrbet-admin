@@ -22,6 +22,10 @@ const getFixtureTableColumns = (
   // isUpdating
 ) => [
   {
+    name: "id",
+    label: "ID",
+  },
+  {
     name: "startDate",
     label: "Starting time",
   },

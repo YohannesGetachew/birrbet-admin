@@ -6,7 +6,7 @@ import { SelectFieldFilter } from "../../../components/fields/muiDatatableFilter
 import { ClearRounded, CheckRounded } from "@material-ui/icons";
 import { CustomIconButton } from "../../../components/buttons/iconButtons";
 
-const gerUsersTableColumns = (theme, history) => [
+const gerUsersTableColumns = (theme, history, currentUserRole) => [
   {
     name: "nameAndPic",
     label: "Name",
@@ -68,13 +68,16 @@ const gerUsersTableColumns = (theme, history) => [
           return !(value === filter);
         },
         display: (filterList, onChange, index, column) => {
-          const selectFieldData = [
-            { value: "All", label: "All" },
-            { value: "SUPER_ADMIN", label: "SUPER_ADMIN" },
-            { value: "ADMIN", label: "ADMIN" },
-            { value: "CUSTOMER", label: "CUSTOMER" },
-            { value: "CASHIER", label: "CASHIER" },
-          ];
+          const selectFieldData =
+            currentUserRole !== "CASHIER"
+              ? [
+                  { value: "All", label: "All" },
+                  { value: "SUPER_ADMIN", label: "SUPER_ADMIN" },
+                  { value: "ADMIN", label: "ADMIN" },
+                  { value: "CUSTOMER", label: "CUSTOMER" },
+                  { value: "CASHIER", label: "CASHIER" },
+                ]
+              : [{ value: "CUSTOMER", label: "CUSTOMER" }];
           return (
             <SelectFieldFilter
               label="Role"

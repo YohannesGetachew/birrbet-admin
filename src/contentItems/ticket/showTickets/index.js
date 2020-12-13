@@ -44,6 +44,12 @@ const Ticket = ({ tickets, app }) => {
     app.maxWin,
     authData.userData.role
   );
+  const statusSetTickets = tickets.map((ticket) => {
+    const doesLoseExist =
+      ticket.bets.filter((bet) => bet.status === 1).length > 0;
+    if (doesLoseExist) ticket = { ...ticket, status: "LOSE" };
+    return ticket;
+  });
   return (
     <div>
       <CustomModal ref={placeTicketModalRef}>
@@ -70,7 +76,7 @@ const Ticket = ({ tickets, app }) => {
           </div>
         )}
       </CustomModal>
-      <Table columns={ticketColumn} data={tickets} />
+      <Table columns={ticketColumn} data={statusSetTickets} />
     </div>
   );
 };

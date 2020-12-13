@@ -3,6 +3,7 @@ import { useTheme } from "@material-ui/core";
 import Table from "../../../components/table";
 import getUsersTableColumns from "./usersTableColumns";
 import { useHistory } from "react-router-dom";
+import useGetCurrentUserRole from "../../../customHooks/helpers/useGetCurrentUserRole";
 
 const ViewUsers = ({ users }) => {
   const history = useHistory();
@@ -19,7 +20,8 @@ const ViewUsers = ({ users }) => {
     };
   });
   const theme = useTheme();
-  const usersColumn = getUsersTableColumns(theme, history);
+  const currentUserRole = useGetCurrentUserRole();
+  const usersColumn = getUsersTableColumns(theme, history, currentUserRole);
   return <Table data={reorganizedUsers} columns={usersColumn} />;
 };
 export default ViewUsers;

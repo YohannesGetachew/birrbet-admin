@@ -32,14 +32,14 @@ const getDepositRequestTableColumns = (
   {
     name: "customer.firstName",
     options: {
-      display: false,
+      display: "excluded",
       filter: false,
     },
   },
   {
     name: "customer.lastName",
     options: {
-      display: false,
+      display: "excluded",
       filter: false,
     },
   },
@@ -54,7 +54,7 @@ const getDepositRequestTableColumns = (
   {
     name: "denied",
     options: {
-      display: false,
+      display: "excluded",
       filter: false,
     },
   },

@@ -16,6 +16,7 @@ export const FIXTURES = gql`
       status: $status
     ) {
       _id
+      id
       leagueId
       status
       startDate
