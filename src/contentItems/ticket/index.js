@@ -31,14 +31,23 @@ const Tickets = () => {
     );
   }
   const tickets = ticketData.tickets;
-  let todaysTicketCount = 0;
+  let todaysTicketCount = { cashierPlaced: 0, onlinePlaced: 0 };
   const TODAY = getFormattedDate(new Date());
   tickets.forEach((ticket) => {
     const ticketPlaceDate = convertFromUnix(ticket.updatedAt);
     if (ticket.isPlaced) {
       const isTicketPlacedToday = TODAY === ticketPlaceDate;
       if (isTicketPlacedToday) {
-        todaysTicketCount = todaysTicketCount + 1;
+        if (ticket.placerType === "CASHIER")
+          todaysTicketCount = {
+            ...todaysTicketCount,
+            cashierPlaced: todaysTicketCount.cashierPlaced + 1,
+          };
+        if (ticket.placerType === "CUSTOMER")
+          todaysTicketCount = {
+            ...todaysTicketCount,
+            onlinePlaced: todaysTicketCount.cashierPlaced + 1,
+          };
         return;
       }
     }
@@ -51,7 +60,9 @@ const Tickets = () => {
           <ShowTickets tickets={tickets} app={appData.app} />
         </Grid>
         <Grid item xs={12} md={2}>
-          <TicketAnylitics count={todaysTicketCount} />
+          <TicketAnylitics placerType={"Cashier"} count={todaysTicketCount} />
+          <div style={{ margin: "10px" }}></div>
+          <TicketAnylitics placerType={"Online"} count={todaysTicketCount} />
         </Grid>
       </Grid>
     </>
