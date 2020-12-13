@@ -6,7 +6,7 @@ import Loader from "../../components/loader";
 import { TICKETS } from "../../graphql/ticket";
 import { Grid } from "@material-ui/core";
 import { APP } from "../../graphql/app";
-import TicketAnylitics from "./ticketAnylitics";
+import { PlacedCount, TodaysStake } from "./ticketAnylitics";
 import { getFormattedDate, convertFromUnix } from "../../utils/date";
 
 const Tickets = () => {
@@ -33,11 +33,13 @@ const Tickets = () => {
   const tickets = ticketData.tickets;
   let todaysTicketCount = { cashierPlaced: 0, onlinePlaced: 0 };
   const TODAY = getFormattedDate(new Date());
+  let todaysStake = 0;
   tickets.forEach((ticket) => {
     const ticketPlaceDate = convertFromUnix(ticket.updatedAt);
     if (ticket.isPlaced) {
       const isTicketPlacedToday = TODAY === ticketPlaceDate;
       if (isTicketPlacedToday) {
+        todaysStake = todaysStake + ticket.stake;
         if (ticket.placerType === "CASHIER")
           todaysTicketCount = {
             ...todaysTicketCount,
@@ -60,9 +62,11 @@ const Tickets = () => {
           <ShowTickets tickets={tickets} app={appData.app} />
         </Grid>
         <Grid item xs={12} md={2}>
-          <TicketAnylitics placerType={"Cashier"} count={todaysTicketCount} />
+          <PlacedCount placerType={"Cashier"} count={todaysTicketCount} />
           <div style={{ margin: "10px" }}></div>
-          <TicketAnylitics placerType={"Online"} count={todaysTicketCount} />
+          <PlacedCount placerType={"Online"} count={todaysTicketCount} />
+          <div style={{ margin: "10px" }}></div>
+          <TodaysStake count={todaysStake} />
         </Grid>
       </Grid>
     </>

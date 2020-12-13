@@ -1,7 +1,7 @@
 import React from "react";
 import ticketAnyliticsStyle from "./style";
 import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
-const TicketAnylitics = ({ count, placerType }) => {
+const PlacedCount = ({ count, placerType }) => {
   const style = ticketAnyliticsStyle();
   return (
     <div className={style.root}>
@@ -15,4 +15,17 @@ const TicketAnylitics = ({ count, placerType }) => {
   );
 };
 
-export default TicketAnylitics;
+const TodaysStake = ({ count }) => {
+  const style = ticketAnyliticsStyle({ stakeCard: true });
+  return (
+    <div className={style.root}>
+      <h3>Today's stake</h3>
+      <h5 className={style.count}>
+        {" "}
+        {count} <span className={style.currency}>ETB</span>
+      </h5>
+    </div>
+  );
+};
+
+export { PlacedCount, TodaysStake };

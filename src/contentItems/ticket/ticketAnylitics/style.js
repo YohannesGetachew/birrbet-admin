@@ -2,8 +2,14 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const style = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.secondary.main,
+    backgroundColor: (props) =>
+      props.stakeCard
+        ? theme.palette.secondary.main
+        : theme.palette.primary.dark,
+    color: (props) =>
+      props.stakeCard
+        ? theme.palette.primary.light
+        : theme.palette.secondary.main,
     padding: "8px",
     borderRadius: "8px",
     position: "relative",
@@ -11,7 +17,10 @@ const style = makeStyles((theme) => ({
   title: {},
   count: {
     fontSize: "70px",
-    color: theme.palette.secondary.main,
+    color: (props) =>
+      props.stakeCard
+        ? theme.palette.primary.light
+        : theme.palette.secondary.main,
   },
   ticketIcon: {
     fontSize: "100px",
@@ -21,6 +30,9 @@ const style = makeStyles((theme) => ({
     position: "absolute",
     top: 10,
     right: 10,
+  },
+  currency: {
+    fontSize: "16px",
   },
 }));
 
