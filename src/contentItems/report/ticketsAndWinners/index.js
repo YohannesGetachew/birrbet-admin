@@ -3,90 +3,124 @@ import {
   getCustomFilterListOptions,
   getDateConfig,
 } from "../../../components/table/DefaultColumnConfigs";
-import { convertFromUnix, getFormattedDate } from "../../../utils/date";
+import { convertFromUnix, convertToUnix } from "../../../utils/date";
 
-// function compateDates(a, b) {
-//   if (a.ticketUpdatedDate < b.ticketUpdatedDate) {
-//     return -1;
-//   }
-//   if (a.ticketUpdatedDate > b.ticketUpdatedDate) {
-//     return 1;
-//   }
-//   return 0;
-// }
+const calculateTicketIncome = (ticket, app) => {
+  switch (ticket.status) {
+    case "WIN":
+      return {
+        userWon: calculateTicketReturns(
+          ticket.stake,
+          ticket.totalOdds,
+          app.maxWin
+        ).possibleWin,
+        systemWon: 0,
+      };
+    case "LOSE":
+      return { userWon: 0, systemWon: ticket.stake };
+    case "PENDING":
+      return { userWon: 0, systemWon: 0 };
+    default:
+      return { userWon: 0, systemWon: 0 };
+  }
+};
 
-// const calculateTicketIncome = (ticket) => {
-//   const ticketStatus = tic
-// }
-
-// const getTicketReport = (tickets, app) => {
-//   const dailyTicketReport = []
-//   let allTimeUserWon = 0
-//   let allTimeSystemWon = 0
-
-//   tickets.forEach(ticket => {
-
-//   })
-
-//   return {dailyTicketReport, allTimeSystemWon, allTimeUserWon}
-// }
-
-const getTicketsAndWinnersTableInfo = (tickets, app) => {
-  const ticketsReportData = [];
+const getTicketReport = (tickets, app) => {
+  const dailyTicketReport = [];
   let allTimeUserWon = 0;
   let allTimeSystemWon = 0;
+
   tickets.forEach((ticket) => {
+    const isTicketPlaced = ticket.isPlaced;
+    if (!isTicketPlaced) return;
     const ticketUpdatedDate = ticket.updatedAt;
-    const ticketPlacedDate = ticket.placedDate;
+    const ticketPlacedDate = convertToUnix(ticket.placedDate);
     const isTicketWinner = ticket.status === "WIN";
-    const isTicketLoser = ticket.status === "LOSE";
-    const isTicketPending = ticket.status === "PENDING";
-    const calculateTicketIncome = () => {
-      if (isTicketPending) return { userWon: 0, systemWon: 0 };
-      if (isTicketWinner)
-        return {
-          userWon: parseFloat(
-            calculateTicketReturns(ticket.stake, ticket.totalOdds, app.maxWin)
-              .possibleWin
-          ),
-          systemWon: 0,
-        };
-      if (isTicketLoser) return { userWon: 0, systemWon: ticket.stake };
-    };
-    const dateIndex = ticketsReportData.findIndex(
-      (report) =>
-        convertFromUnix(report.date) === convertFromUnix(ticketUpdatedDate)
-    );
-    const ticketIncome = calculateTicketIncome();
+
+    // daily report should include the date when certain tickets are resolved (update-date) and
+    // date when tickets are placed placed date
+    // sometimes update date and placed date may be equal
+
+    const getReportIndex = (date) =>
+      dailyTicketReport.findIndex(
+        (report) =>
+          // check if the date of the report is equal to the ticket updated date or the ticket placed date
+          // sometimes update date and placed date may be equal
+          // 12/10/20 and // 12/09/20
+          convertFromUnix(report.date) === convertFromUnix(date)
+      );
+
+    const ticketIncome = calculateTicketIncome(ticket, app);
     allTimeUserWon = allTimeUserWon + ticketIncome.userWon;
     allTimeSystemWon = allTimeSystemWon + ticketIncome.systemWon;
-    if (dateIndex < 0) {
-      ticketsReportData.push({
-        date: ticketUpdatedDate,
-        placedTicketCount:
-          ticket.isPlaced &&
-          getFormattedDate(ticket.placedDate) ===
+
+    // if the ticket date doesnt exist create a report on that date
+    // else alter the report that contains that date
+
+    if (
+      getReportIndex(ticketUpdatedDate) < 0 ||
+      getReportIndex(ticketPlacedDate) < 0
+    ) {
+      if (getReportIndex(ticketUpdatedDate) < 0) {
+        dailyTicketReport.push({
+          date: ticketUpdatedDate, //
+          placedTicketCount:
+            convertFromUnix(ticketPlacedDate) ===
             convertFromUnix(ticketUpdatedDate)
-            ? 1
-            : 0,
-        winnerCount: isTicketWinner ? 1 : 0,
-        netUserWon: ticketIncome.userWon,
-        netSystemWon: ticketIncome.systemWon,
-      });
+              ? 1
+              : 0,
+          winnerCount: isTicketWinner ? 1 : 0,
+          netUserWon: ticketIncome.userWon,
+          netSystemWon: ticketIncome.systemWon,
+        });
+      }
+
+      // no ticket may be updated in the placed date
+      if (getReportIndex(ticketPlacedDate) < 0) {
+        dailyTicketReport.push({
+          date: ticketPlacedDate, //
+          placedTicketCount: 1,
+          winnerCount: isTicketWinner ? 1 : 0,
+          netUserWon: ticketIncome.userWon,
+          netSystemWon: ticketIncome.systemWon,
+        });
+      }
     } else {
-      ticketsReportData[dateIndex].placedTicketCount = ticket.isPlaced
-        ? ticketsReportData[dateIndex].placedTicketCount + 1
-        : ticketsReportData[dateIndex].placedTicketCount;
-      ticketsReportData[dateIndex].winnerCount = isTicketWinner
-        ? ticketsReportData[dateIndex].winnerCount + 1
-        : ticketsReportData[dateIndex].winnerCount;
-      ticketsReportData[dateIndex].netUserWon =
-        ticketsReportData[dateIndex].netUserWon + ticketIncome.userWon;
-      ticketsReportData[dateIndex].netSystemWon =
-        ticketsReportData[dateIndex].netSystemWon + ticketIncome.systemWon;
+      if (getReportIndex(ticketUpdatedDate) >= 0) {
+        const reportIndex = getReportIndex(ticketUpdatedDate);
+        dailyTicketReport[reportIndex].placedTicketCount = ticket.isPlaced
+          ? dailyTicketReport[reportIndex].placedTicketCount + 1
+          : dailyTicketReport[reportIndex].placedTicketCount;
+        dailyTicketReport[reportIndex].winnerCount = isTicketWinner
+          ? dailyTicketReport[reportIndex].winnerCount + 1
+          : dailyTicketReport[reportIndex].winnerCount;
+        dailyTicketReport[reportIndex].netUserWon =
+          dailyTicketReport[reportIndex].netUserWon + ticketIncome.userWon;
+        dailyTicketReport[reportIndex].netSystemWon =
+          dailyTicketReport[reportIndex].netSystemWon + ticketIncome.systemWon;
+        return;
+      }
+
+      if (getReportIndex(ticketPlacedDate) >= 0) {
+        const reportIndex = getReportIndex(ticketPlacedDate);
+        dailyTicketReport[reportIndex].placedTicketCount = ticket.isPlaced
+          ? dailyTicketReport[reportIndex].placedTicketCount + 1
+          : dailyTicketReport[reportIndex].placedTicketCount;
+        dailyTicketReport[reportIndex].winnerCount = isTicketWinner
+          ? dailyTicketReport[reportIndex].winnerCount + 1
+          : dailyTicketReport[reportIndex].winnerCount;
+        dailyTicketReport[reportIndex].netUserWon =
+          dailyTicketReport[reportIndex].netUserWon + ticketIncome.userWon;
+        dailyTicketReport[reportIndex].netSystemWon =
+          dailyTicketReport[reportIndex].netSystemWon + ticketIncome.systemWon;
+      }
     }
   });
 
+  return { dailyTicketReport, allTimeSystemWon, allTimeUserWon };
+};
+
+const getTicketsAndWinnersTableInfo = (tickets, app) => {
   const ticketsReportColumns = [
     {
       name: "date",
@@ -124,11 +158,12 @@ const getTicketsAndWinnersTableInfo = (tickets, app) => {
       },
     },
   ];
+  const ticketReport = getTicketReport(tickets, app);
   return {
-    data: ticketsReportData,
+    data: ticketReport.dailyTicketReport,
     columns: ticketsReportColumns,
-    allTimeUserWon: allTimeUserWon.toFixed(2),
-    allTimeSystemWon: allTimeSystemWon.toFixed(2),
+    allTimeUserWon: ticketReport.allTimeUserWon.toFixed(2),
+    allTimeSystemWon: ticketReport.allTimeSystemWon.toFixed(2),
   };
 };
 

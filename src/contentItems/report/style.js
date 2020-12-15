@@ -1,6 +1,17 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const style = makeStyles((theme) => ({
+  chooseReport: {
+    fontSize: "25px",
+    fontStyle: "italic",
+    fontWeight: "bold",
+    color: theme.palette.secondary.main,
+    marginRight: "15px",
+  },
+  selectC: {
+    // textAlign: "center",
+    padding: "8px",
+  },
   tabBody: {
     backgroundColor: `${theme.palette.primary.dark}`,
     padding: "30px",
@@ -28,6 +39,9 @@ const style = makeStyles((theme) => ({
   allTimeNumber: {
     color: theme.palette.secondary.light,
     fontSize: "14px",
+  },
+  cashierTable: {
+    marginBottom: "30px",
   },
 }));
 

@@ -1,18 +1,21 @@
 import { useQuery } from "@apollo/client";
-import { Grid, Tabs, Tab } from "@material-ui/core";
+import { Grid, Tabs, Tab, TextField, MenuItem } from "@material-ui/core";
 import React, { useState } from "react";
 import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
 import Table from "../../components/table";
 import { TICKETS } from "../../graphql/ticket";
 import { TRANSACTIONS } from "../../graphql/transaction";
-import { USERS } from "../../graphql/user";
 import getTransactionsReportTableInfo from "./transactionReport";
 import { useTheme } from "@material-ui/core";
-import getUsersReportTableInfo from "./usersReport";
+import {
+  getCustomersReportData,
+  getCashiersReportDataAndColumns,
+} from "./usersReport";
 import reportStyle from "./style";
 import getTicketsAndWinnersTableInfo from "./ticketsAndWinners";
 import { APP } from "../../graphql/app";
+import { useGetUsers } from "../../customHooks/dataFetchers";
 
 // daily tickets
 // daily winners
@@ -23,7 +26,7 @@ const Report = () => {
     data: userData,
     loading: loadingUserData,
     error: errorLoadingUserData,
-  } = useQuery(USERS, { variables: { role: "CUSTOMER" } });
+  } = useGetUsers();
   const {
     loading: loadingTransactions,
     error: errorLoadingTransactions,
@@ -40,11 +43,7 @@ const Report = () => {
     error: errorLoadingApp,
   } = useQuery(APP);
 
-  const [currentTab, setCurrentTab] = useState(0);
-
-  const handleTabChange = (event, newValue) => {
-    setCurrentTab(newValue);
-  };
+  const [currentTab, setCurrentTab] = useState("tickets");
 
   const theme = useTheme();
   const style = reportStyle();
@@ -60,10 +59,6 @@ const Report = () => {
     return <AlertError />;
 
   const {
-    data: userReportData,
-    columns: userReportColumns,
-  } = getUsersReportTableInfo(userData.users);
-  const {
     data: transactionReportData,
     columns: transactionReportColumns,
   } = getTransactionsReportTableInfo(transactions.transactions, theme);
@@ -73,19 +68,45 @@ const Report = () => {
     allTimeUserWon,
     allTimeSystemWon,
   } = getTicketsAndWinnersTableInfo(ticketData.tickets, appData.app);
+
+  let customers = [];
+  let cashiers = [];
+  userData.users.forEach((user) => {
+    if (user.role === "CASHIER") cashiers.push(user);
+    if (user.role === "CUSTOMER") customers.push(user);
+  });
+
+  const {
+    data: customersReportData,
+    columns: customersReportColumns,
+  } = getCustomersReportData(customers);
+
   return (
     <>
-      <Tabs
-        value={currentTab}
-        onChange={handleTabChange}
-        aria-label="reports-tab"
-      >
-        <Tab label="Tickets" />
-        <Tab label="Users" />
-        <Tab label="Transactions" />
-      </Tabs>
+      <div className={style.selectC}>
+        <span className={style.chooseReport}>Choose report</span>
+        <TextField
+          // className={style.root}
+          select
+          value={currentTab}
+          onChange={(e) => setCurrentTab(e.target.value)}
+        >
+          <MenuItem key={"tickets"} value={"tickets"}>
+            Tickets
+          </MenuItem>
+          <MenuItem key={"cashiers"} value={"cashiers"}>
+            Cashiers
+          </MenuItem>
+          <MenuItem key={"transactions"} value={"transactions"}>
+            Transactions
+          </MenuItem>
+          <MenuItem key={"customers"} value={"customers"}>
+            Customers
+          </MenuItem>
+        </TextField>
+      </div>
       <div className={style.tabBody}>
-        {currentTab === 0 && (
+        {currentTab === "tickets" && (
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
               <Table
@@ -116,19 +137,37 @@ const Report = () => {
           </Grid>
         )}
 
-        {currentTab === 1 && (
+        {currentTab === "cashiers" &&
+          cashiers.map((cashier) => {
+            const { data, columns } = getCashiersReportDataAndColumns(
+              cashier,
+              ticketData.tickets
+            );
+            return (
+              <div className={style.cashierTable}>
+                <Table
+                  key={cashier._id}
+                  title={cashier.firstName + " " + cashier.lastName}
+                  data={data}
+                  columns={columns}
+                />
+              </div>
+            );
+          })}
+
+        {currentTab === "transactions" && (
           <Table
-            title="Daily registered users"
-            data={userReportData}
-            columns={userReportColumns}
+            title="Daily transactions report "
+            data={transactionReportData}
+            columns={transactionReportColumns}
           />
         )}
 
-        {currentTab === 2 && (
+        {currentTab === "customers" && (
           <Table
-            title="Daily transactions"
-            data={transactionReportData}
-            columns={transactionReportColumns}
+            title="Daily registered customers"
+            data={customersReportData}
+            columns={customersReportColumns}
           />
         )}
       </div>

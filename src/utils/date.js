@@ -9,6 +9,10 @@ const convertFromUnix = (timestamp, includeTime) => {
   return formattedDate;
 };
 
+const convertToUnix = (dateTime) => {
+  return new Date(dateTime).getTime();
+};
+
 const TODAY_IN_MS = Math.round(new Date().getTime());
 
 const getDurationInMS = (durationInDays) => {
@@ -65,6 +69,7 @@ const getFormattedDate = (dateTime, includeTime) => {
 
 export {
   convertFromUnix,
+  convertToUnix,
   getDurationInMS,
   TODAY_IN_MS,
   getFormattedDate,
