@@ -31,12 +31,12 @@ const getCustomFilterListOptions = (columnName, renderCustomValue, type) => {
   };
 };
 
-const getDateConfig = (includeTime) => {
+const getDateConfig = (includeTime, timestamp = true) => {
   return {
     options: {
       ...getCustomFilterListOptions("Date", null, "date"),
       customBodyRender: (value) => {
-        return typeof value === "string"
+        return !timestamp
           ? getFormattedDate(value, includeTime)
           : convertFromUnix(value, includeTime);
       },
