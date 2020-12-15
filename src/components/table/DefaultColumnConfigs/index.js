@@ -31,21 +31,15 @@ const getCustomFilterListOptions = (columnName, renderCustomValue, type) => {
   };
 };
 
-const getDateConfig = (
-  includeTime,
-  timestamp = true,
-  notAvailableText = "NOT AVAILABLE"
-) => {
+const getDateConfig = (includeTime, customRender) => {
   return {
     options: {
       ...getCustomFilterListOptions("Date", null, "date"),
-      customBodyRender: (value) => {
-        if (!value) {
-          return notAvailableText;
+      customBodyRender: (value, tableMeta) => {
+        if (customRender) {
+          return customRender(value, tableMeta);
         }
-        return !timestamp
-          ? getFormattedDate(value, includeTime)
-          : convertFromUnix(value, includeTime);
+        return convertFromUnix(value, includeTime);
       },
       filterType: "custom",
       filterOptions: {

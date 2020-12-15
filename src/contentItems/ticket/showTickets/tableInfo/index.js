@@ -9,6 +9,7 @@ import {
 } from "../../../../components/table/DefaultColumnConfigs";
 import { calculateTicketReturns } from "../../../../utils/ticketCalculation";
 import { Button } from "@material-ui/core";
+import { convertFromUnix, getFormattedDate } from "../../../../utils/date";
 
 const getTicketColumn = (theme, prepareTicketPlacement, maxWin, role) => [
   {
@@ -134,9 +135,22 @@ const getTicketColumn = (theme, prepareTicketPlacement, maxWin, role) => [
     },
   },
   {
+    name: "createdAt",
+    options: {
+      display: "excluded",
+      filter: "false",
+    },
+  },
+  {
     name: "placedDate",
     label: "Date",
-    ...getDateConfig(true, false, "Not placed"),
+    ...getDateConfig(true, (placedDate, tableMeta) => {
+      if (!placedDate) {
+        const savedDate = tableMeta.rowData[6];
+        return convertFromUnix(savedDate, true);
+      }
+      return getFormattedDate(placedDate, true);
+    }),
   },
   {
     name: "_id",
