@@ -3,7 +3,7 @@ import {
   getCustomFilterListOptions,
   getDateConfig,
 } from "../../../components/table/DefaultColumnConfigs";
-import { convertFromUnix } from "../../../utils/date";
+import { convertFromUnix, getFormattedDate } from "../../../utils/date";
 
 // function compateDates(a, b) {
 //   if (a.ticketUpdatedDate < b.ticketUpdatedDate) {
@@ -15,12 +15,29 @@ import { convertFromUnix } from "../../../utils/date";
 //   return 0;
 // }
 
+// const calculateTicketIncome = (ticket) => {
+//   const ticketStatus = tic
+// }
+
+// const getTicketReport = (tickets, app) => {
+//   const dailyTicketReport = []
+//   let allTimeUserWon = 0
+//   let allTimeSystemWon = 0
+
+//   tickets.forEach(ticket => {
+
+//   })
+
+//   return {dailyTicketReport, allTimeSystemWon, allTimeUserWon}
+// }
+
 const getTicketsAndWinnersTableInfo = (tickets, app) => {
   const ticketsReportData = [];
   let allTimeUserWon = 0;
   let allTimeSystemWon = 0;
   tickets.forEach((ticket) => {
     const ticketUpdatedDate = ticket.updatedAt;
+    const ticketPlacedDate = ticket.placedDate;
     const isTicketWinner = ticket.status === "WIN";
     const isTicketLoser = ticket.status === "LOSE";
     const isTicketPending = ticket.status === "PENDING";
@@ -38,7 +55,8 @@ const getTicketsAndWinnersTableInfo = (tickets, app) => {
     };
     const dateIndex = ticketsReportData.findIndex(
       (report) =>
-        convertFromUnix(report.date) === convertFromUnix(ticketUpdatedDate)
+        convertFromUnix(report.date) === convertFromUnix(ticketUpdatedDate) ||
+        convertFromUnix(report.data) === getFormattedDate(ticketPlacedDate)
     );
     const ticketIncome = calculateTicketIncome();
     allTimeUserWon = allTimeUserWon + ticketIncome.userWon;
