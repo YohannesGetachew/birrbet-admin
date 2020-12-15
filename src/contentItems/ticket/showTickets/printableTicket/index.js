@@ -4,7 +4,7 @@ import printableTicketStyle from "./style";
 import PlaceTicketForm from "./placeTicketForm";
 import { calculateTicketReturns } from "../../../../utils/ticketCalculation";
 import logo from "./birrBetTicketPrint.png";
-import { convertFromUnix, getFormattedDate } from "../../../../utils/date";
+import { getFormattedDate } from "../../../../utils/date";
 
 class PrintableTicket extends React.Component {
   COMPANY_NAME = "BIRR BET";
@@ -41,7 +41,7 @@ class PrintableTicket extends React.Component {
       placerType,
       user,
       isPlaced,
-      updatedAt,
+      placedDate,
       _id: id,
     } = this.props?.ticket;
     const { maxWin } = this.props?.app;
@@ -94,7 +94,7 @@ class PrintableTicket extends React.Component {
             <span className={classes.boldFont}>Date:</span>
             <span className={classes.lightText}>
               {isPlaced
-                ? convertFromUnix(updatedAt, true)
+                ? getFormattedDate(placedDate, true)
                 : getFormattedDate(new Date(), true)}
             </span>
           </p>

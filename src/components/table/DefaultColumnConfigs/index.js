@@ -1,5 +1,5 @@
 import React from "react";
-import { convertFromUnix } from "../../../utils/date";
+import { convertFromUnix, getFormattedDate } from "../../../utils/date";
 import { DatePicker } from "../../fields/muiDatatableFilters";
 
 const getCustomFilterListOptions = (columnName, renderCustomValue, type) => {
@@ -35,8 +35,10 @@ const getDateConfig = (includeTime) => {
   return {
     options: {
       ...getCustomFilterListOptions("Date", null, "date"),
-      customBodyRender: (values) => {
-        return convertFromUnix(values, includeTime);
+      customBodyRender: (value) => {
+        return typeof value === "string"
+          ? getFormattedDate(value, includeTime)
+          : convertFromUnix(value, includeTime);
       },
       filterType: "custom",
       filterOptions: {

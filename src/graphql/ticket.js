@@ -28,6 +28,7 @@ export const TICKETS = gql`
       placementID
       status
       placerType
+      placedDate
       userID
       shopID
       user {

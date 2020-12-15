@@ -7,7 +7,8 @@ import { TICKETS } from "../../graphql/ticket";
 import { Grid } from "@material-ui/core";
 import { APP } from "../../graphql/app";
 import { PlacedCount, TodaysStake } from "./ticketAnylitics";
-import { getFormattedDate, convertFromUnix } from "../../utils/date";
+import { getFormattedDate } from "../../utils/date";
+import useGetCurrentUserRole from "../../customHooks/helpers/useGetCurrentUserRole";
 
 const Tickets = () => {
   const {
@@ -20,6 +21,7 @@ const Tickets = () => {
     loading: loadingApp,
     error: errorLoadingApp,
   } = useQuery(APP);
+  const currentUserRole = useGetCurrentUserRole();
   if (loadingTickets || loadingApp) {
     return <Loader />;
   }
@@ -35,7 +37,7 @@ const Tickets = () => {
   const TODAY = getFormattedDate(new Date());
   let todaysStake = 0;
   tickets.forEach((ticket) => {
-    const ticketPlaceDate = convertFromUnix(ticket.updatedAt);
+    const ticketPlaceDate = getFormattedDate(ticket.placedDate);
     if (ticket.isPlaced) {
       const isTicketPlacedToday = TODAY === ticketPlaceDate;
       if (isTicketPlacedToday) {
@@ -54,7 +56,6 @@ const Tickets = () => {
       }
     }
   });
-
   return (
     <>
       <Grid container spacing={2}>
@@ -64,8 +65,12 @@ const Tickets = () => {
         <Grid item xs={12} md={2}>
           <PlacedCount placerType={"Cashier"} count={todaysTicketCount} />
           <div style={{ margin: "10px" }}></div>
-          <PlacedCount placerType={"Online"} count={todaysTicketCount} />
-          <div style={{ margin: "10px" }}></div>
+          {currentUserRole !== "CASHIER" && (
+            <>
+              <PlacedCount placerType={"Online"} count={todaysTicketCount} />
+              <div style={{ margin: "10px" }}></div>
+            </>
+          )}
           <TodaysStake count={todaysStake} />
         </Grid>
       </Grid>

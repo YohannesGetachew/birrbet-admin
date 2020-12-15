@@ -49,6 +49,10 @@ const getDateRelativeToToday = (numberOfDaysFromToday) => {
 };
 
 const getFormattedDate = (dateTime, includeTime) => {
+  if (typeof dateTime === "string") {
+    dateTime = new Date(dateTime);
+  }
+
   const year = dateTime.getFullYear();
   const month = dateTime.getMonth() + 1;
   const day = dateTime.getDate();
