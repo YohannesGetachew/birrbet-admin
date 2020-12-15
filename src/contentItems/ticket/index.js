@@ -37,8 +37,8 @@ const Tickets = () => {
   const TODAY = getFormattedDate(new Date());
   let todaysStake = 0;
   tickets.forEach((ticket) => {
-    const ticketPlaceDate = getFormattedDate(ticket.placedDate);
     if (ticket.isPlaced) {
+      const ticketPlaceDate = getFormattedDate(ticket.placedDate);
       const isTicketPlacedToday = TODAY === ticketPlaceDate;
       if (isTicketPlacedToday) {
         todaysStake = todaysStake + ticket.stake;

@@ -31,11 +31,18 @@ const getCustomFilterListOptions = (columnName, renderCustomValue, type) => {
   };
 };
 
-const getDateConfig = (includeTime, timestamp = true) => {
+const getDateConfig = (
+  includeTime,
+  timestamp = true,
+  notAvailableText = "NOT AVAILABLE"
+) => {
   return {
     options: {
       ...getCustomFilterListOptions("Date", null, "date"),
       customBodyRender: (value) => {
+        if (!value) {
+          return notAvailableText;
+        }
         return !timestamp
           ? getFormattedDate(value, includeTime)
           : convertFromUnix(value, includeTime);

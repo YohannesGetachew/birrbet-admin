@@ -55,8 +55,7 @@ const getTicketsAndWinnersTableInfo = (tickets, app) => {
     };
     const dateIndex = ticketsReportData.findIndex(
       (report) =>
-        convertFromUnix(report.date) === convertFromUnix(ticketUpdatedDate) ||
-        convertFromUnix(report.data) === getFormattedDate(ticketPlacedDate)
+        convertFromUnix(report.date) === convertFromUnix(ticketUpdatedDate)
     );
     const ticketIncome = calculateTicketIncome();
     allTimeUserWon = allTimeUserWon + ticketIncome.userWon;
@@ -64,7 +63,12 @@ const getTicketsAndWinnersTableInfo = (tickets, app) => {
     if (dateIndex < 0) {
       ticketsReportData.push({
         date: ticketUpdatedDate,
-        placedTicketCount: ticket.isPlaced ? 1 : 0,
+        placedTicketCount:
+          ticket.isPlaced &&
+          getFormattedDate(ticket.placedDate) ===
+            convertFromUnix(ticketUpdatedDate)
+            ? 1
+            : 0,
         winnerCount: isTicketWinner ? 1 : 0,
         netUserWon: ticketIncome.userWon,
         netSystemWon: ticketIncome.systemWon,
