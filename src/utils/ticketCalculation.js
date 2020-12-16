@@ -1,7 +1,7 @@
 export const calculateTicketReturns = (stake, totalOdds, maxWin, maxStake) => {
   totalOdds = totalOdds.toFixed(2);
-  const stakeAfterVat = Math.round(stake / 1.15);
-  const vatOnStake = Math.round(stake - stakeAfterVat);
+  const stakeAfterVat = (stake / 1.15).toFixed(2);
+  const vatOnStake = (stake - stakeAfterVat).toFixed(2);
   let possibleWin = (stakeAfterVat * totalOdds).toFixed(2);
 
   if (possibleWin > maxWin) {

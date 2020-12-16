@@ -1,31 +1,41 @@
 import React from "react";
 import ticketAnyliticsStyle from "./style";
-import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
-const PlacedCount = ({ count, placerType }) => {
+import { Grid } from "@material-ui/core";
+const PlacedCount = ({ anylitics, placerType, userRole }) => {
   const style = ticketAnyliticsStyle();
   return (
     <div className={style.root}>
-      <h3>{placerType} placed today</h3>
-      <h5 className={style.count}>
-        {" "}
-        {placerType === "Cashier" ? count.cashierPlaced : count.onlinePlaced}
-      </h5>
-      <ConfirmationNumberIcon className={style.ticketIcon} />
+      <h3 className={style.title}>
+        {userRole === "CASHIER" ? "You placed" : `${placerType} placed`}
+      </h3>
+      <Grid container>
+        <Grid
+          item
+          xs={6}
+          md={12}
+          className={style.ticketsC}
+          container
+          direction="column"
+          alignItems="center"
+        >
+          <Grid className={style.number}>{anylitics.tickets}</Grid>
+          <Grid className={style.numberDesc}>Tickets</Grid>
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          md={12}
+          className={style.amountC}
+          container
+          direction="column"
+          alignItems="center"
+        >
+          <Grid className={style.number}>{anylitics.amount}</Grid>
+          <Grid className={style.numberDesc}>ETB</Grid>
+        </Grid>
+      </Grid>
     </div>
   );
 };
 
-const TodaysStake = ({ count }) => {
-  const style = ticketAnyliticsStyle({ stakeCard: true });
-  return (
-    <div className={style.root}>
-      <h3>Today's stake</h3>
-      <h5 className={style.count}>
-        {" "}
-        {count} <span className={style.currency}>ETB</span>
-      </h5>
-    </div>
-  );
-};
-
-export { PlacedCount, TodaysStake };
+export default PlacedCount;

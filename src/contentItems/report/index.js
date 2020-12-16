@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
 import Table from "../../components/table";
-import { TICKETS } from "../../graphql/ticket";
 import { TRANSACTIONS } from "../../graphql/transaction";
 import getTransactionsReportTableInfo from "./transactionReport";
 import { useTheme } from "@material-ui/core";
@@ -15,7 +14,7 @@ import {
 import reportStyle from "./style";
 import getTicketsAndWinnersTableInfo from "./ticketsAndWinners";
 import { APP } from "../../graphql/app";
-import { useGetUsers } from "../../customHooks/dataFetchers";
+import { useGetTickets, useGetUsers } from "../../customHooks/dataFetchers";
 
 // daily tickets
 // daily winners
@@ -36,7 +35,7 @@ const Report = () => {
     data: ticketData,
     loading: loadingTickets,
     error: errorFetchingTickets,
-  } = useQuery(TICKETS);
+  } = useGetTickets();
   const {
     data: appData,
     loading: loadingApp,

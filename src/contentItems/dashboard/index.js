@@ -68,7 +68,7 @@ const DashboardDataFetcher = () => {
         direction: transactionDirection,
         number: transactionFluctuation,
       },
-      title: "Total income",
+      title: "Net transactions",
       body: transactionCount,
       analyticsStartDate: transactionComparisonStartData,
     },

@@ -16,7 +16,7 @@ const TextCard = ({ anyliticsData, cardColor, getCardIcon }) => {
       className={style.root}
     >
       {getCardIcon(style.cardIcon)}
-      <h3 className={style.title}>{title}</h3>
+      <h4 className={style.title}>{title}</h4>
       <h3 className={style.body}>{body}</h3>
       <h5 className={style.analytics}>
         <span>

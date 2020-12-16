@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import ShowTickets from "./showTickets";
 import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
-import { TICKETS } from "../../graphql/ticket";
 import { Grid } from "@material-ui/core";
 import { APP } from "../../graphql/app";
-import { PlacedCount, TodaysStake } from "./ticketAnylitics";
+import PlacedCount from "./ticketAnylitics";
 import { getFormattedDate } from "../../utils/date";
 import useGetCurrentUserRole from "../../customHooks/helpers/useGetCurrentUserRole";
+import { useGetTickets } from "../../customHooks/dataFetchers";
+import { AuthContext } from "../../contexts/auth";
 
 const Tickets = () => {
+  const { authData } = useContext(AuthContext);
   const {
     data: ticketData,
     loading: loadingTickets,
     error: errorFetchingTickets,
-  } = useQuery(TICKETS);
+  } = useGetTickets();
   const {
     data: appData,
     loading: loadingApp,
@@ -32,26 +34,42 @@ const Tickets = () => {
       </div>
     );
   }
-  const tickets = ticketData.tickets;
+  let tickets = ticketData.tickets;
   let todaysTicketCount = { cashierPlaced: 0, onlinePlaced: 0 };
   const TODAY = getFormattedDate(new Date());
-  let todaysStake = 0;
-  tickets.forEach((ticket) => {
+  let todaysStake = { cashierPlacedStake: 0, onlinePlacedStake: 0 };
+
+  let ticketsByUserId = tickets;
+  if (currentUserRole === "CASHIER") {
+    ticketsByUserId = tickets.filter(
+      (ticket) => ticket.userID === authData.userData._id
+    );
+  }
+  ticketsByUserId.forEach((ticket) => {
     if (ticket.isPlaced) {
       const ticketPlaceDate = getFormattedDate(ticket.placedDate);
       const isTicketPlacedToday = TODAY === ticketPlaceDate;
       if (isTicketPlacedToday) {
-        todaysStake = todaysStake + ticket.stake;
-        if (ticket.placerType === "CASHIER")
+        if (ticket.placerType === "CASHIER") {
+          todaysStake = {
+            ...todaysStake,
+            cashierPlacedStake: todaysStake.cashierPlacedStake + ticket.stake,
+          };
           todaysTicketCount = {
             ...todaysTicketCount,
             cashierPlaced: todaysTicketCount.cashierPlaced + 1,
           };
-        if (ticket.placerType === "CUSTOMER")
+        }
+        if (ticket.placerType === "CUSTOMER") {
+          todaysStake = {
+            ...todaysStake,
+            onlinePlacedStake: todaysStake.onlinePlacedStake + ticket.stake,
+          };
           todaysTicketCount = {
             ...todaysTicketCount,
-            onlinePlaced: todaysTicketCount.cashierPlaced + 1,
+            onlinePlaced: todaysTicketCount.onlinePlaced + 1,
           };
+        }
         return;
       }
     }
@@ -63,15 +81,27 @@ const Tickets = () => {
           <ShowTickets tickets={tickets} app={appData.app} />
         </Grid>
         <Grid item xs={12} md={2}>
-          <PlacedCount placerType={"Cashier"} count={todaysTicketCount} />
+          <PlacedCount
+            placerType={"Cashier"}
+            anylitics={{
+              tickets: todaysTicketCount.cashierPlaced,
+              amount: todaysStake.cashierPlacedStake,
+            }}
+            userRole={currentUserRole}
+          />
           <div style={{ margin: "10px" }}></div>
           {currentUserRole !== "CASHIER" && (
             <>
-              <PlacedCount placerType={"Online"} count={todaysTicketCount} />
-              <div style={{ margin: "10px" }}></div>
+              <PlacedCount
+                placerType={"Online"}
+                anylitics={{
+                  tickets: todaysTicketCount.onlinePlaced,
+                  amount: todaysStake.onlinePlacedStake,
+                }}
+                userRole={currentUserRole}
+              />
             </>
           )}
-          <TodaysStake count={todaysStake} />
         </Grid>
       </Grid>
     </>
