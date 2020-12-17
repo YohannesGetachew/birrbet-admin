@@ -6,43 +6,27 @@ import { SelectFieldFilter } from "../../../components/fields/muiDatatableFilter
 import { ClearRounded, CheckRounded } from "@material-ui/icons";
 import { CustomIconButton } from "../../../components/buttons/iconButtons";
 
-const gerUsersTableColumns = (theme, history, currentUserRole) => [
+const gerUsersTableColumns = (
+  theme,
+  history,
+  currentUserRole,
+  setUserToDeleteId
+) => [
   {
-    name: "nameAndPic",
+    name: "firstName",
+    options: {
+      filter: "false",
+      display: "exclude",
+    },
+  },
+  {
+    name: "lastName",
     label: "Name",
     options: {
       ...getCustomFilterListOptions("Name"),
-      customBodyRender: (value, tableMeta) => {
-        const even = tableMeta.rowIndex % 2 === 0;
-        return (
-          <Grid container alignItems="center">
-            <Avatar
-              style={{
-                color: even
-                  ? theme.palette.primary.main
-                  : theme.palette.accentOne.main,
-                backgroundColor: even
-                  ? `${theme.palette.accentOne.main}44`
-                  : `${theme.palette.primary.main}88`,
-                width: "30px",
-                height: "30px",
-                fontSize: "14px",
-              }}
-            >
-              {value.name[0]}
-            </Avatar>
-            <span style={{ marginLeft: "5px" }}>{value.name}</span>
-          </Grid>
-        );
-      },
-      filterOptions: {
-        logic: (value, filters, row) => {
-          if (filters.length)
-            return !filters.filter((item) =>
-              value.name.toLowerCase().includes(item.toLowerCase())
-            ).length;
-          return true;
-        },
+      customBodyRender: (lastName, tableMeta) => {
+        const firstName = tableMeta.rowData[0];
+        return `${firstName} ${lastName}`;
       },
     },
   },
@@ -52,6 +36,10 @@ const gerUsersTableColumns = (theme, history, currentUserRole) => [
     options: {
       ...getCustomFilterListOptions("UserName"),
     },
+  },
+  {
+    name: "accountBalance",
+    label: "Current balance",
   },
   {
     name: "role",
@@ -166,13 +154,25 @@ const gerUsersTableColumns = (theme, history, currentUserRole) => [
       filter: false,
       sort: false,
       customBodyRender: (value, tableMeta) => {
-        const isUserCustomer = tableMeta.rowData[2] === "CUSTOMER";
+        const rowRole = tableMeta.rowData[4];
         return (
-          <CustomIconButton
-            type="edit"
-            handleClick={() => history.push(`/admin/users/edit/${value}`)}
-            disabled={isUserCustomer}
-          />
+          <>
+            {(currentUserRole === "SUPER_ADMIN" ||
+              currentUserRole === "ADMIN") && (
+              <CustomIconButton
+                type="edit"
+                handleClick={() => history.push(`/admin/users/edit/${value}`)}
+                disabled={rowRole === "CUSTOMER"}
+              />
+            )}
+            {currentUserRole === "SUPER_ADMIN" && (
+              <CustomIconButton
+                type="delete"
+                handleClick={() => setUserToDeleteId(value)}
+                disabled={rowRole === "SUPER_ADMIN"}
+              />
+            )}
+          </>
         );
       },
     },
@@ -180,3 +180,36 @@ const gerUsersTableColumns = (theme, history, currentUserRole) => [
 ];
 
 export default gerUsersTableColumns;
+
+// customBodyRender: (value, tableMeta) => {
+//   const even = tableMeta.rowIndex % 2 === 0;
+//   return (
+//     <Grid container alignItems="center">
+//       <Avatar
+//         style={{
+//           color: even
+//             ? theme.palette.primary.main
+//             : theme.palette.accentOne.main,
+//           backgroundColor: even
+//             ? `${theme.palette.accentOne.main}44`
+//             : `${theme.palette.primary.main}88`,
+//           width: "30px",
+//           height: "30px",
+//           fontSize: "14px",
+//         }}
+//       >
+//         {value.name[0]}
+//       </Avatar>
+//       <span style={{ marginLeft: "5px" }}>{value.name}</span>
+//     </Grid>
+//   );
+// },
+// filterOptions: {
+//   logic: (value, filters, row) => {
+//     if (filters.length)
+//       return !filters.filter((item) =>
+//         value.name.toLowerCase().includes(item.toLowerCase())
+//       ).length;
+//     return true;
+//   },
+// },

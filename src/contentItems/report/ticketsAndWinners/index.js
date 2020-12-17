@@ -181,9 +181,7 @@ const getTicketReport = (tickets, app) => {
         dailyTicketReport[reportIndex].placedTicketCount = ticket.isPlaced
           ? dailyTicketReport[reportIndex].placedTicketCount + 1
           : dailyTicketReport[reportIndex].placedTicketCount;
-        dailyTicketReport[reportIndex].winnerCount = isTicketWinner
-          ? dailyTicketReport[reportIndex].winnerCount + 1
-          : dailyTicketReport[reportIndex].winnerCount;
+        // dailyTicketReport[reportIndex].winnerCount
         // dailyTicketReport[reportIndex].netUserWon =
         //   dailyTicketReport[reportIndex].netUserWon + ticketIncome.userWon;
         // dailyTicketReport[reportIndex].netSystemWon =
@@ -234,6 +232,7 @@ const getTicketsAndWinnersTableInfo = (tickets, app) => {
     // },
   ];
   const ticketReport = getTicketReport(tickets, app);
+
   return {
     data: ticketReport.dailyTicketReport,
     columns: ticketsReportColumns,

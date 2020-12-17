@@ -9,3 +9,5 @@ export {
   useConfirmDepositRequest,
   useDeleteDepositRequest,
 };
+
+export { useDeleteUser } from "./users";

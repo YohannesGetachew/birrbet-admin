@@ -1,12 +1,14 @@
 import { useMutation } from "@apollo/client";
 import { Grid } from "@material-ui/core";
 import { Style, TextFields } from "@material-ui/icons";
+import { Autocomplete } from "@material-ui/lab";
 import { Formik, Form, Field } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
 import { SubmitButton } from "../../../../components/buttons";
 import { AlertError } from "../../../../components/errors";
 import { SelectField, TextField } from "../../../../components/fields";
+import AutocompleteField from "../../../../components/fields/autocomplet";
 import { MAKE_TRANSACTION } from "../../../../graphql/transaction";
 import transactionFormStyle from "./style";
 
@@ -41,11 +43,11 @@ const handleSubmit = async (
 ) => {
   setSubmitting(true);
   const transaction = {
-    customer: values.customer,
+    customer: values.customer._id,
     amount: parseFloat(values.amount),
     type: type,
   };
-  const currentBalance = findCustomersBalance(transaction.customer, customers);
+  const currentBalance = values.customer.accountBalance;
   if (currentBalance < transaction.amount && type === "WITHDRAW") {
     setErrors({ amount: "Account is insufficient" });
     setSubmitting(false);
@@ -61,16 +63,16 @@ const handleSubmit = async (
   }
 };
 
-const findCustomersBalance = (id, customers) => {
-  const customer = customers.find((customer) => customer._id === id);
-  const currentBalance = customer?.accountBalance;
-  return currentBalance;
-};
+// const findCustomersBalance = (id, customers) => {
+//   const customer = customers.find((customer) => customer._id === id);
+//   const currentBalance = customer?.accountBalance;
+//   return currentBalance;
+// };
 
 const TransactionForm = ({ type, customers, history }) => {
   const style = transactionFormStyle();
-  // const [currentBalance, setCurrentBalance] = useState(false);
   const [mutate, { error }] = useMutation(MAKE_TRANSACTION);
+
   return (
     <Formik
       initialValues={initialValues}
@@ -89,6 +91,7 @@ const TransactionForm = ({ type, customers, history }) => {
     >
       {({ isSubmitting, values }) => (
         <Form>
+          {console.log(values)}
           {error && <AlertError />}
           <div className={style.root}>
             <div className={style.balanceC}>
@@ -97,7 +100,7 @@ const TransactionForm = ({ type, customers, history }) => {
                 {values.customer ? (
                   <>
                     <span className={style.amount}>
-                      {findCustomersBalance(values.customer, customers)}
+                      {values.customer.accountBalance}
                     </span>
                     <span className={style.currency}>birr</span>
                   </>
@@ -108,11 +111,36 @@ const TransactionForm = ({ type, customers, history }) => {
             </div>
             <Grid container>
               <Grid item xs={12} md={6} className={style.formItem}>
-                <SelectField
+                <AutocompleteField
+                  name="customer"
+                  label="Customer"
+                  placeholder="Select a customer"
+                  data={customers}
+                />
+                {/* <SelectField
                   data={customers}
                   label="Customer"
                   name="customer"
-                />
+                /> */}
+                {/* <Autocomplete
+                  options={customers}
+                  getOptionLabel={(option) => option.name}
+                  onChange={(e, value) => (values.customer = value)}
+                  renderInput={(params) => (
+                    <TextField
+                      // classes={{
+                      //     root: customStyle || style.root
+                      // }}
+                      {...params}
+                      name={"customer"}
+                      label={"Customer"}
+                      variant={"standard"}
+                      placeholder={"Select customer"}
+                      // error={meta.error && meta.touched}
+                      // helperText={meta.touched && meta.error}
+                    />
+                  )}
+                /> */}
               </Grid>
               {/* <Grid item>
                 <Field name="accountBalance">

@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 
 const ConfirmActionAlert = ({
   message,
+  error,
   submitLabel,
   submitLoading,
   onSubmitClick,
@@ -13,7 +14,8 @@ const ConfirmActionAlert = ({
   const style = customActionStyle();
   return (
     <div className={style.root}>
-      <div> {message} </div>
+      {error && <div>{error}</div>}
+      <div className={style.messageC}> {message} </div>
       <div className={style.buttonsC}>
         <CancelButton onClick={onCancleClick} />
         <SubmitButton
