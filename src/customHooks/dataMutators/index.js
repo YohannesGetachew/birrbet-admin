@@ -10,4 +10,4 @@ export {
   useDeleteDepositRequest,
 };
 
-export { useDeleteUser } from "./users";
+export { useChangeUserActive } from "./users";

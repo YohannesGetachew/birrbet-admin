@@ -1,9 +1,9 @@
 import { useMutation } from "@apollo/client";
-import { DELETE_USER } from "../../../graphql/user";
+import { CHANGE_USER_ACTIVE } from "../../../graphql/user";
 
-const useDeleteUser = () => {
-  const mutation = useMutation(DELETE_USER);
+const useChangeUserActive = () => {
+  const mutation = useMutation(CHANGE_USER_ACTIVE);
   return mutation;
 };
 
-export { useDeleteUser };
+export { useChangeUserActive };

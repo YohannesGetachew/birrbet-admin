@@ -113,8 +113,8 @@ export const CREATE_USER = gql`
   }
 `;
 
-export const DELETE_USER = gql`
-  mutation DeleteUser($id: String!) {
-    deleteUser(id: $id)
+export const CHANGE_USER_ACTIVE = gql`
+  mutation ChangeUserActive($id: String!) {
+    changeUserActive(id: $id)
   }
 `;

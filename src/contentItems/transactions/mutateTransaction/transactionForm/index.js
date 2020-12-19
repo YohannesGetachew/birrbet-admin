@@ -55,8 +55,7 @@ const handleSubmit = async (
   }
   try {
     await mutate({ variables: { transaction } });
-    history.push("/admin/transactions");
-    return;
+    window.location.reload(false);
   } catch (err) {
     setSubmitting(false);
     return;

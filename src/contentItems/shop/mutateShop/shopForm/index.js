@@ -105,7 +105,7 @@ const handleSubmit = async (
 
   try {
     await mutate({ variables });
-    history.push("/admin/shops");
+    window.location.reload(false);
   } catch (err) {
     setSubmitting(false);
     return;

@@ -1,16 +1,16 @@
 import React from "react";
-import { Avatar, Grid } from "@material-ui/core";
 import Tag from "../../../components/tag";
 import { getCustomFilterListOptions } from "../../../components/table/DefaultColumnConfigs";
 import { SelectFieldFilter } from "../../../components/fields/muiDatatableFilters";
 import { ClearRounded, CheckRounded } from "@material-ui/icons";
 import { CustomIconButton } from "../../../components/buttons/iconButtons";
+import { Button } from "@material-ui/core";
 
 const gerUsersTableColumns = (
   theme,
   history,
   currentUserRole,
-  setUserToDeleteId
+  prepForDelete
 ) => [
   {
     name: "firstName",
@@ -40,6 +40,12 @@ const gerUsersTableColumns = (
   {
     name: "accountBalance",
     label: "Current balance",
+    options: {
+      ...getCustomFilterListOptions("Current balance"),
+      customBodyRender: (value) => {
+        return value.toFixed(2);
+      },
+    },
   },
   {
     name: "role",
@@ -128,6 +134,49 @@ const gerUsersTableColumns = (
           ];
           return (
             <SelectFieldFilter
+              label="Is verified"
+              data={selectFieldData}
+              displayProps={{ filterList, onChange, index, column }}
+            />
+          );
+        },
+      },
+      customBodyRender: (value) => {
+        const style = {
+          color: value ? theme.palette.success.main : theme.palette.error.light,
+        };
+        return value ? (
+          <CheckRounded style={style} />
+        ) : (
+          <ClearRounded style={style} />
+        );
+      },
+    },
+  },
+  {
+    name: "isActive",
+    label: "Is active",
+    options: {
+      filterType: "custom",
+      ...getCustomFilterListOptions("Is verified", (value) =>
+        value[0] === "All" ? "All" : value[0] ? "Yes" : "No"
+      ),
+      filterOptions: {
+        logic: (value, filters, row) => {
+          const filter = filters[0];
+          if (filter === "All" || filter === undefined) {
+            return false;
+          }
+          return !(value === filter);
+        },
+        display: (filterList, onChange, index, column) => {
+          const selectFieldData = [
+            { value: "All", label: "All" },
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
+          ];
+          return (
+            <SelectFieldFilter
               label="Is active"
               data={selectFieldData}
               displayProps={{ filterList, onChange, index, column }}
@@ -155,24 +204,34 @@ const gerUsersTableColumns = (
       sort: false,
       customBodyRender: (value, tableMeta) => {
         const rowRole = tableMeta.rowData[4];
+        const isActive = tableMeta.rowData[6];
+
         return (
-          <>
-            {(currentUserRole === "SUPER_ADMIN" ||
-              currentUserRole === "ADMIN") && (
+          (currentUserRole === "SUPER_ADMIN" ||
+            currentUserRole === "ADMIN") && (
+            <>
               <CustomIconButton
                 type="edit"
                 handleClick={() => history.push(`/admin/users/edit/${value}`)}
                 disabled={rowRole === "CUSTOMER"}
               />
-            )}
-            {currentUserRole === "SUPER_ADMIN" && (
-              <CustomIconButton
-                type="delete"
-                handleClick={() => setUserToDeleteId(value)}
+              <div style={{ margin: "4px" }}></div>
+              <Button
                 disabled={rowRole === "SUPER_ADMIN"}
-              />
-            )}
-          </>
+                onClick={() => prepForDelete(value, isActive)}
+                size={"small"}
+                variant={"contained"}
+                style={{
+                  backgroundColor: isActive
+                    ? theme.palette.error.dark
+                    : theme.palette.success.dark,
+                  color: theme.palette.primary.main,
+                }}
+              >
+                {isActive ? "Deactivate" : "Activate"}
+              </Button>
+            </>
+          )
         );
       },
     },

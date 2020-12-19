@@ -118,7 +118,7 @@ const handleSubmit = async (
   try {
     await mutate({ variables: variables });
     setSubmitting(false);
-    history.push("/admin/users");
+    window.location.reload(false);
   } catch (err) {
     setSubmitting(false);
     if (

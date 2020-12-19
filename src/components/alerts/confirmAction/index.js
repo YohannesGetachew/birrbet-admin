@@ -2,6 +2,7 @@ import React from "react";
 import customActionStyle from "./style";
 import { CancelButton, SubmitButton } from "../../buttons";
 import PropTypes from "prop-types";
+import { AlertError } from "../../errors";
 
 const ConfirmActionAlert = ({
   message,
@@ -14,7 +15,11 @@ const ConfirmActionAlert = ({
   const style = customActionStyle();
   return (
     <div className={style.root}>
-      {error && <div>{error}</div>}
+      {error && (
+        <div>
+          <AlertError />
+        </div>
+      )}
       <div className={style.messageC}> {message} </div>
       <div className={style.buttonsC}>
         <CancelButton onClick={onCancleClick} />

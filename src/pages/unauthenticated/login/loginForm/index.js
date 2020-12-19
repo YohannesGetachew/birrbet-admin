@@ -40,9 +40,14 @@ const LoginForm = () => {
   const [mutate, { error: errorLoadingAuthData, data: authData }] = useMutation(
     LOGIN
   );
+  const [customError, setCustomError] = useState(false);
   const [getUser, { loading: loadingUser }] = useLazyQuery(IS_USER_EXISTS, {
     onCompleted: (userData) => {
-      if (userData?.isUserExists?.role === "CUSTOMER") {
+      if (
+        userData?.isUserExists?.role === "CUSTOMER" ||
+        !userData?.isUserExists?.isActive
+      ) {
+        setCustomError(true);
         return;
       }
       const token = authData?.login?.accessToken;
@@ -71,6 +76,7 @@ const LoginForm = () => {
   };
   return (
     <>
+      {checkForErrors(errorLoadingAuthData)}
       <h1 className={style.header}>
         <img
           width="100"
@@ -80,7 +86,7 @@ const LoginForm = () => {
           className={style.logo}
         />
       </h1>
-      {checkForErrors(errorLoadingAuthData) && (
+      {(checkForErrors(errorLoadingAuthData) || customError) && (
         <div className={style.errorC}>
           <AlertError message="Wrong credentials" />
         </div>
