@@ -74,3 +74,4 @@ const Transactions = () => {
 };
 
 export default Transactions;
+export { ViewTransactions };

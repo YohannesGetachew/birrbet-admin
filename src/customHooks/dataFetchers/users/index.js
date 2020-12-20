@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { USERS } from "../../../graphql/user";
+import { USERS, GET_USER } from "../../../graphql/user";
 import { AuthContext } from "../../../contexts/auth";
 import { useContext } from "react";
 import { useGetShops } from "..";
@@ -49,4 +49,9 @@ const useGetUsers = (options = {}) => {
   return { loading, data, error };
 };
 
-export default useGetUsers;
+const useGetUser = (options = {}) => {
+  const result = useQuery(GET_USER, options);
+  return result;
+};
+
+export { useGetUsers, useGetUser };

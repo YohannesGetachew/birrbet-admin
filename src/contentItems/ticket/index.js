@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
-import { useQuery } from "@apollo/client";
 import ShowTickets from "./showTickets";
 import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
 import { Grid } from "@material-ui/core";
-import { APP } from "../../graphql/app";
+import { useGetApp } from "../../customHooks/dataFetchers";
 import PlacedCount from "./ticketAnylitics";
 import { getFormattedDate } from "../../utils/date";
 import useGetCurrentUserRole from "../../customHooks/helpers/useGetCurrentUserRole";
@@ -22,7 +21,7 @@ const Tickets = () => {
     data: appData,
     loading: loadingApp,
     error: errorLoadingApp,
-  } = useQuery(APP);
+  } = useGetApp();
   const currentUserRole = useGetCurrentUserRole();
   if (loadingTickets || loadingApp) {
     return <Loader />;
@@ -109,3 +108,4 @@ const Tickets = () => {
 };
 
 export default Tickets;
+export { ShowTickets };

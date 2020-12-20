@@ -4,6 +4,7 @@ import Report from "../contentItems/report";
 import Ticket from "../contentItems/ticket";
 import Users from "../contentItems/users";
 import MutateUser from "../contentItems/users/mutateUser";
+import ViewUser from "../contentItems/users/viewUser";
 import Transactions from "../contentItems/transactions";
 import MutateTransaction from "../contentItems/transactions/mutateTransaction";
 import Leagues from "../contentItems/league";
@@ -175,6 +176,12 @@ const CategorizedSuperAdminRoutes = [
             path: "/edit/:id",
             content: MutateUser,
             subRouteName: "Edit user",
+            permission: ["SUPER_ADMIN", "ADMIN"],
+          },
+          {
+            path: "/view/:id",
+            content: ViewUser,
+            subRouteName: "View user",
             permission: ["SUPER_ADMIN", "ADMIN"],
           },
         ],
@@ -442,14 +449,6 @@ const CategorizedCashierRoutes = [
     categoryName: "Customer",
     permission: ["SUPER_ADMIN", "ADMIN"],
     items: [
-      {
-        menuName: "Users",
-        path: "/admin/users",
-        icon: <GroupRoundedIcon style={{ fontSize: "20px" }} />,
-        content: Users,
-        permission: ["ADMIN"],
-        subRoutes: [],
-      },
       {
         menuName: "Transactions",
         path: "/admin/transactions",

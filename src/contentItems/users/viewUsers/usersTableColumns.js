@@ -210,6 +210,14 @@ const gerUsersTableColumns = (
           (currentUserRole === "SUPER_ADMIN" ||
             currentUserRole === "ADMIN") && (
             <>
+              {currentUserRole === "SUPER_ADMIN" && (
+                <CustomIconButton
+                  type="view"
+                  handleClick={() => history.push(`/admin/users/view/${value}`)}
+                  disabled={rowRole !== "CUSTOMER" && rowRole !== "CASHIER"}
+                />
+              )}
+              <div style={{ margin: "4px" }}></div>
               <CustomIconButton
                 type="edit"
                 handleClick={() => history.push(`/admin/users/edit/${value}`)}
