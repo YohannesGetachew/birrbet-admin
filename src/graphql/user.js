@@ -80,7 +80,12 @@ export const GET_USER = gql`
       firstName
       lastName
       username
+      isVerified
+      isActive
       role
+      accountBalance
+      profileImage
+      createdAt
       belongsToShop
       cashierPermissions
     }
@@ -100,6 +105,8 @@ export const UPDATE_USER = gql`
       accountBalance
       profileImage
       createdAt
+      belongsToShop
+      cashierPermissions
     }
   }
 `;

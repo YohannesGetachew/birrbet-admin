@@ -5,7 +5,6 @@ import React from "react";
 import { SubmitButton } from "../../../components/buttons";
 import { AlertError } from "../../../components/errors";
 import { TextField } from "../../../components/fields";
-import style from "../../../components/loader/style";
 import { UPDATE_APP } from "../../../graphql/app";
 import * as Yup from "yup";
 import appStyle from "./style";

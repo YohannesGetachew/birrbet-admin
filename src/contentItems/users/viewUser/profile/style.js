@@ -14,7 +14,7 @@ const style = makeStyles((theme) => ({
   },
   name: {
     fontSize: "30px",
-    color: theme.palette.secondary.light,
+    color: theme.palette.primary.dark,
     marginBottom: "10px",
   },
   username: {
@@ -27,6 +27,15 @@ const style = makeStyles((theme) => ({
     color: theme.palette.success.light,
     fontWeight: "bold",
     padding: "4px",
+  },
+  currency: {
+    fontSize: "12px",
+    marginLeft: "4px",
+  },
+  accountBalance: {
+    fontSize: "16px",
+    marginBottom: "10px",
+    color: theme.palette.secondary.light,
   },
 }));
 
