@@ -4,6 +4,7 @@ import useGetTickets from "./tickets";
 import useGetDepositRequests from "./depositRequests";
 import useGetShops from "./shops";
 import { useGetApp } from "./app";
+import { useGetFixture } from "./fixture";
 
 export {
   useGetUsers,
@@ -13,4 +14,5 @@ export {
   useGetDepositRequests,
   useGetShops,
   useGetApp,
+  useGetFixture,
 };

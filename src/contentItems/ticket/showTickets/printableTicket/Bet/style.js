@@ -1,41 +1,19 @@
-const style = (theme) => ({
-  root: {},
-  ticketItem: {
-    backgroundColor: theme.palette.primary.light,
-    padding: "10px",
-  },
-  alignTextCenter: {
-    textAlign: "center",
-  },
-  smallText: {
-    fontSize: "13px",
-  },
-  padding: {
-    padding: "10px 25px 10px",
+import { makeStyles } from "@material-ui/core/styles";
+
+const style = makeStyles((theme) => ({
+  expired: {
+    fontWeight: "Bold",
+    textAlign: "right",
+    color: theme.palette.error.dark,
+    "@media print": {
+      display: "none",
+    },
   },
   lightText: {
     color: theme.palette.accentOne.dark,
     fontWeight: "600",
     fontSize: "13px",
   },
-  boldFont: {
-    fontSize: "12px",
-    fontWeight: "500",
-    margin: "0 8px 0px 0",
-    color: theme.palette.accentOne.dark,
-  },
-  header: {
-    fontSize: "30px",
-    margin: "16px",
-  },
-  logo: {
-    width: "100px",
-    height: "100px",
-  },
-  bMargin: {
-    marginBottom: "4px",
-  },
-  pending: {},
   bet: {
     paddingLeft: "4px",
     borderRadius: "4px",
@@ -43,13 +21,6 @@ const style = (theme) => ({
       backgroundColor: "transparent !important",
       borderRadius: 0,
       padding: 0,
-    },
-  },
-  statusText: {
-    fontSize: "18px",
-    fontWeight: "bold",
-    "@media print": {
-      display: "none",
     },
   },
   winner: {
@@ -73,17 +44,11 @@ const style = (theme) => ({
   betName: {
     fontWeight: "600",
     color: theme.palette.accentOne.dark,
-    fontSize: "17px",
+    fontSize: "15px",
   },
   betDetails: {
     marginRight: "20px",
   },
-  summary: {
-    justifyContent: "flex-end",
-  },
-  terms: {
-    margin: "20px 0",
-  },
-});
+}));
 
 export default style;

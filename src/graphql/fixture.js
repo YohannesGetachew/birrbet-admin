@@ -30,6 +30,15 @@ export const FIXTURES = gql`
   }
 `;
 
+export const FIXTURE = gql`
+  query Fixture($id: String!) {
+    fixture(id: $id) {
+      _id
+      startDate
+    }
+  }
+`;
+
 export const UPDATE_FIXUTRE = gql`
   mutation UpdateFixture($id: String!, $updateInput: FixtureDTO!) {
     updateFixture(id: $id, updateInput: $updateInput) {

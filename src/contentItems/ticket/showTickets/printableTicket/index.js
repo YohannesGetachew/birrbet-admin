@@ -5,30 +5,21 @@ import PlaceTicketForm from "./placeTicketForm";
 import { calculateTicketReturns } from "../../../../utils/ticketCalculation";
 import logo from "./birrBetTicketPrint.png";
 import { getFormattedDate } from "../../../../utils/date";
+import Bet from "./Bet";
 
 class PrintableTicket extends React.Component {
+  state = {
+    betsPlacableStatus: [],
+  };
+
   COMPANY_NAME = "BIRR BET";
 
-  getBetStatusInfo = (status) => {
-    const { classes } = this.props;
-    switch (status) {
-      case -1:
-        return { style: classes.cancelled, text: "CANCELLED" };
-      case 1:
-        return { style: classes.loser, text: "LOSE" };
-      case 2:
-        return { style: classes.winner, text: "WIN" };
-      case 3:
-        return { style: classes.refund, text: "REFUND" };
-      case 4:
-        return { style: classes.halfLost, text: "HALF LOST" };
-      case 5:
-        return { style: classes.halfWon, text: "HALF WON" };
-      case null:
-        return { style: classes.pending, text: "PENDING" };
-      default:
-        return { style: classes.pending, text: "UNKNOWN" };
-    }
+  checkTicketPlaceable = (betsCount) => {
+    const { betsPlacableStatus } = this.state;
+    const areAllBetsPlaceable = betsPlacableStatus.reduce((prev, cur) => {
+      return prev && cur.isPlaceable;
+    }, true);
+    return betsPlacableStatus.length === betsCount && areAllBetsPlaceable;
   };
 
   render() {
@@ -53,6 +44,8 @@ class PrintableTicket extends React.Component {
       incomeTax,
       possibleWin,
     } = calculateTicketReturns(stake, totalOdds, maxWin);
+    console.log(this.state);
+    console.log(this.props.ticket);
     return (
       <div className={classes.root}>
         <div className={classes.ticketItem}>
@@ -107,13 +100,13 @@ class PrintableTicket extends React.Component {
               classes.bMargin
             }
           >
-            <span className={classes.boldFont}>Cashier:</span>
+            <span className={classes.boldFont}>
+              {placerType === "CASHIER" ? "Cashier:" : "Customer:"}
+            </span>
             <span className={classes.lightText}>
-              {placerType === "CUSTOMER"
-                ? "Placed online"
-                : placerType === "GUEST"
-                ? "Not placed"
-                : `${user.firstName} ${user.lastName}`}
+              {placerType === "CUSTOMER" || placerType === "CASHIER"
+                ? `${user.firstName} ${user.lastName}`
+                : "Not placed"}
             </span>
           </p>
           <p
@@ -142,35 +135,19 @@ class PrintableTicket extends React.Component {
           </p>
           <div className={classes.padding}>
             {bets.map((bet) => {
-              const { status } = bet;
-              const statusInfo = this.getBetStatusInfo(status);
-              const betStatusStyle = statusInfo.style;
               return (
-                <article
+                <Bet
+                  bet={bet}
                   key={bet._id}
-                  className={classes.bet + " " + betStatusStyle}
-                  title={statusInfo.text}
-                >
-                  <p className={classes.betName}>{bet.fixtureName}</p>
-                  <Grid container justify="space-between">
-                    <span
-                      className={classes.betDetails + " " + classes.lightText}
-                    >
-                      {bet.type}
-                    </span>
-                    <span
-                      className={classes.betDetails + " " + classes.lightText}
-                    >
-                      {bet.value}
-                    </span>
-                    <span
-                      className={classes.betDetails + " " + classes.lightText}
-                    >
-                      {bet.oddValue}
-                    </span>
-                  </Grid>
-                  <hr />
-                </article>
+                  setBetStatus={(status) =>
+                    this.setState((prevState) => ({
+                      betsPlacableStatus: [
+                        ...prevState.betsPlacableStatus,
+                        status,
+                      ],
+                    }))
+                  }
+                />
               );
             })}
             <Grid container className={classes.summary}>
@@ -216,6 +193,7 @@ class PrintableTicket extends React.Component {
                   totalOdds={totalOdds}
                   totalBets={bets.length}
                   app={this.props.app}
+                  placeable={this.checkTicketPlaceable(bets.length)}
                 />
               )}
             </Grid>

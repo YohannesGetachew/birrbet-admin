@@ -47,6 +47,7 @@ const PlaceTicketForm = ({
   totalOdds,
   totalBets,
   history,
+  placeable,
   app,
 }) => {
   const [mutate, { error }] = useMutation(UPDATE_TICKET);
@@ -106,7 +107,11 @@ const PlaceTicketForm = ({
               <span className={style.boldLabel}>Possible win:</span>
               {possibleWin} ETB
             </p>
-            <SubmitButton isSubmitting={isSubmitting} label="PLACE" />
+            <SubmitButton
+              isSubmitting={isSubmitting}
+              label={placeable ? "Place" : "Time is up"}
+              disabled={!placeable}
+            />
           </Form>
         );
       }}
