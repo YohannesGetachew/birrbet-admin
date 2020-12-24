@@ -62,7 +62,7 @@ const getLeagueTableColumns = (theme, handleModalOpen) => [
       sort: false,
       filter: false,
       customBodyRender: (value, tableMeta) => {
-        const isTop = tableMeta.rowData[1];
+        const isTop = tableMeta.rowData[3];
         return (
           <Button
             size="small"
