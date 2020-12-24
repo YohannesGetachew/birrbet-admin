@@ -17,6 +17,21 @@ const getLeagueTableColumns = (theme, handleModalOpen) => [
   //   label: "Country",
   // },
   {
+    name: "country.name",
+    label: "Country name",
+  },
+  {
+    name: "country.flag",
+    label: "Country flag",
+    options: {
+      filter: "false",
+      sort: "false",
+      customBodyRender: (value) => {
+        return <img width="20px" height="20px" src={value} alt={"name"} />;
+      },
+    },
+  },
+  {
     name: "isTop",
     label: "Is top",
     options: {

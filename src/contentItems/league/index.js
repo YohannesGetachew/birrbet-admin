@@ -46,7 +46,7 @@ const Leagues = () => {
 
   if (loadingLeagues) return <Loader />;
   if (errorLoadingLeagues) return <AlertError />;
-
+  console.log(leagues);
   const handleModalOpen = (isTop, id) => {
     setMutationVariables({ id: id, updateInput: { isTop: isTop } });
     topLeagueModalRef.current.openModal();

@@ -9,6 +9,11 @@ export const LEAGUES = gql`
       order
       isAvailable
       isTop
+      country {
+        _id
+        name
+        flag
+      }
     }
   }
 `;

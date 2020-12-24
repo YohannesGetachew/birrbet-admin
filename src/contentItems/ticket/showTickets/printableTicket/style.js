@@ -26,7 +26,7 @@ const style = (theme) => ({
   },
   header: {
     fontSize: "30px",
-    margin: "16px",
+    margin: "12px 0px 4px",
   },
   logo: {
     width: "100px",

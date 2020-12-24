@@ -44,8 +44,6 @@ class PrintableTicket extends React.Component {
       incomeTax,
       possibleWin,
     } = calculateTicketReturns(stake, totalOdds, maxWin);
-    console.log(this.state);
-    console.log(this.props.ticket);
     return (
       <div className={classes.root}>
         <div className={classes.ticketItem}>

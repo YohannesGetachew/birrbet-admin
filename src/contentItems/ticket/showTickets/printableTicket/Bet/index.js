@@ -3,6 +3,7 @@ import { Skeleton } from "@material-ui/lab";
 import React, { useEffect } from "react";
 import { AlertError } from "../../../../../components/errors";
 import { useGetFixture } from "../../../../../customHooks/dataFetchers";
+import { getFormattedDate } from "../../../../../utils/date";
 import style from "./style";
 
 const useCheckFixturePlaceable = (id) => {
@@ -20,7 +21,7 @@ const useCheckFixturePlaceable = (id) => {
       isPlaceable = true;
     }
   }
-  return { loading, isPlaceable, error };
+  return { loading, data, isPlaceable, error };
 };
 
 const Bet = ({ bet, setBetStatus }) => {
@@ -28,7 +29,7 @@ const Bet = ({ bet, setBetStatus }) => {
   const classes = style();
   const statusInfo = getBetStatusInfo(status, classes);
   const betStatusStyle = statusInfo.style;
-  const { loading, isPlaceable, error } = useCheckFixturePlaceable(
+  const { loading, data, isPlaceable, error } = useCheckFixturePlaceable(
     bet.fixtureId
   );
   useEffect(() => {
@@ -42,6 +43,8 @@ const Bet = ({ bet, setBetStatus }) => {
   if (error) {
     return <AlertError />;
   }
+  // const betStartDate = getFormattedDate(data.fixture.startDate, true);
+  // console.log(bet.fixtureName, betStartDate);
   return (
     <article
       key={bet._id}
@@ -52,6 +55,7 @@ const Bet = ({ bet, setBetStatus }) => {
         <p className={classes.expired}>Match started</p>
       )}
       <p className={classes.betName}>{bet.fixtureName}</p>
+      {/* <p className={classes.betName}>{betStartDate}</p> */}
       <Grid container justify="space-between">
         <span className={classes.betDetails + " " + classes.lightText}>
           {bet.type}
