@@ -3,25 +3,33 @@ import { Skeleton } from "@material-ui/lab";
 import React, { useEffect } from "react";
 import { AlertError } from "../../../../../components/errors";
 import { useGetFixture } from "../../../../../customHooks/dataFetchers";
-import { getFormattedDate } from "../../../../../utils/date";
+import {
+  getFormattedDate,
+  convertUtcToLocal,
+  convertLocalToUtc,
+} from "../../../../../utils/date";
 import style from "./style";
 
 const useCheckFixturePlaceable = (id) => {
   const { loading, data, error } = useGetFixture({ variables: { id } });
   let isPlaceable = undefined;
+  let startDate;
   if (data) {
-    const d = new Date().setMinutes(
-      new Date().getMinutes() + new Date().getTimezoneOffset()
-    );
-    const now = new Date(d);
-    const fixDate = new Date(data.fixture.startDate);
-    if (now > fixDate) {
-      isPlaceable = false;
+    if (data.fixture) {
+      startDate = data.fixture.startDate;
+      const localToUTCNow = convertLocalToUtc(new Date());
+      const fixDate = new Date(startDate);
+      if (localToUTCNow > fixDate) {
+        isPlaceable = false;
+      } else {
+        isPlaceable = true;
+      }
     } else {
       isPlaceable = true;
+      startDate = "00/00/00";
     }
   }
-  return { loading, data, isPlaceable, error };
+  return { loading, startDate, isPlaceable, error };
 };
 
 const Bet = ({ bet, setBetStatus }) => {
@@ -29,7 +37,7 @@ const Bet = ({ bet, setBetStatus }) => {
   const classes = style();
   const statusInfo = getBetStatusInfo(status, classes);
   const betStatusStyle = statusInfo.style;
-  const { loading, data, isPlaceable, error } = useCheckFixturePlaceable(
+  const { loading, startDate, isPlaceable, error } = useCheckFixturePlaceable(
     bet.fixtureId
   );
   useEffect(() => {
@@ -43,19 +51,17 @@ const Bet = ({ bet, setBetStatus }) => {
   if (error) {
     return <AlertError />;
   }
-  // const betStartDate = getFormattedDate(data.fixture.startDate, true);
-  // console.log(bet.fixtureName, betStartDate);
+  const localFixtueDate = convertUtcToLocal(startDate);
+  const formattedLocalFixtureDate = getFormattedDate(localFixtueDate, true);
   return (
     <article
       key={bet._id}
       className={classes.bet + " " + betStatusStyle}
       title={statusInfo.text}
     >
-      {isPlaceable === false && (
-        <p className={classes.expired}>Match started</p>
-      )}
+      {isPlaceable === false && <p className={classes.expired}>Bet Expired</p>}
       <p className={classes.betName}>{bet.fixtureName}</p>
-      {/* <p className={classes.betName}>{betStartDate}</p> */}
+      <p className={classes.fixtureDate}>{formattedLocalFixtureDate}</p>
       <Grid container justify="space-between">
         <span className={classes.betDetails + " " + classes.lightText}>
           {bet.type}
@@ -67,6 +73,7 @@ const Bet = ({ bet, setBetStatus }) => {
           {bet.oddValue}
         </span>
       </Grid>
+      <div className={classes.betDivider}></div>
       <hr />
     </article>
   );

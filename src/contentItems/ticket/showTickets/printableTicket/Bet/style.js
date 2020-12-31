@@ -44,7 +44,12 @@ const style = makeStyles((theme) => ({
   betName: {
     fontWeight: "600",
     color: theme.palette.accentOne.dark,
-    fontSize: "15px",
+    fontSize: "14px",
+  },
+  fixtureDate: {
+    fontWeight: "600",
+    color: theme.palette.accentOne.dark,
+    fontSize: "13px",
   },
   betDetails: {
     marginRight: "20px",

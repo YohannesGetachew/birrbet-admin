@@ -67,6 +67,20 @@ const getFormattedDate = (dateTime, includeTime) => {
   return formattedDate;
 };
 
+const convertUtcToLocal = (dateTime) => {
+  const localDate = new Date(dateTime).setHours(
+    new Date(dateTime).getHours() - new Date().getTimezoneOffset() / 60
+  );
+  return new Date(localDate);
+};
+
+const convertLocalToUtc = (dateTime) => {
+  const utcDate = new Date(dateTime).setHours(
+    new Date(dateTime).getHours() + new Date().getTimezoneOffset() / 60
+  );
+  return new Date(utcDate);
+};
+
 export {
   convertFromUnix,
   convertToUnix,
@@ -78,4 +92,6 @@ export {
   getDateRelativeToToday,
   getWeekRelativeToThisWeek,
   getMonthRelativeToThisMonth,
+  convertUtcToLocal,
+  convertLocalToUtc,
 };
