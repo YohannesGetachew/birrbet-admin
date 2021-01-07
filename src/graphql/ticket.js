@@ -35,9 +35,11 @@ export const TICKETS = gql`
         _id
         firstName
         lastName
+        belongsToShop
       }
       shop {
         _id
+        branchName
       }
       bets {
         _id

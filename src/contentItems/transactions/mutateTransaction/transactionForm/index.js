@@ -99,7 +99,7 @@ const TransactionForm = ({ type, customers, history }) => {
                 {values.customer ? (
                   <>
                     <span className={style.amount}>
-                      {values.customer.accountBalance}
+                      {values.customer.accountBalance.toFixed(2)}
                     </span>
                     <span className={style.currency}>birr</span>
                   </>

@@ -15,6 +15,8 @@ import reportStyle from "./style";
 import getTicketsAndWinnersTableInfo from "./ticketsAndWinners";
 import { APP } from "../../graphql/app";
 import { useGetTickets, useGetUsers } from "../../customHooks/dataFetchers";
+import useGetCurrentUserRole from "../../customHooks/helpers/useGetCurrentUserRole";
+import { sortShopsByTickets } from "../../customHooks/dataFetchers/shops";
 
 // daily tickets
 // daily winners
@@ -42,6 +44,8 @@ const Report = () => {
     error: errorLoadingApp,
   } = useQuery(APP);
 
+  const currentUserRole = useGetCurrentUserRole();
+
   const [currentTab, setCurrentTab] = useState("tickets");
 
   const theme = useTheme();
@@ -58,10 +62,6 @@ const Report = () => {
     return <AlertError />;
 
   const {
-    data: transactionReportData,
-    columns: transactionReportColumns,
-  } = getTransactionsReportTableInfo(transactions.transactions, theme);
-  const {
     data: ticketsReportData,
     columns: ticketsColumns,
     allTimeUserWon,
@@ -75,10 +75,37 @@ const Report = () => {
     if (user.role === "CUSTOMER") customers.push(user);
   });
 
+  const filteredTransactionsForAdmin = transactions.transactions.filter(
+    (transaction) => {
+      return cashiers.find(
+        (cashier) => cashier._id === transaction.cashier._id
+      );
+    }
+  );
+
+  const filteredTransactions =
+    currentUserRole === "SUPER_ADMIN"
+      ? transactions.transactions
+      : filteredTransactionsForAdmin;
+  const {
+    data: transactionReportData,
+    columns: transactionReportColumns,
+  } = getTransactionsReportTableInfo(filteredTransactions, theme);
+
   const {
     data: customersReportData,
     columns: customersReportColumns,
   } = getCustomersReportData(customers);
+
+  const shopsToTicketsMap = sortShopsByTickets(ticketData.tickets);
+
+  const shopsToTicketsReport = shopsToTicketsMap.map((shopToTicketsMap) => {
+    const shopTicketsReport = getTicketsAndWinnersTableInfo(
+      ticketData.tickets,
+      appData.app
+    );
+    return { shop: shopToTicketsMap.shop, shopTicketsReport };
+  });
 
   return (
     <>
@@ -93,15 +120,24 @@ const Report = () => {
           <MenuItem key={"tickets"} value={"tickets"}>
             Tickets
           </MenuItem>
-          <MenuItem key={"cashiers"} value={"cashiers"}>
-            Cashiers
-          </MenuItem>
+          {currentUserRole === "ADMIN" && (
+            <MenuItem key={"cashiers"} value={"cashiers"}>
+              Cashiers
+            </MenuItem>
+          )}
           <MenuItem key={"transactions"} value={"transactions"}>
             Transactions
           </MenuItem>
-          <MenuItem key={"customers"} value={"customers"}>
-            Customers
-          </MenuItem>
+          {currentUserRole === "SUPER_ADMIN" && (
+            <MenuItem key={"customers"} value={"customers"}>
+              Customers
+            </MenuItem>
+          )}
+          {currentUserRole === "SUPER_ADMIN" && (
+            <MenuItem key={"shops"} value={"shops"}>
+              Shops
+            </MenuItem>
+          )}
         </TextField>
       </div>
       <div className={style.tabBody}>
@@ -135,25 +171,26 @@ const Report = () => {
             </Grid>
           </Grid>
         )}
-
         {currentTab === "cashiers" &&
-          cashiers.map((cashier) => {
-            const { data, columns } = getCashiersReportDataAndColumns(
-              cashier,
-              ticketData.tickets
-            );
-            return (
-              <div className={style.cashierTable}>
-                <Table
-                  key={cashier._id}
-                  title={cashier.firstName + " " + cashier.lastName}
-                  data={data}
-                  columns={columns}
-                />
-              </div>
-            );
-          })}
-
+          (cashiers.length === 0 ? (
+            <h1>Sorry no cashiers placed tickets</h1>
+          ) : (
+            cashiers.map((cashier) => {
+              const { data, columns } = getCashiersReportDataAndColumns(
+                cashier,
+                ticketData.tickets
+              );
+              return (
+                <div key={cashier._id} className={style.cashierTable}>
+                  <Table
+                    title={cashier.firstName + " " + cashier.lastName}
+                    data={data}
+                    columns={columns}
+                  />
+                </div>
+              );
+            })
+          ))}
         {currentTab === "transactions" && (
           <Table
             title="Daily transactions report "
@@ -161,7 +198,6 @@ const Report = () => {
             columns={transactionReportColumns}
           />
         )}
-
         {currentTab === "customers" && (
           <Table
             title="Daily registered customers"
@@ -169,6 +205,43 @@ const Report = () => {
             columns={customersReportColumns}
           />
         )}
+        {currentTab === "shops" &&
+          shopsToTicketsReport.map((shopReport) => {
+            return (
+              <Grid key={shopReport.shop._id} container spacing={2}>
+                <Grid item xs={12} md={8}>
+                  <Table
+                    title={shopReport.shop.branchName}
+                    data={shopReport.shopTicketsReport.data}
+                    columns={shopReport.shopTicketsReport.columns}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <div
+                    className={
+                      style.allTimeTicketIncome + " " + style.allTimeUserWon
+                    }
+                  >
+                    <h2 className={style.allTimeTitle}>All time user won</h2>
+                    <h6 className={style.allTimeNumber}>
+                      {shopReport.shopTicketsReport.allTimeUserWon}
+                    </h6>
+                  </div>
+
+                  <div
+                    className={
+                      style.allTimeTicketIncome + " " + style.allTimeSystemWon
+                    }
+                  >
+                    <h2 className={style.allTimeTitle}>All time system won</h2>
+                    <h6 className={style.allTimeNumber}>
+                      {shopReport.shopTicketsReport.allTimeSystemWon}
+                    </h6>
+                  </div>
+                </Grid>
+              </Grid>
+            );
+          })}
       </div>
     </>
   );

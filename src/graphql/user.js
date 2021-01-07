@@ -23,6 +23,7 @@ export const CURRENT_USER = gql`
       role
       accountBalance
       profileImage
+      belongsToShop
     }
   }
 `;
@@ -40,6 +41,7 @@ export const IS_USER_EXISTS = gql`
       accountBalance
       profileImage
       createdAt
+      belongsToShop
     }
   }
 `;

@@ -32,6 +32,7 @@ export const TRANSACTIONS = gql`
         firstName
         lastName
         username
+        belongsToShop
       }
     }
   }

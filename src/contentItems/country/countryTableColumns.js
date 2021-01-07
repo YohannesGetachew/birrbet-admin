@@ -5,7 +5,7 @@ import { CustomIconButton } from "../../components/buttons/iconButtons";
 const getCountryColumns = (theme, mutate, handleCountryUpdate, isUpdating) => [
   {
     name: "name",
-    label: "Sport name",
+    label: "Country name",
   },
   {
     name: "isAvailable",

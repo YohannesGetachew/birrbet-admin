@@ -70,7 +70,6 @@ const Sport = () => {
   };
   if (loadingSports) return <Loader />;
   if (errorLoadingSports) return <AlertError />;
-
   return (
     <>
       {errorUpdatingSport && <AlertError />}

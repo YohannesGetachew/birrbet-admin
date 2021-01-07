@@ -44,7 +44,6 @@ class PrintableTicket extends React.Component {
       incomeTax,
       possibleWin,
     } = calculateTicketReturns(stake, totalOdds, maxWin);
-    console.log(this.props.ticket);
     return (
       <div className={classes.root}>
         <div className={classes.ticketItem}>
@@ -118,7 +117,7 @@ class PrintableTicket extends React.Component {
             }
           >
             <span className={classes.boldFont}>Phone number:</span>
-            <span className={classes.lightText}>0966415868</span>
+            <span className={classes.lightText}>0966415859</span>
           </p>
           <p
             className={

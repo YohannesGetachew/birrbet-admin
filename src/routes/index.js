@@ -246,13 +246,13 @@ const CategorizedAdminRoutes = [
     categoryName: "Data",
     permission: ["SUPER_ADMIN", "ADMIN"],
     items: [
-      {
-        menuName: "Dashboard",
-        path: "/admin/dashboard",
-        icon: <DashboardRoundedIcon style={{ fontSize: "20px" }} />,
-        content: DashboardDataFetcher,
-        permission: ["SUPER_ADMIN", "ADMIN"],
-      },
+      // {
+      //   menuName: "Dashboard",
+      //   path: "/admin/dashboard",
+      //   icon: <DashboardRoundedIcon style={{ fontSize: "20px" }} />,
+      //   content: DashboardDataFetcher,
+      //   permission: ["SUPER_ADMIN", "ADMIN"],
+      // },
       {
         menuName: "Reports",
         path: "/admin/reports",

@@ -140,6 +140,16 @@ const getTicketReport = (tickets, app) => {
             convertFromUnix(ticketUpdatedDate)
               ? 1
               : 0,
+          totalStake:
+            convertFromUnix(ticketPlacedDate) ===
+            convertFromUnix(ticketUpdatedDate)
+              ? ticket.stake
+              : 0,
+          comission:
+            convertFromUnix(ticketPlacedDate) ===
+            convertFromUnix(ticketUpdatedDate)
+              ? ticket.stake * 0.15
+              : 0,
           winnerCount: isTicketWinner ? 1 : 0,
           //netUserWon: ticketIncome.userWon,
           //netSystemWon: ticketIncome.systemWon,
@@ -151,6 +161,8 @@ const getTicketReport = (tickets, app) => {
         dailyTicketReport.push({
           date: ticketPlacedDate, //
           placedTicketCount: 1,
+          totalStake: ticket.stake,
+          comission: ticket.stake * 0.15,
           winnerCount: isTicketWinner ? 1 : 0,
           // netUserWon: ticketIncome.userWon,
           //netSystemWon: ticketIncome.systemWon,
@@ -167,6 +179,16 @@ const getTicketReport = (tickets, app) => {
         dailyTicketReport[reportIndex].winnerCount = isTicketWinner
           ? dailyTicketReport[reportIndex].winnerCount + 1
           : dailyTicketReport[reportIndex].winnerCount;
+        dailyTicketReport[reportIndex].totalStake =
+          convertFromUnix(ticketPlacedDate) ===
+          convertFromUnix(ticketUpdatedDate)
+            ? dailyTicketReport[reportIndex].totalStake + ticket.stake
+            : dailyTicketReport[reportIndex].totalStake;
+        dailyTicketReport[reportIndex].comission =
+          convertFromUnix(ticketPlacedDate) ===
+          convertFromUnix(ticketUpdatedDate)
+            ? dailyTicketReport[reportIndex].comission + ticket.stake * 0.15
+            : dailyTicketReport[reportIndex].comission;
         // dailyTicketReport[reportIndex].netUserWon =
         //   dailyTicketReport[reportIndex].netUserWon + ticketIncome.userWon;
         // dailyTicketReport[reportIndex].netSystemWon =
@@ -181,6 +203,10 @@ const getTicketReport = (tickets, app) => {
         dailyTicketReport[reportIndex].placedTicketCount = ticket.isPlaced
           ? dailyTicketReport[reportIndex].placedTicketCount + 1
           : dailyTicketReport[reportIndex].placedTicketCount;
+        dailyTicketReport[reportIndex].totalStake =
+          dailyTicketReport[reportIndex].totalStake + ticket.stake;
+        dailyTicketReport[reportIndex].comission =
+          dailyTicketReport[reportIndex].comission + ticket.stake * 0.15;
         // dailyTicketReport[reportIndex].winnerCount
         // dailyTicketReport[reportIndex].netUserWon =
         //   dailyTicketReport[reportIndex].netUserWon + ticketIncome.userWon;
@@ -212,6 +238,20 @@ const getTicketsAndWinnersTableInfo = (tickets, app) => {
       label: "Winners",
       options: {
         ...getCustomFilterListOptions("Winners"),
+      },
+    },
+    {
+      name: "totalStake",
+      label: "Total stake",
+      options: {
+        ...getCustomFilterListOptions("Total stake"),
+      },
+    },
+    {
+      name: "comission",
+      label: "Comission(15%)",
+      options: {
+        ...getCustomFilterListOptions("Comission(15%)"),
       },
     },
     // {

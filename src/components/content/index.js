@@ -12,9 +12,7 @@ const Content = () => {
   const style = contentStyle();
   const Routes = getAuthorizedRoutes(role);
   const defaultRoute =
-    role === "SUPER_ADMIN" || role === "ADMIN"
-      ? "/admin/dashboard"
-      : "/admin/tickets";
+    role === "SUPER_ADMIN" ? "/admin/dashboard" : "/admin/tickets";
   return (
     <div className={style.root}>
       <div className={style.headerNbodyC}>
