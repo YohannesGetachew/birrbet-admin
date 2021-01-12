@@ -20,8 +20,25 @@ export const sortShopsByTickets = (tickets) => {
   const shopsToTicketsMap = [];
   tickets.forEach((ticket) => {
     const { placerType } = ticket;
-    const doesTicketBelongToShop = placerType === "CASHIER";
-    if (!doesTicketBelongToShop) return;
+    if (placerType !== "CASHIER" && placerType !== "CUSTOMER") return;
+    if (placerType === "CUSTOMER") {
+      const onlineShopIndex = shopsToTicketsMap.findIndex(
+        (shopToTicketMap) => shopToTicketMap.shop._id === "online"
+      );
+
+      const onlineShop = {
+        _id: "online",
+        branchName: "Online",
+      };
+
+      onlineShopIndex < 0
+        ? shopsToTicketsMap.push({
+            shop: onlineShop,
+            tickets: [ticket],
+          })
+        : shopsToTicketsMap[onlineShopIndex].tickets.push(ticket);
+      return;
+    }
     const shopIndex = shopsToTicketsMap.findIndex(
       (shopToTicketMap) =>
         shopToTicketMap.shop._id === ticket.user.belongsToShop

@@ -64,3 +64,8 @@ const filterTicketsForRole = (tickets, currentUser, adminsShop) => {
 
   return newTickets;
 };
+
+export const getWinnerTickets = (tickets) => {
+  const winnerTickets = tickets.filter((ticket) => ticket.status === "WIN");
+  return winnerTickets;
+};

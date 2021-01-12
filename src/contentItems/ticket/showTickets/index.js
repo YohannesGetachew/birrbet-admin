@@ -9,6 +9,7 @@ import { useReactToPrint } from "react-to-print";
 import { AuthContext } from "../../../contexts/auth";
 
 const Ticket = ({ tickets, app }) => {
+  console.log(tickets);
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,

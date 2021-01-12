@@ -1,5 +1,12 @@
 import { useQuery } from "@apollo/client";
-import { Grid, Tabs, Tab, TextField, MenuItem } from "@material-ui/core";
+import {
+  Grid,
+  Tabs,
+  Tab,
+  TextField,
+  MenuItem,
+  Button,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import { AlertError } from "../../components/errors";
 import Loader from "../../components/loader";
@@ -17,6 +24,10 @@ import { APP } from "../../graphql/app";
 import { useGetTickets, useGetUsers } from "../../customHooks/dataFetchers";
 import useGetCurrentUserRole from "../../customHooks/helpers/useGetCurrentUserRole";
 import { sortShopsByTickets } from "../../customHooks/dataFetchers/shops";
+import { shopTicketsSummary, winnerReportSummary } from "./shopReport";
+import { getWinnerTickets } from "../../customHooks/dataFetchers/tickets";
+import { convertFromUnix } from "../../utils/date";
+import { calculateTicketReturns } from "../../utils/ticketCalculation";
 
 // daily tickets
 // daily winners
@@ -47,6 +58,7 @@ const Report = () => {
   const currentUserRole = useGetCurrentUserRole();
 
   const [currentTab, setCurrentTab] = useState("tickets");
+  const [shopsTab, setShopsTab] = useState("summary");
 
   const theme = useTheme();
   const style = reportStyle();
@@ -101,11 +113,13 @@ const Report = () => {
 
   const shopsToTicketsReport = shopsToTicketsMap.map((shopToTicketsMap) => {
     const shopTicketsReport = getTicketsAndWinnersTableInfo(
-      ticketData.tickets,
+      shopToTicketsMap.tickets,
       appData.app
     );
     return { shop: shopToTicketsMap.shop, shopTicketsReport };
   });
+
+  const winnerTickets = getWinnerTickets(ticketData.tickets);
 
   return (
     <>
@@ -205,43 +219,114 @@ const Report = () => {
             columns={customersReportColumns}
           />
         )}
-        {currentTab === "shops" &&
-          shopsToTicketsReport.map((shopReport) => {
-            return (
-              <Grid key={shopReport.shop._id} container spacing={2}>
-                <Grid item xs={12} md={8}>
-                  <Table
-                    title={shopReport.shop.branchName}
-                    data={shopReport.shopTicketsReport.data}
-                    columns={shopReport.shopTicketsReport.columns}
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <div
-                    className={
-                      style.allTimeTicketIncome + " " + style.allTimeUserWon
-                    }
-                  >
-                    <h2 className={style.allTimeTitle}>All time user won</h2>
-                    <h6 className={style.allTimeNumber}>
-                      {shopReport.shopTicketsReport.allTimeUserWon}
-                    </h6>
-                  </div>
+        {currentTab === "shops" && (
+          <>
+            <div style={{ textAlign: "right", marginBottom: "4px" }}>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => setShopsTab("daily")}
+              >
+                Daily
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setShopsTab("summary")}
+                style={{ marginLeft: "5px" }}
+              >
+                Summary
+              </Button>
+            </div>
+            {shopsTab === "daily" ? (
+              shopsToTicketsReport.map((shopReport) => {
+                return (
+                  <Grid key={shopReport.shop._id} container spacing={2}>
+                    <Grid item xs={12} md={8}>
+                      <Table
+                        title={shopReport.shop.branchName}
+                        data={shopReport.shopTicketsReport.data}
+                        columns={shopReport.shopTicketsReport.columns}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <div
+                        className={
+                          style.allTimeTicketIncome + " " + style.allTimeUserWon
+                        }
+                      >
+                        <h2 className={style.allTimeTitle}>
+                          All time user won
+                        </h2>
+                        <h6 className={style.allTimeNumber}>
+                          {shopReport.shopTicketsReport.allTimeUserWon}
+                        </h6>
+                      </div>
 
-                  <div
-                    className={
-                      style.allTimeTicketIncome + " " + style.allTimeSystemWon
-                    }
-                  >
-                    <h2 className={style.allTimeTitle}>All time system won</h2>
-                    <h6 className={style.allTimeNumber}>
-                      {shopReport.shopTicketsReport.allTimeSystemWon}
-                    </h6>
-                  </div>
-                </Grid>
-              </Grid>
-            );
-          })}
+                      <div
+                        className={
+                          style.allTimeTicketIncome +
+                          " " +
+                          style.allTimeSystemWon
+                        }
+                      >
+                        <h2 className={style.allTimeTitle}>
+                          All time system won
+                        </h2>
+                        <h6 className={style.allTimeNumber}>
+                          {shopReport.shopTicketsReport.allTimeSystemWon}
+                        </h6>
+                      </div>
+                    </Grid>
+                  </Grid>
+                );
+              })
+            ) : (
+              <>
+                <Table
+                  title="Sales report"
+                  data={shopsToTicketsMap.map((shopToTicketsMap) => {
+                    const { tickets } = shopToTicketsMap;
+                    const beforeVat = tickets.reduce(
+                      (ac, cu) => ac + cu.stake,
+                      0
+                    );
+                    return {
+                      noOfPlaced: tickets.length,
+                      beforeVat,
+                      totalStake: beforeVat - beforeVat * 0.15,
+                      vat: "15%",
+                      branchName: shopToTicketsMap.shop.branchName,
+                    };
+                  })}
+                  columns={shopTicketsSummary}
+                />
+                <div style={{ margin: "16px" }}></div>
+                <Table
+                  title="Winning payment"
+                  data={winnerTickets.map((ticket) => {
+                    const { stake, totalOdds } = ticket;
+                    const ticketReturns = calculateTicketReturns(
+                      stake,
+                      totalOdds,
+                      appData.app
+                    );
+                    return {
+                      ...ticket,
+                      grossWinAmount: (
+                        ticketReturns.possibleWin - ticketReturns.incomeTax
+                      ).toFixed(2),
+                      netPayment: ticketReturns.possibleWin,
+                      incomeTax: ticketReturns.incomeTax,
+                      updatedAt: convertFromUnix(ticket.updatedAt),
+                    };
+                  })}
+                  columns={winnerReportSummary}
+                />
+              </>
+            )}
+          </>
+        )}
       </div>
     </>
   );

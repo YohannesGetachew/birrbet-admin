@@ -29,3 +29,18 @@ const translatePhrase = (
 };
 
 export default translatePhrase;
+
+// return new Promise((resolve, reject) => {
+//   if (!phraseToTranslate) reject("No phrase provider");
+//   if (preferredLocaleCode !== "am")
+//     reject("Only translations to amharic supported");
+//   const locale = availableDictionaries[dictionaryToFindIn].find(
+//     (locale) => locale.en === phraseToTranslate
+//   );
+//   if (!locale) {
+//     return resolve(phraseToTranslate);
+//   } else {
+//     const translatedPhrase = locale[preferredLocaleCode];
+//     return resolve(translatedPhrase);
+//   }
+// });

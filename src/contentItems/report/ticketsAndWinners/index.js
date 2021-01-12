@@ -224,7 +224,9 @@ const getTicketsAndWinnersTableInfo = (tickets, app) => {
     {
       name: "date",
       label: "Date",
-      ...getDateConfig(),
+      ...getDateConfig(true, (value, tableMeta) => {
+        return value;
+      }),
     },
     {
       name: "placedTicketCount",
@@ -274,7 +276,10 @@ const getTicketsAndWinnersTableInfo = (tickets, app) => {
   const ticketReport = getTicketReport(tickets, app);
 
   return {
-    data: ticketReport.dailyTicketReport,
+    data: ticketReport.dailyTicketReport.map((report) => ({
+      ...report,
+      date: convertFromUnix(report.date),
+    })),
     columns: ticketsReportColumns,
     allTimeUserWon: ticketReport.allTimeUserWon.toFixed(2),
     allTimeSystemWon: ticketReport.allTimeSystemWon.toFixed(2),
