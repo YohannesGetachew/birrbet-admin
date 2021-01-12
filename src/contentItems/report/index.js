@@ -223,14 +223,14 @@ const Report = () => {
           <>
             <div style={{ textAlign: "right", marginBottom: "4px" }}>
               <Button
-                variant="outlined"
+                variant={shopsTab === "daily" ? "contained" : "outlined"}
                 color="secondary"
                 onClick={() => setShopsTab("daily")}
               >
                 Daily
               </Button>
               <Button
-                variant="contained"
+                variant={shopsTab === "summary" ? "contained" : "outlined"}
                 color="secondary"
                 onClick={() => setShopsTab("summary")}
                 style={{ marginLeft: "5px" }}
