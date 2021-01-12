@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
+import Barcode from "react-barcode";
 import printableTicketStyle from "./style";
 import PlaceTicketForm from "./placeTicketForm";
 import { calculateTicketReturns } from "../../../../utils/ticketCalculation";
@@ -66,10 +67,21 @@ class PrintableTicket extends React.Component {
               </>
             ) : (
               <>
-                <span className={classes.boldFont}>Placement ID:</span>
-                <span className={classes.lightText}>
-                  {placementID ? placementID : "Not placed"}
-                </span>
+                <div className={classes.alignTextCenter}>
+                  <Barcode
+                    value={placementID}
+                    displayValue={false}
+                    height={50}
+                  />
+                </div>
+                <div
+                  className={classes.alignTextCenter + " " + classes.bMargin}
+                >
+                  <span className={classes.boldFont}>Placement ID:</span>
+                  <span className={classes.lightText}>
+                    {placementID ? placementID : "Not placed"}
+                  </span>
+                </div>
               </>
             )}
           </p>
