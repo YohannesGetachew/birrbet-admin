@@ -12,6 +12,7 @@ const handleCountryUpdate = async (id, isAvailable, order, mutate) => {
     await mutate({
       variables: { id, updateInput: { isAvailable: !isAvailable, order } },
     });
+    window.location.reload(false);
   } catch (err) {
     return;
   }

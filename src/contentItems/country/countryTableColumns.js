@@ -38,8 +38,8 @@ const getCountryColumns = (theme, mutate, handleCountryUpdate, isUpdating) => [
       filter: false,
       sort: false,
       customBodyRender: (value, tableMeta) => {
-        const isAvailable = tableMeta.rowData[2];
-        const order = tableMeta.rowData[1];
+        const isAvailable = tableMeta.rowData[1];
+        const order = 0;
 
         return (
           <CustomIconButton

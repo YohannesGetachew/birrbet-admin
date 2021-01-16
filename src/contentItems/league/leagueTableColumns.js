@@ -3,7 +3,13 @@ import React from "react";
 import { CustomIconButton } from "../../components/buttons/iconButtons";
 import Tag from "../../components/tag";
 
-const getLeagueTableColumns = (theme, handleModalOpen) => [
+const getLeagueTableColumns = (
+  theme,
+  handleModalOpen,
+  isUpdating,
+  editLeagueAvailability,
+  mutate
+) => [
   {
     name: "name",
     label: "Name",
@@ -19,6 +25,30 @@ const getLeagueTableColumns = (theme, handleModalOpen) => [
   {
     name: "country.name",
     label: "Country name",
+  },
+  {
+    name: "isAvailable",
+    label: "Is available",
+    options: {
+      customBodyRender: (value) => {
+        const colors = value
+          ? {
+              backgroundColor: theme.palette.success.light,
+              color: theme.palette.success.dark,
+            }
+          : {
+              backgroundColor: theme.palette.error.light,
+              color: theme.palette.error.dark,
+            };
+        return (
+          <Tag
+            label={value ? "Yes" : "No"}
+            textColor={colors.color}
+            backgroundColor={colors.backgroundColor}
+          />
+        );
+      },
+    },
   },
   {
     name: "country.flag",
@@ -62,21 +92,32 @@ const getLeagueTableColumns = (theme, handleModalOpen) => [
       sort: false,
       filter: false,
       customBodyRender: (value, tableMeta) => {
-        const isTop = tableMeta.rowData[3];
+        const isTop = tableMeta.rowData[4];
+        const isAvailable = tableMeta.rowData[2];
         return (
-          <Button
-            size="small"
-            variant="contained"
-            style={{
-              backgroundColor: isTop
-                ? theme.palette.accentTwo.dark
-                : theme.palette.secondary.main,
-              color: theme.palette.primary.light,
-            }}
-            onClick={() => handleModalOpen(isTop, value)}
-          >
-            {isTop ? "Remove from top" : "Make top"}
-          </Button>
+          <>
+            <Button
+              size="small"
+              variant="contained"
+              style={{
+                backgroundColor: isTop
+                  ? theme.palette.accentTwo.dark
+                  : theme.palette.secondary.main,
+                color: theme.palette.primary.light,
+              }}
+              onClick={() => handleModalOpen(isTop, value)}
+            >
+              {isTop ? "Remove from top" : "Make top"}
+            </Button>
+            <CustomIconButton
+              type="lock"
+              locked={!isAvailable}
+              loading={isUpdating}
+              handleClick={() =>
+                editLeagueAvailability(value, isAvailable, isTop, mutate)
+              }
+            />
+          </>
         );
       },
     },

@@ -10,17 +10,37 @@ import { Button, useTheme } from "@material-ui/core";
 import { CancelButton } from "../../components/buttons";
 import leagueStyle from "./style";
 import { SubmitButton } from "../../components/buttons";
-import { ErrorOutlineSharp } from "@material-ui/icons";
+import { DesktopWindows, ErrorOutlineSharp } from "@material-ui/icons";
 
 const handleLeagueUpdate = async (mutate, variables, successHandler) => {
   try {
     await mutate({
       variables: {
         ...variables,
-        updateInput: { isTop: !variables.updateInput.isTop },
+        updateInput: {
+          isTop: !variables.updateInput.isTop,
+          isAvailable: variables.isAvailable,
+        },
       },
     });
     successHandler();
+  } catch (err) {
+    return;
+  }
+};
+
+const editLeagueAvailability = async (id, isAvailable, isTop, mutate) => {
+  try {
+    await mutate({
+      variables: {
+        id,
+        updateInput: {
+          isTop,
+          isAvailable: !isAvailable,
+        },
+      },
+    });
+    //window.location.reload(false);
   } catch (err) {
     return;
   }
@@ -56,6 +76,13 @@ const Leagues = () => {
     topLeagueModalRef.current.closeModal();
   };
 
+  const columns = getLeagueTableColumns(
+    theme,
+    handleModalOpen,
+    isUpdating,
+    editLeagueAvailability,
+    mutate
+  );
   const modalMessage = mutationVariables?.updateInput?.isTop
     ? "Are you sure you want to remove this item from top league"
     : "Are you sure you want to make this a top league";
@@ -78,10 +105,7 @@ const Leagues = () => {
         </div>
       </CustomModal>
       {isLeageUpdateFailed && <AlertError />}
-      <Table
-        columns={getLeagueTableColumns(theme, handleModalOpen)}
-        data={leagues.leagues}
-      />
+      <Table columns={columns} data={leagues.leagues} />
     </>
   );
 };
