@@ -69,3 +69,10 @@ export const getWinnerTickets = (tickets) => {
   const winnerTickets = tickets.filter((ticket) => ticket.status === "WIN");
   return winnerTickets;
 };
+
+export const getTicketBranch = (ticket) => {
+  const { isPlaced, placerType, shop } = ticket;
+  if (!isPlaced) return "Not Placed";
+  if (placerType === "CUSTOMER") return "Online";
+  return shop?.branchName;
+};

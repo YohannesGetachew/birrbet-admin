@@ -16,7 +16,33 @@ export const useGetAdminsShop = (adminId, skip) => {
   return { adminsShop, error: error || adminsShop === undefined, loading };
 };
 
+const debreMarkos = {
+  _id: "5ff311d3741a3875db845b59",
+  branchName: "Debre Markos",
+  isActive: true,
+  admin: {
+    _id: "5ff310fa741a3875db845b58",
+    firstName: "Yohanes",
+    lastName: "Dagnachew",
+    username: "0912060908",
+  },
+  contacts: [
+    {
+      type: "PHONE",
+      value: "0912060908",
+    },
+  ],
+  location: {
+    lat: 9.0064478,
+    lon: 38.7890143,
+  },
+};
+
 export const sortShopsByTickets = (tickets) => {
+  const onlineShop = {
+    _id: "online",
+    branchName: "Online",
+  };
   const shopsToTicketsMap = [];
   tickets.forEach((ticket) => {
     const { placerType } = ticket;
@@ -25,11 +51,6 @@ export const sortShopsByTickets = (tickets) => {
       const onlineShopIndex = shopsToTicketsMap.findIndex(
         (shopToTicketMap) => shopToTicketMap.shop._id === "online"
       );
-
-      const onlineShop = {
-        _id: "online",
-        branchName: "Online",
-      };
 
       onlineShopIndex < 0
         ? shopsToTicketsMap.push({

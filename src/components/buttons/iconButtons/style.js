@@ -22,6 +22,11 @@ const getStyleByType = (type, theme) => {
         iconColor: theme.palette.primary.main,
         backgroundColor: theme.palette.secondary.light,
       };
+    case "duplicate":
+      return {
+        iconColor: theme.palette.secondary.dark,
+        backgroundColor: theme.palette.primary.main,
+      };
     default:
       return {
         iconColor: theme.palette.primary.dark,

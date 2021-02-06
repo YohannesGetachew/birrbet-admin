@@ -10,6 +10,7 @@ import {
 import { calculateTicketReturns } from "../../../../utils/ticketCalculation";
 import { Button } from "@material-ui/core";
 import { convertFromUnix, getFormattedDate } from "../../../../utils/date";
+import { getTicketBranch } from "../../../../customHooks/dataFetchers/tickets";
 
 const getTicketColumn = (
   theme,
@@ -159,7 +160,31 @@ const getTicketColumn = (
         return getFormattedDate(placedDate, true);
       }),
     },
+    {
+      name: "placerType",
+      label: "Placer type",
+      options: {
+        display: "excluded",
+        filter: "false",
+      },
+    },
   ];
+  if (role === "SUPER_ADMIN") {
+    columns.push({
+      name: "shop",
+      label: "Shop",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          const ticket = {
+            placerType: tableMeta.rowData[8],
+            isPlaced: tableMeta.rowData[5],
+            shop: value,
+          };
+          return getTicketBranch(ticket);
+        },
+      },
+    });
+  }
   if (!excludeActions) {
     columns.push({
       name: "_id",
@@ -198,6 +223,13 @@ const getTicketColumn = (
                     handleClick={() => prepareTicketPlacement(value, "PRINT")}
                   />
                   <span style={{ marginLeft: "8px", marginTop: "8px" }}></span>
+                  <CustomIconButton
+                    type="duplicate"
+                    disabled={!isPlaced}
+                    handleClick={() =>
+                      prepareTicketPlacement(value, "DUPLICATE")
+                    }
+                  />
                 </>
               )}
 

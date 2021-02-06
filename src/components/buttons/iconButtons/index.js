@@ -10,6 +10,7 @@ import {
   LockRounded,
   PinDrop,
   Add,
+  FileCopyTwoTone,
 } from "@material-ui/icons";
 import iconButtonStyle from "./style";
 
@@ -45,6 +46,8 @@ const getItemsByType = (type, style, disabled, locked, loading) => {
       ) : (
         <LockRounded className={style.icon} />
       );
+    case "duplicate":
+      return <FileCopyTwoTone className={style.icon} />;
     default:
       return <Print className={style.icon} />;
   }

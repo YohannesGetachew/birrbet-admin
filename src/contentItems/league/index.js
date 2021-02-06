@@ -6,11 +6,10 @@ import Table from "../../components/table";
 import { LEAGUES, UPDATE_LEAGUE } from "../../graphql/league";
 import getLeagueTableColumns from "./leagueTableColumns";
 import CustomModal from "../../components/modal";
-import { Button, useTheme } from "@material-ui/core";
+import { useTheme } from "@material-ui/core";
 import { CancelButton } from "../../components/buttons";
 import leagueStyle from "./style";
 import { SubmitButton } from "../../components/buttons";
-import { DesktopWindows, ErrorOutlineSharp } from "@material-ui/icons";
 
 const handleLeagueUpdate = async (mutate, variables, successHandler) => {
   try {
@@ -19,7 +18,7 @@ const handleLeagueUpdate = async (mutate, variables, successHandler) => {
         ...variables,
         updateInput: {
           isTop: !variables.updateInput.isTop,
-          isAvailable: variables.isAvailable,
+          isAvailable: variables.updateInput.isAvailable,
         },
       },
     });
@@ -67,8 +66,8 @@ const Leagues = () => {
   if (loadingLeagues) return <Loader />;
   if (errorLoadingLeagues) return <AlertError />;
 
-  const handleModalOpen = (isTop, id) => {
-    setMutationVariables({ id: id, updateInput: { isTop: isTop } });
+  const handleModalOpen = (isTop, isAvailable, id) => {
+    setMutationVariables({ id: id, updateInput: { isTop, isAvailable } });
     topLeagueModalRef.current.openModal();
   };
 

@@ -65,7 +65,7 @@ const getFixtureTableColumns = (
           (participant) => participant.name
         );
         if (participantNames.length === 2) return participantNames.join(" vs ");
-        return participantNames.join();
+        return participantNames.join(" ");
       },
     },
   },

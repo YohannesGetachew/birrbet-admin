@@ -61,3 +61,29 @@ export const winnerReportSummary = [
     label: "Net payment",
   },
 ];
+
+export const transactionReportSummary = [
+  {
+    name: "shop.branchName",
+    label: "Branch name",
+  },
+  {
+    name: "deposit",
+    label: "Deposit",
+  },
+  {
+    name: "withdrawal",
+    label: "Withdrawal",
+  },
+  {
+    name: "net",
+    label: "Net",
+    options: {
+      customBodyRender: (value, tableMeta) => {
+        const deposit = tableMeta.rowData[1];
+        const withdrawal = tableMeta.rowData[2];
+        return (deposit - withdrawal).toFixed(2);
+      },
+    },
+  },
+];

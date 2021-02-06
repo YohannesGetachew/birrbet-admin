@@ -105,7 +105,7 @@ const getLeagueTableColumns = (
                   : theme.palette.secondary.main,
                 color: theme.palette.primary.light,
               }}
-              onClick={() => handleModalOpen(isTop, value)}
+              onClick={() => handleModalOpen(isTop, isAvailable, value)}
             >
               {isTop ? "Remove from top" : "Make top"}
             </Button>

@@ -45,4 +45,36 @@ const useGetTransactions = (options = {}) => {
   };
 };
 
+export const filterTransactionsByShop = (transactions, shops) => {
+  const shopSortedTransactions = [];
+  transactions.forEach((transaction) => {
+    const { cashier, type, amount } = transaction;
+    const shopTransactionIndex = shopSortedTransactions.findIndex(
+      (netTransaction) => netTransaction.shop._id === cashier.belongsToShop
+    );
+    if (shopTransactionIndex >= 0) {
+      const {
+        deposit: previousDeposit,
+        withdrawal: previousWithdrawal,
+      } = shopSortedTransactions[shopTransactionIndex];
+      shopSortedTransactions[shopTransactionIndex] = {
+        ...shopSortedTransactions[shopTransactionIndex],
+        deposit:
+          type === "DEPOSIT" ? amount + previousDeposit : previousDeposit,
+        withdrawal:
+          type === "WITHDRAW"
+            ? amount + previousWithdrawal
+            : previousWithdrawal,
+      };
+    } else {
+      shopSortedTransactions.push({
+        deposit: type === "DEPOSIT" ? amount : 0,
+        withdrawal: type === "WITHDRAW" ? amount : 0,
+        shop: shops.find((shop) => shop._id === cashier.belongsToShop),
+      });
+    }
+  });
+  return shopSortedTransactions;
+};
+
 export default useGetTransactions;

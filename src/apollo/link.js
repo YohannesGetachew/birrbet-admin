@@ -1,7 +1,9 @@
-import { from, HttpLink, ApolloLink, Observable } from "@apollo/client";
+import { from, HttpLink, ApolloLink, Observable, split } from "@apollo/client";
+import { WebSocketLink } from "@apollo/client/link/ws";
 import { onError } from "@apollo/client/link/error";
 import { popupError } from "../components/errors";
 import Cookies from "js-cookie";
+import { getMainDefinition } from "@apollo/client/utilities";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -9,6 +11,25 @@ const httpLink = new HttpLink({
   uri: API_URL,
   credentials: "same-origin",
 });
+
+const wsLink = new WebSocketLink({
+  uri: `wss://api.birrbet.com/graphql`,
+  options: {
+    reconnect: true,
+  },
+});
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  httpLink
+);
 
 const request = async (operation) => {
   const token = Cookies.getJSON("AuthData")?.token;
@@ -67,7 +88,7 @@ const errorLink = onError(
   }
 );
 
-const customLink = from([errorLink, requestLink, httpLink]);
+const customLink = from([errorLink, requestLink, splitLink]);
 
 export default customLink;
 

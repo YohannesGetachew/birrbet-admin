@@ -26,6 +26,36 @@ export const FIXTURES = gql`
         id
         name
       }
+      odds {
+        marketId
+        market {
+          id
+          name
+        }
+        bets {
+          id
+          name
+          startPrice
+          price
+        }
+      }
+
+      basicOdds {
+        odds {
+          marketId
+          market {
+            id
+            name
+          }
+          bets {
+            id
+            name
+            startPrice
+            price
+          }
+        }
+        more
+      }
     }
   }
 `;
@@ -55,6 +85,50 @@ export const UPDATE_FIXUTRE = gql`
         away {
           name
         }
+      }
+    }
+  }
+`;
+
+export const LIVE_ODD = gql`
+  subscription {
+    liveOdd {
+      fixtureId
+      marketId
+      bets {
+        id
+        name
+        startPrice
+        price
+      }
+    }
+  }
+`;
+
+export const LIVE_SCORE = gql`
+  subscription {
+    liveScore {
+      fixtureId
+      score {
+        Scoreboard {
+          Results {
+            Value
+            Position
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const LIVE_FIXTURE = gql`
+  subscription {
+    liveFixture {
+      league {
+        name
+      }
+      country {
+        name
       }
     }
   }

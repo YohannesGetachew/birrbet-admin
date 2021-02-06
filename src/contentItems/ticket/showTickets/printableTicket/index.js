@@ -7,6 +7,7 @@ import { calculateTicketReturns } from "../../../../utils/ticketCalculation";
 import logo from "./birrBetTicketPrint.png";
 import { getFormattedDate } from "../../../../utils/date";
 import Bet from "./Bet";
+import { getTicketBranch } from "../../../../customHooks/dataFetchers/tickets";
 
 class PrintableTicket extends React.Component {
   state = {
@@ -33,6 +34,7 @@ class PrintableTicket extends React.Component {
       placerType,
       user,
       isPlaced,
+      shop,
       placedDate,
       _id: id,
     } = this.props?.ticket;
@@ -45,6 +47,7 @@ class PrintableTicket extends React.Component {
       incomeTax,
       possibleWin,
     } = calculateTicketReturns(stake, totalOdds, maxWin);
+    // console.log(this.props.ticket);
     return (
       <div className={classes.root}>
         <div className={classes.ticketItem}>
@@ -71,7 +74,7 @@ class PrintableTicket extends React.Component {
                   <Barcode
                     value={placementID}
                     displayValue={false}
-                    height={50}
+                    height={30}
                   />
                 </div>
                 <div
@@ -141,7 +144,9 @@ class PrintableTicket extends React.Component {
             }
           >
             <span className={classes.boldFont}>Branch:</span>
-            <span className={classes.lightText}>22</span>
+            <span className={classes.lightText}>
+              {getTicketBranch(this.props.ticket)}
+            </span>
           </p>
           <div className={classes.padding}>
             {bets.map((bet) => {

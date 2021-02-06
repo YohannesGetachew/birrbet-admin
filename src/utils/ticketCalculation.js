@@ -17,7 +17,7 @@ export const calculateTicketReturns = (stake, totalOdds, maxWin) => {
     stakeAfterVat,
     vatOnStake,
     possibleWin: +possibleWin,
-    incomeTax,
+    incomeTax: +incomeTax,
     roundedTotalOdds: totalOdds,
   };
 };

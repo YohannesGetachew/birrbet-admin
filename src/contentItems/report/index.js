@@ -23,11 +23,18 @@ import getTicketsAndWinnersTableInfo from "./ticketsAndWinners";
 import { APP } from "../../graphql/app";
 import { useGetTickets, useGetUsers } from "../../customHooks/dataFetchers";
 import useGetCurrentUserRole from "../../customHooks/helpers/useGetCurrentUserRole";
-import { sortShopsByTickets } from "../../customHooks/dataFetchers/shops";
-import { shopTicketsSummary, winnerReportSummary } from "./shopReport";
+import useGetShops, {
+  sortShopsByTickets,
+} from "../../customHooks/dataFetchers/shops";
+import {
+  shopTicketsSummary,
+  winnerReportSummary,
+  transactionReportSummary,
+} from "./shopReport";
 import { getWinnerTickets } from "../../customHooks/dataFetchers/tickets";
 import { convertFromUnix } from "../../utils/date";
 import { calculateTicketReturns } from "../../utils/ticketCalculation";
+import { filterTransactionsByShop } from "../../customHooks/dataFetchers/transactions";
 
 // daily tickets
 // daily winners
@@ -54,6 +61,11 @@ const Report = () => {
     loading: loadingApp,
     error: errorLoadingApp,
   } = useQuery(APP);
+  const {
+    data: shopData,
+    loading: loadingShops,
+    error: errorLoadingShops,
+  } = useGetShops();
 
   const currentUserRole = useGetCurrentUserRole();
 
@@ -63,13 +75,20 @@ const Report = () => {
   const theme = useTheme();
   const style = reportStyle();
 
-  if (loadingUserData || loadingTransactions || loadingTickets || loadingApp)
+  if (
+    loadingUserData ||
+    loadingTransactions ||
+    loadingTickets ||
+    loadingApp ||
+    loadingShops
+  )
     return <Loader />;
   if (
     errorLoadingUserData ||
     errorLoadingTransactions ||
     errorFetchingTickets ||
-    errorLoadingApp
+    errorLoadingApp ||
+    errorLoadingShops
   )
     return <AlertError />;
 
@@ -120,6 +139,11 @@ const Report = () => {
   });
 
   const winnerTickets = getWinnerTickets(ticketData.tickets);
+
+  const transactionsByShop = filterTransactionsByShop(
+    transactions.transactions,
+    shopData.shops
+  );
 
   return (
     <>
@@ -314,7 +338,7 @@ const Report = () => {
                     return {
                       ...ticket,
                       grossWinAmount: (
-                        ticketReturns.possibleWin - ticketReturns.incomeTax
+                        ticketReturns.possibleWin + ticketReturns.incomeTax
                       ).toFixed(2),
                       netPayment: ticketReturns.possibleWin,
                       incomeTax: ticketReturns.incomeTax,
@@ -322,6 +346,12 @@ const Report = () => {
                     };
                   })}
                   columns={winnerReportSummary}
+                />
+                <div style={{ margin: "16px" }}></div>
+                <Table
+                  title="Transactions"
+                  data={transactionsByShop}
+                  columns={transactionReportSummary}
                 />
               </>
             )}

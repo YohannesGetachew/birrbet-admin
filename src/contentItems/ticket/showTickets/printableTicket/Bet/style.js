@@ -12,7 +12,7 @@ const style = makeStyles((theme) => ({
   lightText: {
     color: theme.palette.accentOne.dark,
     fontWeight: "600",
-    fontSize: "13px",
+    fontSize: "8px",
   },
   bet: {
     paddingLeft: "4px",
@@ -44,12 +44,12 @@ const style = makeStyles((theme) => ({
   betName: {
     fontWeight: "600",
     color: theme.palette.accentOne.dark,
-    fontSize: "14px",
+    fontSize: "10px",
   },
   fixtureDate: {
     fontWeight: "600",
     color: theme.palette.accentOne.dark,
-    fontSize: "13px",
+    fontSize: "9px",
   },
   betDetails: {
     marginRight: "20px",

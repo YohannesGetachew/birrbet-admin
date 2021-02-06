@@ -16,7 +16,8 @@ const Tickets = () => {
     data: ticketData,
     loading: loadingTickets,
     error: errorFetchingTickets,
-  } = useGetTickets();
+  } = useGetTickets({ variables: { latest: true } });
+
   const {
     data: appData,
     loading: loadingApp,

@@ -8,7 +8,7 @@ const style = (theme) => ({
     textAlign: "center",
   },
   smallText: {
-    fontSize: "13px",
+    fontSize: "10px",
   },
   padding: {
     padding: "10px 25px 10px",
@@ -16,21 +16,21 @@ const style = (theme) => ({
   lightText: {
     color: theme.palette.accentOne.dark,
     fontWeight: "600",
-    fontSize: "13px",
+    fontSize: "10px",
   },
   boldFont: {
-    fontSize: "12px",
+    fontSize: "9px",
     fontWeight: "500",
     margin: "0 8px 0px 0",
     color: theme.palette.accentOne.dark,
   },
   header: {
-    fontSize: "30px",
+    fontSize: "20px",
     margin: "12px 0px 4px",
   },
   logo: {
-    width: "100px",
-    height: "100px",
+    width: "80px",
+    height: "80px",
   },
   bMargin: {
     marginBottom: "4px",
@@ -46,7 +46,7 @@ const style = (theme) => ({
     },
   },
   statusText: {
-    fontSize: "18px",
+    fontSize: "11px",
     fontWeight: "bold",
     "@media print": {
       display: "none",
@@ -73,7 +73,7 @@ const style = (theme) => ({
   betName: {
     fontWeight: "600",
     color: theme.palette.accentOne.dark,
-    fontSize: "17px",
+    fontSize: "9px",
   },
   betDetails: {
     marginRight: "20px",

@@ -205,8 +205,10 @@ const getTicketReport = (tickets, app) => {
           : dailyTicketReport[reportIndex].placedTicketCount;
         dailyTicketReport[reportIndex].totalStake =
           dailyTicketReport[reportIndex].totalStake + ticket.stake;
-        dailyTicketReport[reportIndex].comission =
-          dailyTicketReport[reportIndex].comission + ticket.stake * 0.15;
+        dailyTicketReport[reportIndex].comission = +(
+          dailyTicketReport[reportIndex].comission +
+          ticket.stake * 0.15
+        ).toFixed(2);
         // dailyTicketReport[reportIndex].winnerCount
         // dailyTicketReport[reportIndex].netUserWon =
         //   dailyTicketReport[reportIndex].netUserWon + ticketIncome.userWon;
