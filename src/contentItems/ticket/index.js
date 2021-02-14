@@ -12,18 +12,19 @@ import { AuthContext } from "../../contexts/auth";
 
 const Tickets = () => {
   const { authData } = useContext(AuthContext);
+  const currentUserRole = useGetCurrentUserRole();
+  const isLatest = currentUserRole === "CASHIER" ? true : false;
   const {
     data: ticketData,
     loading: loadingTickets,
     error: errorFetchingTickets,
-  } = useGetTickets({ variables: { latest: true } });
+  } = useGetTickets({ variables: { latest: isLatest } });
 
   const {
     data: appData,
     loading: loadingApp,
     error: errorLoadingApp,
   } = useGetApp();
-  const currentUserRole = useGetCurrentUserRole();
   if (loadingTickets || loadingApp) {
     return <Loader />;
   }

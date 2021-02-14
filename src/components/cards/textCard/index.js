@@ -17,7 +17,7 @@ const TextCard = ({ anyliticsData, cardColor, getCardIcon }) => {
     >
       {getCardIcon(style.cardIcon)}
       <h4 className={style.title}>{title}</h4>
-      <h3 className={style.body}>{body}</h3>
+      <h3 className={style.body}>{(+body).toFixed(2)}</h3>
       <h5 className={style.analytics}>
         <span>
           {analytics.direction === "increase" ? (
@@ -26,7 +26,7 @@ const TextCard = ({ anyliticsData, cardColor, getCardIcon }) => {
             <DownArrow className={style.icon} />
           )}
         </span>
-        {analytics.number}
+        {(+analytics.number).toFixed(2)}
       </h5>
       <p className={style.analyticsStartDate}>{analyticsStartDate}</p>
     </motion.div>
