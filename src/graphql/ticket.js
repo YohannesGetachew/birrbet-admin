@@ -9,6 +9,7 @@ export const TICKETS = gql`
     $status: String
     $placerType: String
     $latest: Boolean
+    $ticketID: String
   ) {
     tickets(
       date: $date
@@ -18,6 +19,7 @@ export const TICKETS = gql`
       status: $status
       latest: $latest
       placerType: $placerType
+      ticketID: $ticketID
     ) {
       _id
       createdAt

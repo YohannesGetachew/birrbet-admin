@@ -60,6 +60,8 @@ import SettingsRoundedIcon from "@material-ui/icons/SettingsTwoTone";
 import SportsKabaddiRoundedIcon from "@material-ui/icons/SportsKabaddiTwoTone";
 import { RouterOutlined } from "@material-ui/icons";
 import MutateAdvertisement from "../contentItems/advertisement/mutateAdvertisement";
+import ConfirmationNumberTwoToneIcon from "@material-ui/icons/ConfirmationNumberTwoTone";
+import PlaceTicket from "../contentItems/placeTicket";
 
 const CategorizedSuperAdminRoutes = [
   {
@@ -403,6 +405,14 @@ const CategorizedCashierRoutes = [
         path: "/admin/tickets",
         icon: <TheatersRoundedIcon style={{ fontSize: "20px" }} />,
         content: Ticket,
+        permission: ["SUPER_ADMIN", "ADMIN"],
+      },
+
+      {
+        menuName: "Place ticket",
+        path: "/admin/placeTicket",
+        icon: <ConfirmationNumberTwoToneIcon style={{ fontSize: "20px" }} />,
+        content: PlaceTicket,
         permission: ["SUPER_ADMIN", "ADMIN"],
       },
       // {
